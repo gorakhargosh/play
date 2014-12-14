@@ -45,7 +45,7 @@ function golang_fetch() {
 # Fetches golang source code for all enlisted third party packages.
 function golang_fetch_all_tp() {
   for package in "${golang_tp[@]}"; do
-    go_fetch $package
+    golang_fetch $package
   done
 }
 

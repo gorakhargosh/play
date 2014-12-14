@@ -1,0 +1,9 @@
+#!/bin/sh
+
+TOP_DIR=$(git rev-parse --show-toplevel)
+
+# pathenv is does more-or-less the same thing as the Unix env(1) (see: `man
+# env`), but `pathenv` specializes in processing only environment variables with
+# path lists and turns each path into its absolute path for tup to work.
+${TOP_DIR}/bin/pathenv \
+          GOPATH=${TOP_DIR}/third_party/golang:${TOP_DIR}/lib/golang go $*

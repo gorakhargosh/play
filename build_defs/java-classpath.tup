@@ -1,0 +1,4 @@
+SOY_JS_JAR       = $(_)/third_party/devtools/closure_templates/build/SoyToJsSrcCompiler.jar
+CLOSURE_CC_JAR   = $(_)/third_party/devtools/closure_compiler/build/compiler.jar
+NAILGUN_JAR      = $(_)/third_party/java/nailgun/nailgun-server/nailgun-server.jar
+CLASSPATH        = $(NAILGUN_JAR):$(CLOSURE_CC_JAR):$(SOY_JS_JAR):$(_)/lib/java

@@ -1,0 +1,139 @@
+#!/usr/bin/env python
+#
+# Description:
+#   Builds Java source code in a temporary directory and generates a JAR file
+#   from the resulting class files optionally generating a manifest file when
+#   an entry-point is specified.
+
+import argparse
+import collections
+import hashlib
+import os
+import shutil
+import sys
+import tempfile
+
+
+def parse_arguments(argv):
+  """Parses command line arugments.
+
+  Args:
+    argv: The command line arguments vector to parse.
+
+  Returns:
+    (args, parser)
+  """
+  parser = argparse.ArgumentParser(description='Compile java files into a jar.')
+  parser.add_argument(
+      '-o', '--output',
+      dest='output',
+      metavar='FILE',
+      required=True,
+      help='Write the jar to FILE.')
+  parser.add_argument(
+      '-e', '--entry-point', '--entry_point',
+      dest='entry_point',
+      metavar='CLASS',
+      default=None,
+      help='Entry point of the program, if you are making an executable.')
+  parser.add_argument(
+      'files',
+      metavar='file',
+      nargs=argparse.REMAINDER,
+      help='Input files: .java source, or .jar libraries that we depend on.')
+  args = parser.parse_args(argv)
+  return args, parser
+
+
+def md5_digest(string):
+  """Generates the MD5 digest for a given byte string.
+
+  Args:
+    string: The byte string.
+  Returns:
+    The hex digest for the MD5 checksum.
+  """
+  return hashlib.md5(string).hexdigest()
+
+
+def execute_exit_if_error(executable, *args):
+  """Executes a call to the executable with the arguments specified.
+
+  Exits with the return code of the call if an error occurs.
+
+  Args:
+    args: Varidic arguments on the command line for the executable.
+  """
+  ret = os.spawnvp(os.P_WAIT, executable, [executable] + list(args))
+  if ret != 0:
+    sys.exit(ret)
+
+
+def group_by_extension(files):
+  """Groups file names by extension.
+
+  Args:
+    files: The files to bucket.
+  Returns:
+    A dictionary of files keyed by extension.
+  """
+  d = collections.defaultdict(list)
+  l = [os.path.splitext(os.path.abspath(f)) for f in files]
+  for k, v in l:
+    d[v].append(k + v)
+  return d
+
+
+def main(argv):
+  """Entry point function."""
+  args, parser = parse_arguments(argv)
+
+  output = os.path.abspath(args.output)
+  files = group_by_extension(args.files)
+
+  # Probably need to write this better.
+  sources = files['.java']
+  # Directories are placed first in classpath so that they can override JAR
+  # class files.
+  classpath = os.pathsep.join(files[''] + files['.jar'])
+  if not sources:
+    sys.exit('Error: at least one java source file expected.')
+
+  build_root = tempfile.mkdtemp()
+  srcdir = os.path.join(build_root, 'src')
+  jardir = os.path.join(build_root, 'jar')
+
+  try:
+    # Copy source files into a temporary directory to stop javac from touching stuff it shouldn't
+    os.mkdir(srcdir)
+    os.chdir(srcdir)
+    srclist = []
+    for fname in sources:
+      dirname = md5_digest(os.path.dirname(fname))
+      target = os.path.join(dirname, os.path.basename(fname))
+      srclist.append(target)
+      if not os.path.exists(dirname):
+        os.mkdir(dirname)
+      assert not os.path.exists(target)
+      shutil.copy(fname, target)
+
+    os.mkdir(jardir)
+    execute_exit_if_error('javac', '-d', jardir, '-classpath', classpath, *srclist)
+
+    # Make jar from output classfiles
+    os.chdir(jardir)
+    if args.entry_point:
+      manifest_text = '''Manifest-Version: 1.0\nMain-Class: ''' + args.entry_point + '\n'
+      with open(os.path.join(build_root, 'manifest.txt'), 'w') as file:
+        file.write(manifest_text)
+      execute_exit_if_error(
+          'jar', 'cfm', output, os.path.join(build_root, 'manifest.txt'), '.')
+    else:
+      execute_exit_if_error('jar', 'cf', output, '.')
+  finally:
+    os.chdir('/')
+    shutil.rmtree(build_root)
+
+
+if __name__ == '__main__':
+  main(sys.argv[1:])

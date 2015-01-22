@@ -1,0 +1,15 @@
+ifeq (@(TUP_ARCH),i386)
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle-i386/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle-i386/include/linux
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle/include/linux
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-7-oracle-i386/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-7-oracle-i386/include/linux
+else
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-oracle/include/linux
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-openjdk-amd64/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-7-openjdk-amd64/include
+  JNI_LIBRARY_FLAGS += -I/usr/lib/jvm/java-7-openjdk-amd64/include/linux
+endif

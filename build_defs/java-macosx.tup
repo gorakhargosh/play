@@ -1,0 +1,1 @@
+JNI_LIBRARY_FLAGS += -I/System/Library/Frameworks/JavaVM.framework/Headers/

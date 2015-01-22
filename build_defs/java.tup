@@ -1,0 +1,19 @@
+JAVA        = java
+JAVA_FLAGS  = -server
+JAVAC       = javac
+JAVAC_FLAGS =
+
+JAVAC_JAR       = $(_)/bin/javac_jar
+JAVAC_JAR_FLAGS =
+
+
+# ------------------------------------------------------------------------------
+# JNI library compilation.
+# ------------------------------------------------------------------------------
+!jni_library = |> ^ [CC :jni] %o ^ $(CC) $(CC_FLAGS) $(JNI_LIBRARY_FLAGS) %f -o %o |>
+JNI_LIBRARY_FLAGS += -shared
+JNI_LIBRARY_FLAGS += -fPIC
+
+
+# Platform-specific overrides.
+include java-@(TUP_PLATFORM).tup

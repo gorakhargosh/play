@@ -1,0 +1,4 @@
+[alias]
+    app = //lib/java/com/lol/basics:HelloWorld
+[java]
+    src_roots = /lib/java/

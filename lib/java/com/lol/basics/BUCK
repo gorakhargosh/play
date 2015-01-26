@@ -1,0 +1,12 @@
+java_binary(
+  name       = 'HelloWorld',
+  deps       = [
+    ':hello_lib',
+  ],
+  main_class = 'com.lol.basics.HelloWorld',
+)
+
+java_library(
+  name       = 'hello_lib',
+  srcs       = glob(['*.java']),
+)

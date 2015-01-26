@@ -5,8 +5,6 @@ java_library(
 
 java_binary(
   name = 'HelloWorld',
-  srcs = glob(['*.java']),
-  srcs = [],
   main_class = 'com.lol.basics.HelloWorld',
   deps = [
     ':hello_lib',

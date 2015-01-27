@@ -9,5 +9,7 @@ prebuilt_jar(
   ],
   visibility = [
     '//lib/java/...',
+    '//lib/javatests/...',
+    '//third_party/java/...',
   ],
 )

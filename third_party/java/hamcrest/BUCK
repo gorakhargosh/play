@@ -3,6 +3,7 @@ prebuilt_jar(
   binary_jar = 'hamcrest-core-1.3.jar',
   visibility = [
     '//lib/java/...',
+    '//lib/javatests/...',
     '//third_party/java/...',
   ],
 )
@@ -15,7 +16,7 @@ prebuilt_jar(
   ],
   visibility = [
     '//lib/java/...',
+    '//lib/javatests/...',
     '//third_party/java/...',
   ],
 )
-

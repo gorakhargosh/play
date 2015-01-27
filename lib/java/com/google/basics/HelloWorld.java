@@ -1,4 +1,4 @@
-package com.lol.basics;
+package com.google.basics;
 
 import java.util.ArrayList;
 import java.util.List;

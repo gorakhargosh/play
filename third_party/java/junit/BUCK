@@ -1,0 +1,13 @@
+prebuilt_jar(
+  name = 'junit',
+  binary_jar = 'junit-4.11.jar',
+  source_jar = 'junit-4.11-sources.jar',
+  javadoc_url = 'http://junit-team.github.io/junit/javadoc/latest/',
+  deps = [
+    '//third_party/java/hamcrest:hamcrest-core',
+    '//third_party/java/hamcrest:hamcrest-library',
+  ],
+  visibility = [
+    '//lib/java/...',
+  ],
+)

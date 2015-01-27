@@ -2,10 +2,10 @@ java_test(
   name = 'all_tests',
   srcs = glob(['*Test.java']),
   source_under_test = [
-    '//lib/java/com/google/basics:Math',
+    '//src/java/com/google/basics:Math',
   ],
   deps = [
-    '//lib/java/com/google/basics:Math',
+    '//src/java/com/google/basics:Math',
     '//third_party/java/hamcrest:hamcrest-core',
     '//third_party/java/hamcrest:hamcrest-library',
     '//third_party/java/junit:junit',

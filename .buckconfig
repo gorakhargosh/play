@@ -1,4 +1,4 @@
 [alias]
-    app = //lib/java/com/google/basics:HelloWorld
+    hello = //src/java/com/google/basics:HelloWorld
 [java]
-    src_roots = /lib/java/
+    src_roots = /src/java/, /tests/java/, /third_party/java/

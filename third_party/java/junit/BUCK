@@ -8,8 +8,8 @@ prebuilt_jar(
     '//third_party/java/hamcrest:hamcrest-library',
   ],
   visibility = [
-    '//lib/java/...',
-    '//lib/javatests/...',
+    '//src/java/...',
+    '//tests/java/...',
     '//third_party/java/...',
   ],
 )

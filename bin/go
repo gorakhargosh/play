@@ -6,4 +6,4 @@ TOP_DIR=$(git rev-parse --show-toplevel)
 # env`), but `pathenv` specializes in processing only environment variables with
 # path lists and turns each path into its absolute path for tup to work.
 ${TOP_DIR}/bin/pathenv \
-          GOPATH=${TOP_DIR}/third_party/golang:${TOP_DIR}/lib/golang go $*
+          GOPATH=${TOP_DIR}/third_party/golang:${TOP_DIR}/src/golang go $*

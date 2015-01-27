@@ -6,8 +6,6 @@ java_test(
   ],
   deps = [
     '//src/java/com/google/basics:Math',
-    '//third_party/java/hamcrest:hamcrest-core',
-    '//third_party/java/hamcrest:hamcrest-library',
     '//third_party/java/junit:junit',
   ],
 )

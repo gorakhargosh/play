@@ -3,7 +3,7 @@ java_binary(
   deps       = [
     ':hello_lib',
   ],
-  main_class = 'com.lol.basics.HelloWorld',
+  main_class = 'com.google.basics.HelloWorld',
 )
 
 java_library(

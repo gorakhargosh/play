@@ -2,3 +2,5 @@
     hello = //src/java/com/google/basics:HelloWorld
 [java]
     src_roots = /src/java/, /tests/java/, /third_party/java/
+    target_level = 7
+    source_level = 7

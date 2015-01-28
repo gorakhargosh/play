@@ -1,6 +1,6 @@
 package com.google.basics;
 
-import static org.junit.*;
+import static org.junit.Test.*;
 import org.junit.Test;
 
 

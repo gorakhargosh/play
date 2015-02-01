@@ -1,6 +1,0 @@
-include_rules
-
-# .gitignore
-
-: foreach *.go |> !go_binary |>
-: painkiller.go |> stringer -type=Pill |> pill_string.go

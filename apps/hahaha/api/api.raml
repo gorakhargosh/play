@@ -1,0 +1,33 @@
+#%RAML 0.8
+title: Do API
+version: 1
+protocols: [ HTTP, HTTPS ]
+baseUri: https://{appName}.appspot.com/api/
+baseUriParameters:
+  appName:
+    description: The name of the deployed application instance.
+mediaType: application/x-protobuf
+schemas:
+  - !include schemas/attachment.raml
+  - !include schemas/comment.raml
+  - !include schemas/organization.raml
+  - !include schemas/project.raml
+  - !include schemas/story.raml
+  - !include schemas/task.raml
+  - !include schemas/user.raml
+/organizations:
+  get
+  post
+  /{organizationId}:
+    get
+    put
+    patch
+    delete
+/projects:
+  get
+  post
+  /{projectId}:
+    get
+    put
+    patch
+    delete

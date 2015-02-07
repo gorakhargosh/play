@@ -1,5 +1,0 @@
-include_rules
-
-.gitignore
-
-: foreach *.go |> !go_binary |> %B

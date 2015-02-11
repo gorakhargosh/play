@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
-import "fmt"
 
 type Response1 struct {
 	Page   int

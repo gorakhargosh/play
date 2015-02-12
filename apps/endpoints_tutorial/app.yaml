@@ -1,0 +1,15 @@
+application: endpoints-tutorial
+runtime: python27
+version: 1
+threadsafe: true
+api_version: 1
+
+handlers:
+- url: /_ah/spi/.*
+  script: helloworld_api.APPLICATION
+
+libraries:
+- name: pycrypto
+  version: latest
+- name: endpoints
+  version: 1.0

@@ -14,8 +14,7 @@ func main() {
 	go func(message string) {
 		fmt.Println(message)
 	}("going")
-
 	var input string
 	fmt.Scanln(&input)
-	fmt.Println("done")
+	fmt.Println("Done")
 }

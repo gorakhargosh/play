@@ -29,6 +29,9 @@ class HelloWorldApi(remote.Service):
   def greetings_list(self, unused_request):
     return STORED_GREETINGS
 
+
+
+
   MULTIPLY_METHOD_RESOURCE = endpoints.ResourceContainer(
       Greeting, times=messages.IntegerField(
           2, variant=messages.Variant.INT32, required=True))
@@ -38,6 +41,9 @@ class HelloWorldApi(remote.Service):
                     name='greetings.multiply')
   def greetings_multiply(self, request):
     return Greeting(message=request.message * request.times)
+
+
+
 
   ID_RESOURCE = endpoints.ResourceContainer(
       message_types.VoidMessage,

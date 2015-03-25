@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Description: Wraps Google App Engine to use our repo environment.
+ROOT_DIR=$(git rev-parse --show-toplevel)
+
+# Don't allow the system GOPATH to be used. We only allow checked-in libraries.
+gopath=\
+${ROOT_DIR}/third_party/golang:\
+${ROOT_DIR}/src/golang:\
+${ROOT_DIR}/play/users/${USER}/golang
+
+env GOPATH=${gopath} goapp $*

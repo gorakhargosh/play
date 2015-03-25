@@ -1,0 +1,18 @@
+application: demo
+version: 1
+module: default
+runtime: go
+api_version: go1
+
+instance_class: F4
+
+handlers:
+- url: /img/icons
+  static_dir: js/third_party/material-design-icons
+- url: /styles
+  static_dir: styles
+- url: /js
+  static_dir: js
+
+- url: /.*
+  script: _go_app

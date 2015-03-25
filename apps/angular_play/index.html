@@ -9,15 +9,15 @@
     <link rel="stylesheet" type="text/css" href="/js/third_party/angular/angular-csp.css">
     <link rel="stylesheet/less" type="text/css" href="/styles/app.less">
   </head>
-  <body ng-app="MeowApp" ng-controller="AppCtrl" layout="column">
+  <body ng-app="MeowApp" ng-cloak ng-controller="AppCtrl" layout="column">
+    <h1>Meow.</h1>
 
     <md-content>
-      <h1>These buttons are not raised.</h1>
       <section layout="row" layout-sm="column" layout-align="center center">
-        <md-button>{{title1}}</md-button>
-        <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
-        <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
-        <md-button class="md-warn">{{title4}}</md-button>
+        <md-button class="md-raised"><md-icon md-svg-icon="alarm"></md-icon></md-button>
+        <md-button class="md-raised md-primary">Primary (md-noink)</md-button>
+        <md-button ng-disabled="true" class="md-raised md-primary">Disabled</md-button>
+        <md-button class="md-raised md-warn">{{title4}}</md-button>
       </section>
     </md-content>
 

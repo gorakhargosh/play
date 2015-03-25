@@ -1,6 +1,6 @@
 application: demo
 version: 1
-module: default
+# module: default
 runtime: go
 api_version: go1
 
@@ -13,6 +13,8 @@ handlers:
   static_dir: styles
 - url: /js
   static_dir: js
-
+# - url: /templates
+#   static_dir: templates
+#   application_readable: true
 - url: /.*
   script: _go_app

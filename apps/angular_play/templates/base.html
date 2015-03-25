@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Angular Play</title>
+    <title><< .Title >></title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,100,100italic,300,300italic,400italic,500">
     <link rel="stylesheet" type="text/css" href="/js/third_party/angular-material/angular-material.css">
@@ -10,16 +10,8 @@
     <link rel="stylesheet/less" type="text/css" href="/styles/app.less">
   </head>
   <body ng-app="MeowApp" ng-cloak ng-controller="AppCtrl" layout="column">
-    <h1>Meow.</h1>
 
-    <md-content>
-      <section layout="row" layout-sm="column" layout-align="center center">
-        <md-button class="md-fab" aria-label="Use Android"><md-icon md-svg-icon="alarm"></md-icon></md-button>
-        <md-button class="md-fab md-primary">Primary (md-noink)</md-button>
-        <md-button ng-disabled="true" class="md-fab md-primary">Disabled</md-button>
-        <md-button class="md-fab md-warn">{{title4}}</md-button>
-      </section>
-    </md-content>
+    << template "content" . >>
 
     <script src="/js/third_party/less/dist/less.min.js"></script>
     <script src="/js/third_party/angular/angular.js"></script>

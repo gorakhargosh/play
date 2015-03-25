@@ -19,9 +19,7 @@ var testTemplate = parseTemplateString("foobar", `Example content.`)
 // parseTemplate parses a bunch of templates and assigns a nickname to them.
 func parseTemplate(nickname string, filenames ...string) *template.Template {
 	t := template.New(nickname).Delims("<<", ">>")
-	// return template.Must(template.ParseFiles(filenames...))
-	// t, _ = t.ParseFiles(filenames...)
-	t = template.Must(t.ParseFiles("templates/base.html", "templates/index.html"))
+	t = template.Must(t.ParseFiles(filenames...))
 	return t
 }
 
@@ -36,7 +34,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		Title: "MeowApp",
 	}
 
-	if err := indexTemplate.ExecuteTemplate(w, "index.html", applicationConfig); err != nil {
+	if err := indexTemplate.ExecuteTemplate(w, "application", applicationConfig); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

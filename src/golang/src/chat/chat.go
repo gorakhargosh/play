@@ -20,6 +20,12 @@ var debug = flag.Bool("debug", false, "turns on debugging")
 // The port to which the HTTP server will bind.
 var listenPort = flag.Int("port", 80, "listens on port number")
 
+// compileTemplate compiles a template given its filename.
+func compileHtmlTemplate(filename string) *template.Template {
+	return template.Must(template.ParseFiles(filepath.Join("templates", filename)))
+}
+
+// A templateHandler executes a template to generate an HTTP response.
 type templateHandler struct {
 	// Enabling debug mode causes the template to be recompiled
 	// per request (useful during development).
@@ -30,16 +36,13 @@ type templateHandler struct {
 	templ    *template.Template
 }
 
-func compileTemplate(filename string) *template.Template {
-	return template.Must(template.ParseFiles(filepath.Join("templates", filename)))
-}
-
+// ServeHTTP implements the http.Handler interface.
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if t.debug {
-		t.templ = compileTemplate(t.filename)
+		t.templ = compileHtmlTemplate(t.filename)
 	} else {
 		t.once.Do(func() {
-			t.templ = compileTemplate(t.filename)
+			t.templ = compileHtmlTemplate(t.filename)
 		})
 	}
 	t.templ.Execute(w, nil)

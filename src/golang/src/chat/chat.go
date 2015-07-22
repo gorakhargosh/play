@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -17,8 +16,8 @@ import (
 //    allowing reloading the templates as you make changes.
 var debug = flag.Bool("debug", false, "turns on debugging")
 
-// The port to which the HTTP server will bind.
-var listenPort = flag.Int("port", 80, "listens on port number")
+// The host and port to which the HTTP server will bind.
+var listenAddr = flag.String("addr", ":8080", "listen on <host:port>")
 
 // compileTemplate compiles a template given its filename.
 func compileHTMLTemplate(filename string) *template.Template {
@@ -48,12 +47,19 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.templ.Execute(w, nil)
 }
 
+// Entry-point function.
 func main() {
 	flag.Parse()
 
-	http.Handle("/", &templateHandler{filename: "chat.html", debug: *debug})
+	r := newRoom()
 
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", *listenPort), nil); err != nil {
+	http.Handle("/", &templateHandler{filename: "chat.html", debug: *debug})
+	http.Handle("/room", r)
+
+	go r.run()
+
+	log.Println("Started HTTP server on: ", *listenAddr)
+	if err := http.ListenAndServe(*listenAddr, nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
 }

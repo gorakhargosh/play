@@ -12,6 +12,7 @@ logfile=${TOP_DIR}/.bootstrap.log
 # Third party golang libs.
 golang_tp=(
   github.com/gin-gonic/gin
+  github.com/gorilla/websocket
 )
 
 

@@ -5,8 +5,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/gorakhargosh/trace"
 )
 
 // Turns on debugging for the application; especially useful during
@@ -52,6 +55,7 @@ func main() {
 	flag.Parse()
 
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 
 	http.Handle("/", &templateHandler{filename: "chat.html", debug: *debug})
 	http.Handle("/room", r)

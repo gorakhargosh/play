@@ -17,3 +17,8 @@ func TestNew(t *testing.T) {
 		}
 	}
 }
+
+func TestDiscard(t *testing.T) {
+	var silentTracer Tracer = Discard()
+	silentTracer.Trace("something")
+}

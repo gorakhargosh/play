@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Go tool.
 # ------------------------------------------------------------------------------
-GO = $(_)/bin/pathenv GOPATH=$(_)/third_party/golang:$(_)/lib/golang go
+GO = $(_)/bin/pathenv GOPATH=$(_)/third_party/golang:$(_)/src/golang go
 # NOTE(yesudeep): We do not include the system GOPATH here because that breaks
 # build reliability. We should only include checked-in source code.
 GO_FLAGS =

@@ -3,12 +3,17 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"sync/atomic"
 	"time"
 )
 
+var running int64 = 0
+
 func work() {
-	fmt.Print("[")
+	atomic.AddInt64(&running, 1)
+	fmt.Printf("[%d ", running)
 	time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
+	atomic.AddInt64(&running, -1)
 	fmt.Print("]")
 }
 
@@ -19,7 +24,7 @@ func worker(sema chan bool) {
 }
 
 func main() {
-	sema := make(chan bool, 100)
+	sema := make(chan bool, 20)
 	for i := 0; i < 1000; i++ {
 		go worker(sema)
 	}

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var running int64 = 0
+var running int64
 
 func work() {
 	atomic.AddInt64(&running, 1)

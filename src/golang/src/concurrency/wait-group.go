@@ -41,8 +41,10 @@ func doWork(i int, wg *sync.WaitGroup) {
 	// counter by only 1 unit per goroutine, not more.
 	defer wg.Done()
 	// Pretend to do some blocking I/O.
-	time.Sleep(time.Duration(rand.Intn(10)) * time.Millisecond)
-	fmt.Printf("Done with work: %d\n", i)
+
+	d := rand.Intn(5)
+	time.Sleep(time.Duration(d) * time.Second)
+	fmt.Printf("Done with work %d in %d seconds\n", i, d)
 }
 
 func main() {

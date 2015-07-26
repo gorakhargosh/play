@@ -1,3 +1,4 @@
+// Round trip quit channels.
 package main
 
 import (

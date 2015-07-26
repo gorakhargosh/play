@@ -21,18 +21,19 @@ import "fmt"
 func main() {
 	c := make(chan int)
 
-	finite_function := func() {
+	finiteFunction := func() {
 		c <- 1
 	}
 
-	indefinite_function := func() {
+	indefiniteFunction := func() {
 		for {
 		}
+		// Unreachable code.
 		c <- 1
 	}
 
-	go finite_function()
-	go indefinite_function()
+	go finiteFunction()
+	go indefiniteFunction()
 
 	fmt.Println(<-c)
 }

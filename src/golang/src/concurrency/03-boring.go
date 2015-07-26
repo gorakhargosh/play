@@ -23,6 +23,8 @@ func main() {
 	go boring("boring!")
 
 	// We wait for the boring function to complete for 2 seconds.
+	// There's no communication between this main goroutine and the boring
+	// goroutine.
 	fmt.Println("I'm listening")
 	time.Sleep(2 * time.Second)
 	fmt.Println("You're boring; I'm leaving.")

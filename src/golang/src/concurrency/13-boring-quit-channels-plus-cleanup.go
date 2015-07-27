@@ -22,6 +22,7 @@ func fanIn(a, b <-chan string) <-chan string {
 	return c
 }
 
+// cleanup pretends to perform some clean up.
 func cleanup() {
 	fmt.Println("Cleaned up!")
 }
@@ -38,6 +39,8 @@ func boring(msg string, quit chan bool) chan string {
 				// The other goroutine needs to wait for this case block to complete
 				// executing too!
 				cleanup()
+				// Signal to the other waiting goroutine that we're done with the
+				// clean up.
 				quit <- true
 				return
 			}

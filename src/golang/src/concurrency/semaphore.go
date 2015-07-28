@@ -36,7 +36,7 @@ func main() {
 
 	// Semaphore implemented as a buffered channel (does non-blocking I/O
 	// until capacity filled).
-	sema := make(chan bool, 200)
+	sema := make(chan bool, 20)
 	numWorkers := 1000
 	// The wait group must be updated with its count before the goroutine is
 	// scheduled to prevent race conditions.

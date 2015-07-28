@@ -90,9 +90,10 @@ func Google3(query string) (results []Result) {
 
 func First(query string, replicas ...Search) Result {
 	c := make(chan Result)
-	searchReplica := func(i int) { c <- replicas[i](query) }
-	for i := range replicas {
-		go searchReplica(i)
+	for index := range replicas {
+		go func(i int) {
+			c <- replicas[i](query)
+		}(index)
 	}
 	return <-c
 }

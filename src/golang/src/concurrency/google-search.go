@@ -88,6 +88,7 @@ func Google3(query string) (results []Result) {
 	return
 }
 
+// Uses the first response from the replicas.
 func First(query string, replicas ...Search) Result {
 	c := make(chan Result)
 	for index := range replicas {
@@ -130,7 +131,7 @@ func Timeit(label string, fn SearchFunc, query string) []Result {
 	start := time.Now()
 	results := fn(query)
 	elapsed := time.Since(start)
-	fmt.Println("[", label, "] t: ", elapsed, "\n", results)
+	fmt.Printf("%s: %s\n%v\n", label, elapsed, results)
 	return results
 }
 

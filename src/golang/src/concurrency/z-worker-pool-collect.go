@@ -82,7 +82,7 @@ func (t *lookupTask) Process() {
 }
 
 func (t *lookupTask) Print() {
-	fmt.Printf("%s DNS servers: \n", t.query)
+	fmt.Printf("[%s] DNS servers:\n", t.query)
 	for _, ns := range t.ns {
 		fmt.Printf("%s\n", ns.Host)
 	}

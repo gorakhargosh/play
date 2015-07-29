@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -10,6 +11,10 @@ import (
 	"strings"
 	"sync"
 )
+
+type Config struct {
+	workerCount int
+}
 
 type Task interface {
 	Process()
@@ -89,5 +94,10 @@ func NewLookupTask(line string) Task {
 }
 
 func main() {
-	run(os.Stdin, NewLookupTask, 100)
+	config := &Config{workerCount: 100}
+	flag.IntVar(&config.workerCount, "workers", 100, "The number of workers to use.")
+	flag.Parse()
+
+	fmt.Printf("Using %d workers\n", config.workerCount)
+	run(os.Stdin, NewLookupTask, config.workerCount)
 }

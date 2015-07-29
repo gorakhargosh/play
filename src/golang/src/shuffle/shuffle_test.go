@@ -7,9 +7,7 @@ import (
 	"testing"
 )
 
-// We do not seed the random number generator here to test reliably
-// whether two randomly generated sequences are indeed generated as
-// a result of the use of the generator.
+// We do not seed the random number generator here to make the PRNG predictable.
 
 func TestStringSliceShuffle(t *testing.T) {
 	testString := "abcdefghijklmnopqrstuvwxyz"

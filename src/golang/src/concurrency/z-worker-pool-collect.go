@@ -90,5 +90,5 @@ func NewLookupTask(line string) Task {
 }
 
 func main() {
-	run(os.Stdin, NewLookupTask, 1000)
+	run(os.Stdin, NewLookupTask, 10)
 }

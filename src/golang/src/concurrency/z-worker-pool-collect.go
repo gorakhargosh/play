@@ -68,7 +68,6 @@ type lookupTask struct {
 }
 
 func (t *lookupTask) Process() {
-	log.Println(*t)
 	ns, err := net.LookupNS(t.query)
 	if err != nil {
 		log.Fatal(err)
@@ -78,7 +77,7 @@ func (t *lookupTask) Process() {
 }
 
 func (t *lookupTask) Print() {
-	fmt.Println("DNS servers: ")
+	fmt.Printf("%s DNS servers: \n", t.query)
 	for _, ns := range t.ns {
 		fmt.Printf("%s\n", ns.Host)
 	}
@@ -90,5 +89,5 @@ func NewLookupTask(line string) Task {
 }
 
 func main() {
-	run(os.Stdin, NewLookupTask, 10)
+	run(os.Stdin, NewLookupTask, 100)
 }

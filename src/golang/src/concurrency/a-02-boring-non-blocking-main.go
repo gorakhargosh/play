@@ -18,7 +18,7 @@ func main() {
 	// Like running a shell command in the background using `&'.
 	go boring("boring!") // HL
 
-	// Because main immediately returns, we never waited for the goroutine
+	// main immediately returns because we never waited for the goroutine
 	// above to complete.
 }
 // end show A OMIT

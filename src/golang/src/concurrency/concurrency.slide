@@ -73,7 +73,7 @@ yesudeep@gmail.com
      // Do something.
   }()
 
-- *Channels* (message queues; blocking send; blocking receive) for lockstep communication
+- *Channels* (typed message queues; blocking send; blocking receive) for lockstep communication
 
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.

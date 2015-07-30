@@ -28,7 +28,7 @@ yesudeep@gmail.com
 - People working independently of each other while communicating.
 - Waiting for a chat message to arrive as a blocking operation before you can respond.
 - Postal mail using mailboxes as a non-blocking operation.
-- Callbacks akin to SMS notification (when your Amazon order is out for delivery).
+- Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 
 * (2/2) Real world: Communication is used to
 
@@ -90,7 +90,7 @@ yesudeep@gmail.com
 
 * (2/4) Go Primitives: Mutexes, wait groups and pools
 
-- Synchronized memory-sharing: [[https://godoc.org/sync#Mutex][sync.Mutex]]
+- Synchronized memory access: [[https://godoc.org/sync#Mutex][sync.Mutex]]
 - Distributing workload: [[https://godoc.org/sync#Pool][sync.Pool]]
 - Waiting for multiple goroutines to complete: [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
 - Single-execution goroutines: [[https://godoc.org/sync#Once][sync.Once]]

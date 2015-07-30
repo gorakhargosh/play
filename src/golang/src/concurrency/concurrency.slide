@@ -47,7 +47,7 @@ yesudeep@gmail.com
 
 - Do not communicate by sharing memory; instead, share memory by communicating.
 
-- Share message queues; do not share memory.
+- Share synchronized message queues; do not share memory.
 
 - Go gives you tools to shoot yourself in the foot, however.
 

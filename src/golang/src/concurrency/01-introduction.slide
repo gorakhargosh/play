@@ -7,33 +7,46 @@ Lead, Engineering - gTech AdSales (DevShop)
 yesudeep@google.com
 yesudeep@gmail.com
 
-* Mmmm...
+
+* Mmm... McGophers
+
+.image images/gopher-go.jpg
 
 .image images/mcdonalds-logo.svg
+
 
 * Analysing a McDonald's Outlet
 
 - Not OO; process-oriented.
 - The design and analysis of a McDonald's restaurant.
 - Replicating the restaurant.
+- Pay attention to the flow of data, not so much to the flow of control.
 
 
-* Concurrency in the real world
+* (1/2) Real world: People working independently of each other while communicating
 
-- People working independently of each other while communicating.
- - Waiting for a chat message to arrive as a blocking operation before you can respond.
- - Postal mail using mailboxes as a non-blocking operation.
- - Callbacks as a notification system when the post is delivered.
-- Communication is used to:
- - track progress
- - schedule and prioritize tasks
- - resolve conflicts
+- Waiting for a chat message to arrive as a blocking operation before you can respond.
+- Postal mail using mailboxes as a non-blocking operation.
+- Callbacks as a notification system when the post is delivered.
+
+* (2/2) Real world: Communication is used to
+
+- track progress
+- schedule and prioritize tasks
+- resolve conflicts
+- resolve dependencies
 
 * Key concepts
 
-- Concurrency is not parallelism.
+- Concurrency is [[https://www.youtube.com/watch?v=cN_DpYBzKso][not parallelism]].
 
-- Do not communicate by sharing memory; instead share memory by communicating.
+- *Concurrency*, a way to compose structure of software to work in coordination.
+
+- *Parallelism* is simultaneous execution of possibly related or unrelated things.
+
+- Do not communicate by sharing memory; instead, share memory by communicating.
+
+- Go gives you tools to shoot yourself in the foot, however.
 
 
 * CSP (Communicating Sequential Processes)
@@ -48,48 +61,72 @@ yesudeep@gmail.com
 - Avoiding concurrency within each *sequential* process.
 
 
-* Go Primitives (1/3)
+* Go Primitives: High-Level CSP (1/3)
 
 - *Goroutines* (using `go` keyword)
 
-        go func() {
-           // Do something.
-        }()
+  go func() {
+     // Do something.
+  }()
 
 - *Channels* (message queues; blocking send; blocking receive) for lockstep communication
 
-           a := <-ch     // Receive from a channel.
-           ch <- 3       // Send to a channel.
+  a := <-ch     // Receive from a channel.
+  ch <- 3       // Send to a channel.
 
 - *Buffered* channels (non-blocking send until full; blocking receive)
 
-           bch := make(chan bool, 2)  // Capacity 2.
+  bch := make(chan bool, 2)  // Capacity 2.
 
 - Receiving from a channel always blocks unless the channel is closed.
 
 - Closing channels
 
-          close(ch)
+  close(ch)
 
 
-* Go Primitives (2/3)
+* Go Primitives: Locks, Semaphores, and Pools (2/3)
 
 - Synchronized memory-sharing: [[https://godoc.org/sync#Mutex][sync.Mutex]]
 - Distributing workload: [[https://godoc.org/sync#Pool][sync.Pool]]
-- Waiting for multiple goroutines: [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
-- Single-use goroutines: [[https://godoc.org/sync#Once][sync.Once]]
+- Waiting for multiple goroutines to complete: [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
+- Single-execution goroutines: [[https://godoc.org/sync#Once][sync.Once]]
 - Condition variables: [[https://godoc.org/sync#Cond][sync.Cond]]
 
-* Go Primitives (3/3)
+* Go Primitives: Atomic Operations (3/3)
 
 - Atomic operations (increment, decrement, CAS, swaps, pointer dereferencing) [[https://godoc.org/sync/atomic][sync/atomic]]
 - Why CAS (check-and-set)? Race conditions.
+- See spinlock example later.
+- Atomic counter example in semaphore counting.
+
+
+* Pattern: Fan-in
+* Pattern: Fan-out
+* Pattern: PubSub
+
+* Example: Non-blocking exit
+* Example: Using `time.Sleep` to wait
+
+* Example: Channels
+* Example: Buffered channels
+* Example: `nil` channels
+* Example: Closing Channels
+* Example: Reading from closed channels
+* Example: Using signals for synchronized waiting
+
+- Why this is flow-of-control, not flow-of-data.
+- Resembles the goto statement advised against by Djikstra
+
+* Example: Pipeline
+* Example: WaitGroup
+
 
 * Terminology
 
 - I/O: blocking, non-blocking, asynchronous, synchronous
 - Wait group
-- Why single-threaded, event-driven, async I/O based system (read node.js) is fundamentally limited.
+- Why single-threaded, event-driven, async I/O-based systems (e.g., nodejs) are fundamentally limited.
 
 
 * Blocking I/O or computation

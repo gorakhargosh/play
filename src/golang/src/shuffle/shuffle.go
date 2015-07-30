@@ -36,9 +36,7 @@ func (s IntSlice) Len() int      { return len(s) }
 func (s IntSlice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
 
 // Shuffle is a convenience method.
-func (s IntSlice) Shuffle() {
-	Shuffle(s)
-}
+func (s IntSlice) Shuffle() { Shuffle(s) }
 
 type StringSlice []string
 
@@ -46,9 +44,7 @@ func (s StringSlice) Len() int      { return len(s) }
 func (s StringSlice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
 
 // Shuffle is a convenience method.
-func (s StringSlice) Shuffle() {
-	Shuffle(s)
-}
+func (s StringSlice) Shuffle() { Shuffle(s) }
 
 type Float64Slice []float64
 
@@ -56,9 +52,7 @@ func (s Float64Slice) Len() int      { return len(s) }
 func (s Float64Slice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
 
 // Shuffle is a convenience method.
-func (s Float64Slice) Shuffle() {
-	Shuffle(s)
-}
+func (s Float64Slice) Shuffle() { Shuffle(s) }
 
 // Convenience wrappers.
 func Ints(a []int)         { Shuffle(IntSlice(a)) }

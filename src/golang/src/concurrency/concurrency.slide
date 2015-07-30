@@ -124,7 +124,7 @@ yesudeep@gmail.com
   bash$ python -m SimpleHTTPServer &
   bash$ # You can type another command here...
 
-* (2/3) Some Terminology: Order
+* (2/3) Some Terminology: Order in time
 
 - Time goes left-to-right
 

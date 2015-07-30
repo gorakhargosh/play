@@ -1,9 +1,9 @@
 // Package shuffle implements a Fisher-Yates (or Knuth) shuffle for shuffling
 // slices and user-defined collections.
 //
-// In order to guarantee a successful and random shuffle, the pseudo-random
-// number generator must be correctly seeded before using any of the functions
-// defined in this package.
+// In order to guarantee a successful random shuffle, the pseudo-random number
+// generator must be correctly seeded before using any of the functions defined
+// in this package.
 package shuffle
 
 import "math/rand"

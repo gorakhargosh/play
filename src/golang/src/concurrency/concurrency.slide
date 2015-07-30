@@ -109,6 +109,9 @@ yesudeep@gmail.com
 - Multiplexing: fan-in, fan-out
 - Pipelining
 - Futures based on generator functions that return channels as handles for future values.
+- Time-boxing
+- Replication
+
 
 * (1/3) Some Terminology: Blocking or non-blocking
 

@@ -1,0 +1,81 @@
+Concurrency
+Tags: go golang
+
+Yesudeep Mangalapilly
+Lead, Engineering - gTech AdSales (DevShop)
+yesudeep@google.com
+yesudeep@gmail.com
+
+* Concurrency in the real world
+
+- People working independently of each other while communicating.
+ - Waiting for a chat message to arrive as a blocking operation before you can respond.
+ - Postal mail using mailboxes as a non-blocking operation.
+ - Callbacks as a notification system when the post is delivered.
+- Communication is used to:
+ - track progress
+ - schedule and prioritize tasks
+ - resolve conflicts
+
+* Key concepts
+
+- Concurrency is not parallelism.
+
+- Do not communicate by sharing memory; instead share memory by communicating.
+
+
+* CSP (Communicating Sequential Processes)
+
+- Based on paper by C A R Hoare (also inventor of quicksort, null reference).
+
+- Schedule blocking operations to run in separate processes (*goroutines* in Go).
+
+- Synchronizing between them by communicating over shared message queues
+(*channels* in Go).
+
+- Avoiding concurrency within each *sequential* process.
+
+
+* Go Primitives (1/3)
+
+- Goroutines
+- Channels (message queues; blocking send; blocking receive) for lockstep communication
+- *Buffered* channels (async send until full; blocking receive)
+- Receiving from a channel always blocks unless the channel is closed.
+
+
+* Go Primitives (2/3)
+
+- Mutexes [[sync.Mutex][https://godoc.org/sync#Mutex]]
+- Pool [[sync.Pool][https://godoc.org/sync#Pool]]
+- Waiting for multiple goroutines [[sync.WaitGroup][https://godoc.org/sync#WaitGroup]]
+- Single-use goroutines: [[sync.Once][https://godoc.org/sync#Once]]
+- Condition variables: [[sync.Cond][https://godoc.org/sync#Cond]]
+
+* Go Primitives (3/3)
+
+- Atomic operations (increment, decrement, CAS, swaps, pointer dereferencing) [[sync/atomic][https://godoc.org/sync/atomic]]
+
+* Mmmm...
+
+.image images/mcdonalds-logo.svg
+
+* Analysing a McDonald's Outlet
+
+- Not OO; process-oriented.
+- The design and analysis of a McDonald's restaurant.
+- Replicating the restaurant.
+
+
+* Terminology
+
+- I/O: blocking, non-blocking, asynchronous, synchronous
+- Wait group
+- Why single-threaded, event-driven, async I/O based system (read node.js) is fundamentally limited.
+
+
+* Blocking I/O or computation
+
+A very boring function written by Rob Pike.
+
+.play a-01-boring-blocking-io-single-thread.go /show A OMIT/,/end show A OMIT/

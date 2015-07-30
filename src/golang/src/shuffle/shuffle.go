@@ -4,6 +4,8 @@
 // In order to guarantee a successful random shuffle, the pseudo-random number
 // generator must be correctly seeded before using any of the functions defined
 // in this package.
+//
+// See: https://en.wikipedia.org/wiki/Fisher-Yates_shuffle
 package shuffle
 
 import "math/rand"

@@ -1,0 +1,199 @@
+Namasté, Concurrency!
+One piecemeal at a time (sequentially).
+Tags: go golang concurrency examples patterns
+
+
+Yesudeep Mangalapilly | येसुदीप मंगलापिल्ली
+_Lead_, _Engineering_ — gTech AdSales (DevShop)
+yesudeep@google.com
+yesudeep@gmail.com
+
+
+* Mmm... McGophers
+
+.image images/gopher-go.jpg
+
+.image images/mcdonalds-logo.svg
+
+
+* Analysing a McDonald's Outlet
+
+- Not OO; process-oriented.
+- The design and analysis of a McDonald's restaurant.
+- Replicating the restaurant.
+- Pay attention to the flow of data, not so much to the flow of control.
+
+* (1/2) Real world: Examples
+
+- People working independently of each other while communicating.
+- Waiting for a chat message to arrive as a blocking operation before you can respond.
+- Postal mail using mailboxes as a non-blocking operation.
+- Callbacks akin to SMS notification (when your Amazon order is out for delivery).
+
+* (2/2) Real world: Communication is used to
+
+- track progress
+- schedule and prioritize tasks
+- resolve conflicts
+- resolve dependencies
+
+* Key concepts
+
+- Concurrency is [[https://www.youtube.com/watch?v=cN_DpYBzKso][not parallelism]].
+
+- *Concurrency*, a way to compose structure of software to work in coordination.
+
+- *Parallelism* is simultaneous execution of possibly related or unrelated things.
+
+- Do not communicate by sharing memory; instead, share memory by communicating.
+
+- Share message queues; do not share memory.
+
+- Go gives you tools to shoot yourself in the foot, however.
+
+- Flow-of-data > flow-of-control.
+
+
+* CSP (Communicating Sequential Processes)
+
+- Based on [[http://www.usingcsp.com/cspbook.pdf][paper]] by [[https://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. "Tony" Hoare]] (inventor of [[https://en.wikipedia.org/wiki/Quicksort][quick sort]] & null reference).
+
+- Schedule blocking operations to run in separate processes (*goroutines* in Go).
+
+- Synchronize by communicating over shared message queues (*channels* in Go).
+
+- Avoiding concurrency within each *sequential* process.
+
+
+* (1/4) Go Primitives: High-Level CSP
+
+- *Goroutines* (using `go` keyword)
+
+  go func() {
+     // Do something.
+  }()
+
+- *Channels* (message queues; blocking send; blocking receive) for lockstep communication
+
+  a := <-ch     // Receive from a channel.
+  ch <- 3       // Send to a channel.
+
+- *Buffered* channels (non-blocking send until full; blocking receive)
+
+  bch := make(chan bool, 2)  // Capacity 2.
+
+- Receiving from a channel always blocks unless the channel is closed.
+
+  close(ch)
+  <-ch  // non-blocking on closed channel.
+
+
+* (2/4) Go Primitives: Mutexes, wait groups and pools
+
+- Synchronized memory-sharing: [[https://godoc.org/sync#Mutex][sync.Mutex]]
+- Distributing workload: [[https://godoc.org/sync#Pool][sync.Pool]]
+- Waiting for multiple goroutines to complete: [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
+- Single-execution goroutines: [[https://godoc.org/sync#Once][sync.Once]]
+- Condition variables: [[https://godoc.org/sync#Cond][sync.Cond]]
+
+* (3/4) Go Primitives: Atomic operations
+
+- Atomic operations (increment, decrement, CAS, swaps, pointer dereferencing) [[https://godoc.org/sync/atomic][sync/atomic]]
+- Why CAS (check-and-set)? To avoid race conditions.
+- See spinlock example later.
+- Atomic counter example in semaphore counting.
+
+* (4/4) Go Primitives: Patterns based on primitives
+
+- Semaphore using buffered channels and communication-guarded worker routines.
+- Multiplexing: fan-in, fan-out
+- Pipelining
+- Futures based on generator functions that return channels as handles for future values.
+
+* (1/3) Some Terminology: Blocking or non-blocking
+
+- Blocking operation (I/O or computation)
+
+  bash$ python -m SimpleHTTPServer
+  Serving HTTP on 0.0.0.0 port 8000 ...  
+  ... takes over your command line ...
+  [Interrupt with Ctrl-C to exit]
+
+- Non-blocking operation (I/O or computation)
+ 
+  bash$ python -m SimpleHTTPServer &
+  bash$ # You can type another command here...
+
+* (2/3) Some Terminology: Order
+
+- Time goes left-to-right
+
+- Synchronous (in order)
+
+  |-----A----->||--------B-------->||-------C------->|    
+  
+- Asynchronous (out-of-order)
+  
+  |----A----->|
+     |-----B----------->| 
+         |-------C------>|
+
+- Wait group
+
+  |------------A------------->|
+  |------------B----------->| |
+         |-------C------>|    |
+                              |
+  |----------waiting----------|----resume---->
+
+
+* There is a "No" in "NodeJS"
+
+- Single-threaded
+- Event-driven
+- Async I/O-based 
+- Callback hell
+- New [[http://www.html5rocks.com/en/tutorials/es6/promises/][promises API]] helps a bit
+- The "new" thing but fundamentally limited
+- There is a lot more to concurrency than just this
+
+* Example: Blocking I/O or computation
+
+A very boring function written by Rob Pike.
+
+.play a-01-boring-blocking-io-single-thread.go /show A OMIT/,/end show A OMIT/
+
+* Example: Non-blocking exit
+
+.play a-02-boring-non-blocking-main.go /show A OMIT/,/end show A OMIT/
+
+* Example: Using `time.Sleep` to wait
+
+* Example: Using signal channels for synchronized waiting
+
+- Why this is flow-of-control, not flow-of-data.
+- Resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
+- Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] where possible, instead.
+
+.play b-04-signal-channel-to-wait-for-one-goroutine.go /show A OMIT/,/end show A OMIT/
+
+* Example: Channels
+* Example: Buffered channels
+* Example: `nil` channels
+* Example: Closing Channels
+* Example: Reading from closed channels
+
+* Example: Pipeline
+* Example: WaitGroup
+* Example: Semaphore
+* Example: Spinlock and atomic operations
+
+* Pattern: Fan-in
+* Pattern: Fan-out
+* Pattern: PubSub
+
+
+
+* Links:
+
+- [[http://www.golangpatterns.info/concurrency/futures][Go Patterns]]

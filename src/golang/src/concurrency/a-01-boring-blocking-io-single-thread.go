@@ -21,7 +21,9 @@ func boring(msg string) {
 }
 
 func main() {
-	boring("boring!")
+	// Blocks the main goroutine.
+	boring("boring!") // HL
+	// We won't reach here until boring is done.
 }
 
 // end show A OMIT

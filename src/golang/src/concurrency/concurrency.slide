@@ -167,9 +167,10 @@ A very boring function written by Rob Pike.
 
 .play a-02-boring-non-blocking-main.go /show A OMIT/,/end show A OMIT/
 
+* Example: Using `fmt.Scanf` to wait
 * Example: Using `time.Sleep` to wait
 
-* Example: Using signal channels for synchronized waiting
+* Example: Using signal channels to wait
 
 - Why this is flow-of-control, not flow-of-data.
 - Resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].

@@ -9,23 +9,19 @@ import (
 func boring(msg string) {
 	for i := 0; ; i++ {
 		fmt.Println(msg, i)
-		// Fixed interval.
-		// time.Sleep(time.Second)
-
-		// Random sleep interval.
 		time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
 	}
 }
 
+// show A OMIT
 func main() {
-	// Ignore the boring thing that takes a lot of time.
-	// Like running a shell command in the backgroun dusing the ampersand.
 	go boring("boring!")
 
-	// We wait for the boring function to complete for 2 seconds.
-	// There's no communication between this main goroutine and the boring
-	// goroutine.
+	// We wait 2 seconds. There's no communication between this main goroutine and
+	// the boring goroutine.
 	fmt.Println("I'm listening")
-	time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Second) // HL
 	fmt.Println("You're boring; I'm leaving.")
 }
+
+// end show A OMIT

@@ -15,10 +15,12 @@ func boring(msg string) {
 }
 
 func main() {
-	// Like running a shell command in the background using `&'.
+	// Like running a bash shell command in the background using `&'.
+	// Example: python -m SimpleHTTPServer &
 	go boring("boring!") // HL
 
-	// main immediately returns because we never waited for the goroutine
-	// above to complete.
+	// main returns immediately as we don't wait for the goroutine above to
+	// complete.
 }
+
 // end show A OMIT

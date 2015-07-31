@@ -35,38 +35,30 @@ func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 }
 
+// show A OMIT
 func doWork(i int, wg *sync.WaitGroup) {
 	// wg.Done() essentially subtracts 1 from the counter.
-	// Therefore, you should ensure that you're incrementing the
-	// counter by only 1 unit per goroutine, not more.
-	defer wg.Done()
-	// Pretend to do some blocking I/O.
-
+	defer wg.Done() // HL
 	d := rand.Intn(5)
 	time.Sleep(time.Duration(d) * time.Second)
 	fmt.Printf("Done with work %d in %d seconds\n", i, d)
 }
 
 func main() {
-	// The zero-value for this is sufficient.
-	var wg sync.WaitGroup
+	var wg sync.WaitGroup // HL
 	count := 4
 
 	// Calling wg.Add(1) repeatedly is non-pragmatic if you know the count.
-	wg.Add(count)
+	wg.Add(count) // HL
 	for i := 0; i < count; i++ {
 		// The wait group count must be updated before scheduling the goroutine
-		// for execution to prevent race conditions maintaining the counter (
-		// wg.Done() would drop the counter by 1 and the wait group can panic
-		// when the counter goes below 0.
-		//
-
-		// wg.Add(1)
+		// for execution to prevent race conditions maintaining the counter.
+		// wg.Add(1) // HL
 		go doWork(i, &wg)
 	}
 
 	// This will block until the counter drops to 0.
-	wg.Wait()
-
-	fmt.Println("We waited until the last piece of work was complete. Done.")
+	wg.Wait() // HL
 }
+
+// end show A OMIT

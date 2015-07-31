@@ -21,14 +21,33 @@ type Interface interface {
 	Swap(i, j int)
 }
 
+// Ensuring that the shuffled bits are toward the left, not the right.
+// This allows us to shuffle only count number of items in the array,
+// if required.
+func shuffle(data Interface, count int) {
+	len := data.Len()
+	if count > len {
+		count = len
+	}
+	var k = 0
+	for i := 0; i < count; i++ {
+		k = rand.Intn(len-i) + i // Scale the random number.
+		data.Swap(k, i)
+	}
+}
+
 // Fisher-Yates shuffle, or Knuth shuffle, that shuffles an indexable
 // collection of items.
 func Shuffle(data Interface) {
-	for n := data.Len(); n > 0; {
-		i := rand.Intn(n)
-		n--
-		data.Swap(n, i)
-	}
+	shuffle(data, data.Len())
+
+	// Simple implementation.
+	//
+	// for n := data.Len(); n > 0; {
+	// 	i := rand.Intn(n)
+	// 	n--
+	// 	data.Swap(n, i)
+	// }
 }
 
 // Convenience type for most common cases.

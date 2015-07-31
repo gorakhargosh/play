@@ -7,6 +7,10 @@ import (
 )
 
 // We do not seed the random number generator here to make the PRNG predictable.
+// TODO(yesudeep): Bias testing. see:
+// http://gregbee.ch/blog/determining-the-bias-of-a-shuffle-algorithm
+// TODO(yesudeep): There's a bug below. We aren't testing the possibility of the
+// shuffle generating the input sequence without any changes.
 
 func TestShuffleEmptyCollections(t *testing.T) {
 	a := []int{}

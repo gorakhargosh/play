@@ -33,6 +33,8 @@ yesudeep@gmail.com
 - Postal mail using mailboxes as a non-blocking operation.
 - Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 
+* Concurrency is communicating.
+
 * (2/2) Real world: Communication is used to
 
 - track progress
@@ -81,15 +83,20 @@ yesudeep@gmail.com
 
 - TODO(yesudeep): Add more terminology here.
 
+* When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud race condition. *thud*
+
+
 # Key points.
 
 * Concurrency is not parallelism.
 
+- Can work with a single processor
+- Facilitates parallelism if multiple processors are available
 - Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
 
 * Concurrency: a way to compose structure of software to work in coordination.
 
-- A directed graph. One without cycles is better. (DAG)
+- A directed graph; one without cycles (potential deadlocks) is better (DAG).
 
 * Parallelism: simultaneous execution of possibly related or unrelated things.
 
@@ -118,6 +125,8 @@ yesudeep@gmail.com
 
 - Avoiding concurrency within each *sequential* process.
 
+- Sequential process example: Indian traditional game called "langdi??" (hop and chase). Turing machines anybody?
+
 
 * (1/4) Go Primitives: High-Level CSP
 
@@ -127,12 +136,12 @@ yesudeep@gmail.com
      // Do something.
   }()
 
-- *Channels* (typed message queues; blocking send; blocking receive) for lockstep communication
+- *Channels* (typed message queues; blocking send; blocking receive) for lockstep communication (e.g. telephone)
 
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.
 
-- *Buffered* channels (non-blocking send until full; blocking receive)
+- *Buffered* channels (non-blocking send until full; blocking receive; e.g. postal mail)
 
   bch := make(chan bool, 2)  // Capacity 2.
 
@@ -154,8 +163,8 @@ yesudeep@gmail.com
 
 - Atomic operations (increment, decrement, CAS, swaps, pointer dereferencing) [[https://godoc.org/sync/atomic][sync/atomic]]
 - Why CAS (check-and-set)? To avoid race conditions.
-- See spinlock example later.
-- Atomic counter example in semaphore counting.
+- Example race condition: "Check-and-sit" or "bum-meet-floor".
+
 
 * (4/4) Go Primitives: Patterns based on primitives
 
@@ -166,15 +175,7 @@ yesudeep@gmail.com
 - Time-boxing
 - Replication
 
-* There is a "No" in "NodeJS"
-
-- Single-threaded
-- Event-driven
-- Async I/O-based
-- Callback hell
-- New [[http://www.html5rocks.com/en/tutorials/es6/promises/][promises API]] helps a bit
-- The "new" thing but fundamentally limited
-- There is a lot more to concurrency than just this
+* Goroutines and "Please wait..."
 
 * Example: Blocking I/O or computation
 
@@ -184,13 +185,27 @@ A very boring function written by Rob Pike.
 
 * Example: Non-blocking exit
 
+- comes as a neat surprise
+
 .play non-blocking-main.go /show A OMIT/,/end show A OMIT/
 
 * Example: Using `os.Stdin` to wait
 
+- avoid
+- quirky
+- unreliable
+- human/stdin error-prone
+- dependency on presence of a human being/standard input
+
 .play waiting-using-stdin.go /show A OMIT/,/end show A OMIT/
 
 * Example: Using `time.Sleep` to wait
+
+- avoid
+- unreliable
+- what if the goroutine takes more time than we're waiting?
+- what if the goroutine takes a lot less time than we're waiting?
+- surely, there must be something better.
 
 .play waiting-using-sleep.go /show A OMIT/,/end show A OMIT/
 
@@ -202,17 +217,22 @@ A very boring function written by Rob Pike.
 
 .play waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
+* Example: Waiting for groups of goroutines
+
+.play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
+
+* Channels: Talk to my handle.
+
 * Example: Channels
+
+.play channels.go
+
 * Example: Buffered channels
 * Example: `nil` channels
 * Example: Closing Channels
 * Example: Reading from closed channels
 
 * Example: Pipeline
-
-* Example: Waiting for multiple goroutines
-
-.play wait-groups.go /show A OMIT/,/end show A OMIT/
 
 * Example: Semaphore
 
@@ -227,6 +247,15 @@ A very boring function written by Rob Pike.
 * Pattern: PubSub
 
 
+* Hype 1: There is a "No" in "NodeJS"
+
+- Single-threaded
+- Event-driven
+- Async I/O-based
+- Callback hell
+- New [[http://www.html5rocks.com/en/tutorials/es6/promises/][promises API]] helps a bit
+- The "new" thing but fundamentally limited
+- There is a lot more to concurrency than just this
 
 * Links:
 

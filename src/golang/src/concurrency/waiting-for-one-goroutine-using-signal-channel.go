@@ -9,13 +9,20 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 // show A OMIT
 func worker(done chan bool) {
-	time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+	d := rand.Intn(1e3)
+	time.Sleep(time.Duration(d) * time.Millisecond)
+	fmt.Printf("Work took %d ms.\n", d)
 	done <- true // HL
 }
 

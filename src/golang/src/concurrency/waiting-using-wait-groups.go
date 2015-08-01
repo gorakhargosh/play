@@ -36,29 +36,29 @@ func init() {
 }
 
 // show A OMIT
-func doWork(i int, wg *sync.WaitGroup) {
-	// wg.Done() essentially subtracts 1 from the counter.
-	defer wg.Done() // HL
-	d := rand.Intn(5)
-	time.Sleep(time.Duration(d) * time.Second)
-	fmt.Printf("Done with work %d in %d seconds\n", i, d)
+func work(i int, pwg *sync.WaitGroup) { // HL
+	defer pwg.Done() // HL
+
+	d := rand.Intn(1e3)
+	time.Sleep(time.Duration(d) * time.Millisecond)
+	fmt.Printf("Work %d took %d ms.\n", i, d)
 }
 
 func main() {
 	var wg sync.WaitGroup // HL
-	count := 4
 
-	// Calling wg.Add(1) repeatedly is non-pragmatic if you know the count.
+	// Pragmatic if you know the total count.
+	count := 4
 	wg.Add(count) // HL
 	for i := 0; i < count; i++ {
-		// The wait group count must be updated before scheduling the goroutine
-		// for execution to prevent race conditions maintaining the counter.
+		// Update count before scheduling goroutine to prevent race conditions.
 		// wg.Add(1) // HL
-		go doWork(i, &wg)
+		go work(i, &wg) // HL
 	}
 
 	// This will block until the counter drops to 0.
 	wg.Wait() // HL
+	fmt.Println("Done; exiting.")
 }
 
 // end show A OMIT

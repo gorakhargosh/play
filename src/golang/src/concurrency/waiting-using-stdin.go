@@ -15,12 +15,9 @@ func boring(msg string) {
 
 // show A OMIT
 func main() {
-	var discard string
 	go boring("message")
-	// - quirky
-	// - unreliable
-	// - human/stdin error-prone
-	// - dependency on presence of a human being/standard input
+
+	var discard string
 	fmt.Scanf("%s", &discard) // HL
 	fmt.Printf("You entered: %q; exiting.\n", discard)
 }

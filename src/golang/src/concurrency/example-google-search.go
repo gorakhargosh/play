@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// show fakeEngines OMIT
 var (
 	Web1   = fakeSearch("web1")
 	Web2   = fakeSearch("web2")
@@ -17,6 +18,8 @@ var (
 	Video2 = fakeSearch("video2")
 	Video3 = fakeSearch("video3")
 )
+
+// end show fakeEngines OMIT
 
 type Result string
 type Search func(query string) Result
@@ -30,11 +33,11 @@ func fakeSearch(kind string) Search {
 
 type SearchFunc func(query string) []Result
 
-// Serial.
+// Sequential.
 func Google1(query string) (results []Result) {
-	results = append(results, Web1(query))
-	results = append(results, Image1(query))
-	results = append(results, Video1(query))
+	results = append(results, Web1(query))   // HL
+	results = append(results, Image1(query)) // HL
+	results = append(results, Video1(query)) // HL
 	return results
 }
 
@@ -42,48 +45,35 @@ func Google1(query string) (results []Result) {
 func Google2(query string) (results []Result) {
 	c := make(chan Result)
 
-	// Fan-in pattern.
-	go func() {
-		c <- Web1(query)
-	}()
-	go func() {
-		c <- Image1(query)
-	}()
-	go func() {
-		c <- Video1(query)
-	}()
+	// Fan-in (multiplexing) pattern.
+	go func() { c <- Web1(query) }()   // HL
+	go func() { c <- Image1(query) }() // HL
+	go func() { c <- Video1(query) }() // HL
 
 	for i := 0; i < 3; i++ {
-		result := <-c
+		result := <-c // HL
 		results = append(results, result)
 	}
 	return
 }
 
-// Concurrent and time-boxed.
+// Concurrent and time-bound.
 func Google3(query string) (results []Result) {
 	c := make(chan Result)
 
-	// Fan-in pattern.
-	go func() {
-		c <- Web1(query)
-	}()
-	go func() {
-		c <- Image1(query)
-	}()
-	go func() {
-		c <- Video1(query)
-	}()
+	go func() { c <- Web1(query) }()
+	go func() { c <- Image1(query) }()
+	go func() { c <- Video1(query) }()
 
-	timeout := time.After(80 * time.Millisecond)
+	timeout := time.After(80 * time.Millisecond) // HL
 	for i := 0; i < 3; i++ {
-		select {
-		case result := <-c:
+		select { // HL
+		case result := <-c: // HL
 			results = append(results, result)
-		case <-timeout:
+		case <-timeout: // HL
 			fmt.Println("timed out")
 			return
-		}
+		} // HL
 	}
 	return
 }
@@ -91,11 +81,11 @@ func Google3(query string) (results []Result) {
 // Uses the first response from the replicas.
 func First(query string, replicas ...Search) Result {
 	c := make(chan Result)
-	for index := range replicas {
-		go func(i int) {
-			c <- replicas[i](query)
-		}(index)
-	}
+	for index := range replicas { // HL
+		go func(i int) { // HL
+			c <- replicas[i](query) // HL
+		}(index) // HL
+	} // HL
 	return <-c
 }
 
@@ -104,15 +94,9 @@ func Google4(query string) (results []Result) {
 	c := make(chan Result)
 
 	// Fan-in pattern.
-	go func() {
-		c <- First(query, Web1, Web2, Web3)
-	}()
-	go func() {
-		c <- First(query, Image1, Image2, Image3)
-	}()
-	go func() {
-		c <- First(query, Video1, Video2, Video3)
-	}()
+	go func() { c <- First(query, Web1, Web2, Web3) }()       // HL
+	go func() { c <- First(query, Image1, Image2, Image3) }() // HL
+	go func() { c <- First(query, Video1, Video2, Video3) }() // HL
 
 	timeout := time.After(80 * time.Millisecond)
 	for i := 0; i < 3; i++ {
@@ -131,15 +115,15 @@ func Timeit(label string, fn SearchFunc, query string) []Result {
 	start := time.Now()
 	results := fn(query)
 	elapsed := time.Since(start)
-	fmt.Printf("%s: %s\n%v\n", label, elapsed, results)
+	fmt.Printf("%s: %s\n%v\n\n", label, elapsed, results)
 	return results
 }
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	query := "golang"
-	Timeit("serial", Google1, query)
-	Timeit("concurrent", Google2, query)
-	Timeit("concurrent, time-boxed", Google3, query)
-	Timeit("concurrent, time-boxed, replicated", Google4, query)
+	Timeit("1: sequential", Google1, query)
+	Timeit("2: concurrent", Google2, query)
+	Timeit("3: concurrent, time-bound", Google3, query)
+	Timeit("4: concurrent, time-bound, replicated", Google4, query)
 }

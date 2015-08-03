@@ -12,7 +12,10 @@ import "math/rand"
 
 // A type, typically a collection, that satisfies shuffle.Interface can be
 // shuffled by the routines in this package. The methods require that the
-// elements of the collection be enumerated by an integer index.
+// elements of the collection be enumerated by an integer index. If you want to
+// use the shuffling algorithm with a random number generator of your choice,
+// you can choose to implement RandIntn differently from what we have
+// implemented.
 type Interface interface {
 	// Len is the number of elements in the collection.
 	Len() int

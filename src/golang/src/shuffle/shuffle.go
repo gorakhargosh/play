@@ -19,11 +19,14 @@ type Interface interface {
 
 	// Swap swaps the elements with indexes i and j.
 	Swap(i, j int)
+
+	// Generate a random number in [0, n).
+	RandIntn(n int) int
 }
 
-// Ensuring that the shuffled bits are toward the left, not the right.
-// This allows us to shuffle only count number of items in the array,
-// if required.
+// shuffle ensures that the shuffled subarray is toward the start of the array,
+// not the right end. This allows us to shuffle only count number of items in
+// the array, if required.
 func shuffle(data Interface, count int) {
 	len := data.Len()
 	if count > len {
@@ -31,20 +34,20 @@ func shuffle(data Interface, count int) {
 	}
 	var k = 0
 	for i := 0; i < count; i++ {
-		k = rand.Intn(len-i) + i // Scale the random number.
+		k = data.RandIntn(len-i) + i // Scale the random number.
 		data.Swap(k, i)
 	}
 }
 
-// Fisher-Yates shuffle, or Knuth shuffle, that shuffles an indexable
+// Shuffle performs a Fisher-Yates shuffle, or Knuth shuffle, on an indexable
 // collection of items.
 func Shuffle(data Interface) {
 	shuffle(data, data.Len())
 
-	// Simple implementation.
+	// Simple right-subarray implementation.
 	//
 	// for n := data.Len(); n > 0; {
-	// 	i := rand.Intn(n)
+	// 	i := data.RandIntn(n)
 	// 	n--
 	// 	data.Swap(n, i)
 	// }
@@ -53,24 +56,27 @@ func Shuffle(data Interface) {
 // Convenience type for most common cases.
 type IntSlice []int
 
-func (s IntSlice) Len() int      { return len(s) }
-func (s IntSlice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s IntSlice) Len() int           { return len(s) }
+func (s IntSlice) Swap(i, j int)      { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s IntSlice) RandIntn(n int) int { return rand.Intn(n) }
 
 // Shuffle is a convenience method.
 func (s IntSlice) Shuffle() { Shuffle(s) }
 
 type StringSlice []string
 
-func (s StringSlice) Len() int      { return len(s) }
-func (s StringSlice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s StringSlice) Len() int           { return len(s) }
+func (s StringSlice) Swap(i, j int)      { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s StringSlice) RandIntn(n int) int { return rand.Intn(n) }
 
 // Shuffle is a convenience method.
 func (s StringSlice) Shuffle() { Shuffle(s) }
 
 type Float64Slice []float64
 
-func (s Float64Slice) Len() int      { return len(s) }
-func (s Float64Slice) Swap(i, j int) { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s Float64Slice) Len() int           { return len(s) }
+func (s Float64Slice) Swap(i, j int)      { t := s[i]; s[i] = s[j]; s[j] = t }
+func (s Float64Slice) RandIntn(n int) int { return rand.Intn(n) }
 
 // Shuffle is a convenience method.
 func (s Float64Slice) Shuffle() { Shuffle(s) }

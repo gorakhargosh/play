@@ -1,6 +1,7 @@
 package shuffle
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -60,7 +61,7 @@ func TestStringSliceShuffle(t *testing.T) {
 }
 
 func TestIntSliceShuffle(t *testing.T) {
-	s1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	s1 := []int{0, 1, 2}
 	s2 := make([]int, len(s1))
 	copy(s2, s1)
 
@@ -69,8 +70,8 @@ func TestIntSliceShuffle(t *testing.T) {
 
 	ss2 := IntSlice(s2)
 
-	// fmt.Println(ss1)
-	// fmt.Println(ss2)
+	fmt.Println(ss1)
+	fmt.Println(ss2)
 
 	if reflect.DeepEqual(ss1, ss2) {
 		t.Fatal("Shuffle on identical int slices failed")
@@ -79,7 +80,7 @@ func TestIntSliceShuffle(t *testing.T) {
 	s3 := make([]int, len(s1))
 	copy(s3, s1)
 	Ints(s3)
-	// fmt.Println(s3)
+	fmt.Println(s3)
 	if reflect.DeepEqual(s1, s3) {
 		t.Fatal("Ints failed")
 	}

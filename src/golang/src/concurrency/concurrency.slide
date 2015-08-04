@@ -25,6 +25,11 @@ yesudeep@gmail.com
 
 - TODO(yesudeep): Add a diagram here.
 
+* Gratification
+
+- Instant
+- Delayed
+
 * Google Search: A real demo
 
 .image images/google-albert-einstein.png
@@ -54,22 +59,6 @@ yesudeep@gmail.com
 * Google Search: Replication and first-come-first-served
 
 .code example-google-search.go /^func First/,/^}/
-
-* (1/2) Real world: Examples
-
-- People working independently of each other while communicating.
-- Waiting for a chat message to arrive as a blocking operation before you can respond.
-- Postal mail using mailboxes as a non-blocking operation.
-- Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
-
-* Concurrency is about synchronizing work by communicating.
-
-* (2/2) Real world: Communication is used to
-
-- track progress
-- schedule and prioritize tasks
-- resolve conflicts
-- resolve dependencies
 
 * Terminology
 
@@ -116,52 +105,21 @@ yesudeep@gmail.com
 
 * When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud race condition. *thud*
 
+* (1/2) Real world: Examples
 
+- People working independently of each other while communicating.
+- Should you waiting for a chat message to arrive as a blocking operation before you can respond?
+- Postal mail using mailboxes as a non-blocking operation.
+- Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 
-# Key points.
+* Concurrency is about synchronizing work by communicating.
 
-* Concurrency is not parallelism.
+* (2/2) Real world: Communication is used to
 
-- Can work with a single processor
-- Facilitates parallelism if multiple processors are available
-- Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
-
-* Concurrency: a way to compose structure of software to work in coordination.
-
-- A directed graph; one without cycles (potential deadlocks) is better (DAG).
-
-* Parallelism: simultaneous execution of possibly related or unrelated things.
-
-- Best suitable for independently executing computation that needs no synchronization.
-- Examples: image processing,
-
-* Do not communicate by sharing memory; instead, share memory by communicating.
-
-- Share synchronized message queues; do not share memory.
-
-* Go gives you tools to shoot yourself in the foot, however.
-
-- Mutexes
-- Pools
-- Atomic operations
-- RW Mutexes
-- Condition variables
-
-* Flow-of-data > flow-of-control.
-
-
-* CSP (Communicating Sequential Processes)
-
-- Based on [[http://www.usingcsp.com/cspbook.pdf][paper]] by [[https://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. "Tony" Hoare]] (inventor of [[https://en.wikipedia.org/wiki/Quicksort][quick sort]] & null reference).
-
-- Schedule blocking operations to run in separate processes (*goroutines* in Go).
-
-- Synchronize by communicating over shared message queues (*channels* in Go).
-
-- Avoiding concurrency within each *sequential* process.
-
-- Sequential process example: Indian traditional game called "langdi??" (hop and chase). Turing machines anybody?
-
+- track progress
+- schedule and prioritize tasks
+- resolve conflicts
+- resolve dependencies
 
 * (1/4) Go Primitives: High-Level CSP
 
@@ -209,6 +167,52 @@ yesudeep@gmail.com
 - Futures based on generator functions that return channels as handles for future values.
 - Time-bounding
 - Replication
+
+
+# Key points.
+
+* Concurrency is not parallelism.
+
+- Can work with a single processor
+- Facilitates parallelism if multiple processors are available
+- Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
+
+* Concurrency: a way to compose structure of software to work in coordination.
+
+- A directed graph; one without cycles (potential deadlocks) is better (DAG).
+
+* Parallelism: simultaneous execution of possibly related or unrelated things.
+
+- Best suitable for independently executing computation that needs no synchronization.
+- Examples: image processing,
+
+* Do not communicate by sharing memory; instead, share memory by communicating.
+
+- Share synchronized message queues; do not share memory.
+
+* Go gives you tools to shoot yourself in the foot, however.
+
+- Mutexes
+- Pools
+- Atomic operations
+- RW Mutexes
+- Condition variables
+
+* Flow-of-data > flow-of-control.
+
+
+* CSP (Communicating Sequential Processes)
+
+- Based on [[http://www.usingcsp.com/cspbook.pdf][paper]] by [[https://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. "Tony" Hoare]] (inventor of [[https://en.wikipedia.org/wiki/Quicksort][quick sort]] & null reference).
+
+- Schedule blocking operations to run in separate processes (*goroutines* in Go).
+
+- Synchronize by communicating over shared message queues (*channels* in Go).
+
+- Avoiding concurrency within each *sequential* process.
+
+- Sequential process example: Indian traditional game called "langdi??" (hop and chase). Turing machines anybody?
+
 
 * Goroutines and "Please wait..."
 
@@ -258,9 +262,12 @@ A very boring function written by Rob Pike.
 
 * Channels: Talk to my handle.
 
+
 * Example: Channels
 
 .play channels.go
+
+* Example: Channels have direction
 
 * Example: Ping Pong and Deadlock detection
 
@@ -275,9 +282,22 @@ A very boring function written by Rob Pike.
 
 * Example: Pipeline
 
-* Example: Semaphore
 
-.play semaphores-for-throttling-goroutines.go
+* Example: Semaphore - Worker
+
+.play semaphores-for-throttling-goroutines.go /^func worker/,/^}/
+
+* Example: Semaphore - Throttling goroutines
+
+.play semaphores-for-throttling-goroutines.go /^func main/,/^}/
+
+* Example: Semaphore - Atomic counting
+
+- All or nothing.
+- Check-and-set in hardware.
+
+.play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
+
 
 * Example: Spinlock and atomic operations
 

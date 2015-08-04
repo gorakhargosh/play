@@ -8,51 +8,41 @@ import (
 	"time"
 )
 
-var running int64
+// show atomicCounting OMIT
+var running int64 // HL
 
-func work() {
-	atomic.AddInt64(&running, 1)
+func count() {
+	atomic.AddInt64(&running, 1) // HL
 	fmt.Printf("[%d ", running)
 	time.Sleep(time.Duration(rand.Intn(10)) * time.Second)
-	atomic.AddInt64(&running, -1)
+	atomic.AddInt64(&running, -1) // HL
 	fmt.Print("]")
 }
+
+// end show atomicCounting OMIT
 
 func worker(sema chan bool, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	// This semaphore blocks reading only while there are no "slots" available
-	// for this worker depending upon its capacity.
-	<-sema
-	work()
-
-	// Signal to the semaphore that we're done with work and a "slot" is
-	// available for someone else to pick it up.
-	sema <- true
+	<-sema // Wait until "slot" available. // HL
+	count()
+	sema <- true // Signal "slot" available. // HL
 }
 
 func main() {
 	var wg sync.WaitGroup
 
-	// Semaphore implemented as a buffered channel (does non-blocking I/O
-	// until capacity filled).
-	sema := make(chan bool, 20)
-	numWorkers := 1000
-	// The wait group must be updated with its count before the goroutine is
-	// scheduled to prevent race conditions.
+	sema := make(chan bool, 100) // non-blocking write until capacity // HL
+	numWorkers := 1000           // HL
 	wg.Add(numWorkers)
 	for i := 0; i < numWorkers; i++ {
-		go worker(sema, &wg)
+		go worker(sema, &wg) // HL
 	}
 
 	// Make enough "slots" available on the semaphore.
-	for i := 0; i < cap(sema); i++ {
-		sema <- true
-	}
-
-	// Using a wait group is better than this guesstimate of a sleep.
-	// time.Sleep(time.Duration(30) * time.Second)
+	for i := 0; i < cap(sema); i++ { // HL
+		sema <- true // HL
+	} // HL
 	wg.Wait()
-
-	fmt.Println()
+	fmt.Println("Done!")
 }

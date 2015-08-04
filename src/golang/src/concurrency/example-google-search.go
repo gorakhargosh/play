@@ -8,13 +8,13 @@ import (
 
 // show fakeEngines OMIT
 var (
-	Web1   = fakeSearch("web1")
+	Web1   = fakeSearch("web1") // HL
 	Web2   = fakeSearch("web2")
 	Web3   = fakeSearch("web3")
-	Image1 = fakeSearch("image1")
+	Image1 = fakeSearch("image1") // HL
 	Image2 = fakeSearch("image2")
 	Image3 = fakeSearch("image3")
-	Video1 = fakeSearch("video1")
+	Video1 = fakeSearch("video1") // HL
 	Video2 = fakeSearch("video2")
 	Video3 = fakeSearch("video3")
 )
@@ -79,7 +79,7 @@ func Google3(query string) (results []Result) {
 }
 
 // Uses the first response from the replicas.
-func First(query string, replicas ...Search) Result {
+func First(query string, replicas ...Search) Result { // varargs // HL
 	c := make(chan Result)
 	for index := range replicas { // HL
 		go func(i int) { // HL

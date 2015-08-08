@@ -38,11 +38,11 @@ func main() {
 	ann := boring("Ann!")
 	c := fanIn(joe, ann)
 	for {
-		select {
-		case s := <-c:
+		select { // HL
+		case s := <-c: // HL
 			fmt.Println(s)
-		case <-time.After(1 * time.Second):
-			// This timees out a single communication.
+		case <-time.After(1 * time.Second): // HL
+			// This times out a single communication.
 			fmt.Println("You're too slow.")
 			return
 		}

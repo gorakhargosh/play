@@ -101,6 +101,12 @@ yesudeep@gmail.com
 
 * (3/3) Some Terminology:
 
+- Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
+
+.image images/data-race-dragon.png _ 450
+
+
+
 - TODO(yesudeep): Add more terminology here.
 
 * When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud race condition. *thud*
@@ -275,7 +281,54 @@ A very boring function written by Rob Pike.
 
 - source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
 
+
+* Example: Generating channels
+
+.play generator-pattern.go /show A OMIT/,/end show A OMIT/
+
+* Example: Generators as services
+
+.play generators-as-services.go /show A OMIT/,/end show A OMIT/
+
+* Example: Multiplexing (Fan-in)
+
+.code generator-multiplexing-fan-in.go /^func fanIn/,/^}/
+
+* Example: Multiplexing (Fan-in continued)
+
+.play generator-multiplexing-fan-in.go /^func main/,/^}/
+
+* Example: Multiplexing (Fan-in using select)
+
+- Selecting communication.
+- Pseudorandomly if multiple communications are ready.
+
+.play generator-multiplexing-using-select.go /^func fanIn/,/^}/
+
+* Example: Non-blocking select
+
+- Selecting communication without waiting.
+
+.play non-blocking-select.go /^func main/,/^}/
+
+* Example: Timeouts
+
+.play generator-timeout.go /^func main/,/^}/
+
+* Example: Timing out entire conversations
+
+.play generator-timeout-conversation.go /^func main/,/^}/
+
+* Example: Using quit channels for signaling
+
+.play quit-channels.go /show A OMIT/,/end show A OMIT/
+
+* Example: Using quit channels correctly
+
+.play quit-channels-plus-cleanup.go /show A OMIT/,/end show A OMIT/
+
 * Example: Buffered channels
+
 * Example: `nil` channels
 * Example: Closing Channels
 * Example: Reading from closed channels
@@ -297,7 +350,6 @@ A very boring function written by Rob Pike.
 - Check-and-set in hardware.
 
 .play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
-
 
 * Example: Spinlock and atomic operations
 

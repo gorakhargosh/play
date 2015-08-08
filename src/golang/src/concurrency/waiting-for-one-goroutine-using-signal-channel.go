@@ -19,7 +19,7 @@ func init() {
 }
 
 // show A OMIT
-func worker(done chan bool) {
+func worker(done chan bool) { // HL
 	d := rand.Intn(1e3)
 	time.Sleep(time.Duration(d) * time.Millisecond)
 	fmt.Printf("Work took %d ms.\n", d)

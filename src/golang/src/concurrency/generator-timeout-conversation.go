@@ -37,13 +37,14 @@ func main() {
 	joe := boring("Joe!")
 	ann := boring("Ann!")
 	c := fanIn(joe, ann)
+
 	// This times out the entire conversation (applies to the loop).
-	timeout := time.After(5 * time.Second)
+	timeout := time.After(5 * time.Second) // HL
 	for {
 		select {
 		case s := <-c:
 			fmt.Println(s)
-		case <-timeout:
+		case <-timeout: // HL
 			fmt.Println("You talk too much.")
 			return
 		}

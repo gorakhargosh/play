@@ -6,37 +6,6 @@ import (
 	"time"
 )
 
-// Multiplexes reading from multiple channels fanning into a single channel
-// for the reader.
-func fanIn(a, b <-chan string) <-chan string {
-	c := make(chan string)
-
-	// We replace these two goroutines with a single one that uses select
-	// to choose one of the communications that is ready every iteration
-	// of the endless loop.
-	//
-	// go func() {
-	// 	for {
-	// 		c <- <-a
-	// 	}
-	// }()
-	// go func() {
-	// 	for {
-	// 		c <- <-b
-	// 	}
-	// }()
-
-	go func() {
-		for {
-			select {
-			case c <- <-a:
-			case c <- <-b:
-			}
-		}
-	}()
-	return c
-}
-
 // Generates endless messages on a channel that it returns.
 func boring(msg string) chan string {
 	c := make(chan string)
@@ -49,6 +18,20 @@ func boring(msg string) chan string {
 	return c
 }
 
+// show A OMIT
+func fanIn(a, b <-chan string) <-chan string {
+	c := make(chan string)
+	go func() { // HL
+		for { // HL
+			select { // HL
+			case c <- <-a: // HL
+			case c <- <-b: // HL
+			} // HL
+		} // HL
+	}() // HL
+	return c
+}
+
 func main() {
 	joe := boring("Joe!")
 	ann := boring("Ann!")
@@ -58,3 +41,5 @@ func main() {
 	}
 	fmt.Println("You're boring; I'm leaving.")
 }
+
+// end show A OMIT

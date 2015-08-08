@@ -215,9 +215,7 @@ yesudeep@gmail.com
 
 - Synchronize by communicating over shared message queues (*channels* in Go).
 
-- Avoiding concurrency within each *sequential* process.
-
-- Sequential process example: Indian traditional game called "langdi??" (hop and chase). Turing machines anybody?
+- Avoiding concurrency within each *sequential* process...
 
 
 * Goroutines and "Please wait..."
@@ -275,12 +273,6 @@ A very boring function written by Rob Pike.
 
 * Example: Channels have direction
 
-* Example: Ping Pong and Deadlock detection
-
-.play ping-pong.go /show A OMIT/,/end show A OMIT/
-
-- source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
-
 
 * Example: Generating channels
 
@@ -329,9 +321,17 @@ A very boring function written by Rob Pike.
 
 * Example: Buffered channels
 
+.play buffered-channels.go /^func main/,/^}/
+
 * Example: `nil` channels
 * Example: Closing Channels
 * Example: Reading from closed channels
+
+* Example: Ping Pong and Deadlock detection
+
+.play ping-pong.go /show A OMIT/,/end show A OMIT/
+
+- source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
 
 * Example: Pipeline
 
@@ -352,10 +352,6 @@ A very boring function written by Rob Pike.
 .play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
 
 * Example: Spinlock and atomic operations
-
-
-
-* Pattern: Fan-in
 * Pattern: Fan-out
 * Pattern: PubSub
 

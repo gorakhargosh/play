@@ -9,7 +9,7 @@ yesudeep@google.com
 yesudeep@gmail.com
 
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
-# TODO(yesudeep): 
+# TODO(yesudeep):
 
 * "I speak Spanish to God, German to my horse, and Go to connections that might make me wait."      — swdunlop on hackernews
 
@@ -331,6 +331,10 @@ A very boring function written by Rob Pike.
 * Example: Closing Channels
 * Example: Reading from closed channels
 
+* Example: Race condition
+
+.play race-condition-simple.go /^func main/,/^}/
+
 * Example: Ping Pong and Deadlock detection
 
 .play ping-pong.go /show A OMIT/,/end show A OMIT/
@@ -355,9 +359,6 @@ A very boring function written by Rob Pike.
 
 .play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
 
-* Example: Race condition
-
-.play race-condition-simple.go /^func main/,/^}/
 
 * Example: Spinlock and atomic operations
 * Pattern: Fan-out

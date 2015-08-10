@@ -11,35 +11,32 @@ import (
 	"net/http"
 )
 
-type Config struct {
-	Host string
-	Port int
-}
-
 var config Config
 
 func init() {
 	config = Config{}
 	flag.StringVar(&config.Host, "host", "", "the host on which to listen")
 	flag.IntVar(&config.Port, "port", 8080, "the port on which to listen")
+	flag.BoolVar(&config.Debug, "debug", false, "turns on debugging")
+	flag.StringVar(
+		&config.TemplatesDir,
+		"templatesDir",
+		"templates", "the directory that contains the templates")
 	flag.Parse()
-}
-
-type baseHandler struct {
-}
-
-func (h baseHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello world"))
 }
 
 func main() {
 	hostAddr := fmt.Sprintf("%s:%d", config.Host, config.Port)
 
 	mux := http.NewServeMux()
-	mux.Handle("/", &baseHandler{})
-	log.Printf("Starting HTTP server on %s...\n", hostAddr)
+	mux.Handle("/", &templateHandler{
+		debug:        config.Debug,
+		filename:     "index.html",
+		templatesDir: config.TemplatesDir,
+	})
+	log.Printf("starting HTTP server on %s...\n", hostAddr)
 	err := http.ListenAndServe(hostAddr, mux)
 	if err != nil {
-		log.Fatalf("Could not start HTTP server: error - %s", err)
+		log.Fatalf("cannot start HTTP server: error - %s", err)
 	}
 }

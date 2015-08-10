@@ -31,7 +31,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", &templateHandler{
 		debug:        config.Debug,
-		filename:     "index.html",
+		filenames:    []string{"index.html"},
 		templatesDir: config.TemplatesDir,
 	})
 	log.Printf("starting HTTP server on %s...\n", hostAddr)

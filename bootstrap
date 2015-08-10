@@ -12,7 +12,10 @@ logfile=${TOP_DIR}/.bootstrap.log
 # Third party golang libs.
 golang_tp=(
   github.com/gin-gonic/gin
+  github.com/go-sql-driver/mysql
   github.com/gorilla/websocket
+  github.com/julienschmidt/httprouter
+  github.com/mattn/go-sqlite3
 )
 
 

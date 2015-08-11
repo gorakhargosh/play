@@ -136,6 +136,7 @@ yesudeep@gmail.com
 
 * Concurrency != parallelism
 
+- More about topology; less about parallelism.
 - Can work with a single processor core (scheduling by timeslicing)
 - Facilitates parallelism if multiple processor cores are available
 - Concurrency that scales over a network is called *distributed*computing*

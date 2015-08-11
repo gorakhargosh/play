@@ -10,11 +10,12 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func gen(n int) <-chan int {
-	c := make(chan int)
+func gen(n int) <-chan time.Duration { // HL
+	c := make(chan time.Duration) // HL
 	go func() {
-		time.Sleep(time.Duration(rand.Intn(n)) * time.Millisecond)
-		c <- n
+		d := time.Duration(rand.Intn(n)) * time.Millisecond
+		time.Sleep(d)
+		c <- d // HL
 	}()
 	return c
 }
@@ -36,12 +37,13 @@ func After(t time.Duration) <-chan bool { // HL
 }
 
 func main() {
-	ch := gen(150) // max ms
-	select {       // HL
+	ch := gen(150)                // max ms
+	tmax := 80 * time.Millisecond // ms
+	select {                      // HL
 	case v := <-ch: // HL
-		fmt.Println("success: read from channel:", v)
-	case <-After(80 * time.Millisecond): // HL
-		fmt.Println("error: channel timed out")
+		fmt.Printf("success: read from channel: %v\n", v)
+	case <-After(tmax): // HL
+		fmt.Printf("error: channel timed out (%v)\n", tmax)
 	} // HL
 }
 

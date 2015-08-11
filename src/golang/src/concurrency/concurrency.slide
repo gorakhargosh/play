@@ -412,7 +412,13 @@ A very boring function written by Rob Pike.
 
 * Timing out: How it works
 
+
 .play timeout-after.go /show A OMIT/,/end show A OMIT/
+
+* Timing out: The emitter
+
+.code timeout-after.go /^func gen/,/^}/
+
 
 * Signalling
 

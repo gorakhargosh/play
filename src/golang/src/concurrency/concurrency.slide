@@ -28,9 +28,9 @@ yesudeep@google.com
 
 - A long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
 
-* Pay attention now. You're late to the party. No kidding.
+* Pay attention. You're late to the party. No kidding.
 
-* The free ride is over.
+* The free (hardware-accelerated) ride is over.
 
 * Gratification
 
@@ -81,10 +81,10 @@ yesudeep@google.com
 
 * Analysing a McDonald's Outlet
 
-- Not OO; process-oriented.
+- Real world is NOT object-oriented; it is concurrent.
 - The design and analysis of a McDonald's restaurant.
 - Replicating the restaurant.
-- Pay attention to the flow of data, not so much to the flow of control.
+- Pay attention to the flow-of-data, then to the flow-of-control.
 
 - TODO(yesudeep): Add a diagram here.
 
@@ -134,7 +134,7 @@ yesudeep@google.com
 
 .image images/pattern-survey.png
 
-* Patterns: How they are implemented
+* Patterns: Adding behavior
 
 - Message queues (buffered and unbuffered)
 - Generators
@@ -226,7 +226,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
     |-----B----------->|
                             |---C-->|
 
-- Wait group (or barriers)
+- Wait group (or barrier)
 
  |------------A------------->|
  |-------B-------->|         |
@@ -258,7 +258,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
      // Do something.
   }()
 
-- *Channels* - typed _message_queues_ (blocking send; blocking receive) for *lockstep* communication between goroutines (e.g. telephone)
+- *Channels* - _typed_message_queues_ (blocking send; blocking receive) for *lockstep* communication between goroutines (e.g. telephone)
 
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.

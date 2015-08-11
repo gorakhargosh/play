@@ -36,16 +36,16 @@ import (
 
 // gen emits the specified numbers on a channel that it returns. Closing the
 // done signal channel causes gen to stop emitting more numbers.
-func gen(done chan struct{}, nums ...int) <-chan int {
+func gen(done chan struct{}, nums ...int) <-chan int { // HL
 	out := make(chan int)
 	go func() {
-		defer close(out)
+		defer close(out) // HL
 		for _, n := range nums {
-			select {
-			case out <- n:
-			case <-done:
-				return
-			}
+			select { // HL
+			case out <- n: // HL
+			case <-done: // Unblocks when closed // HL
+				return // HL
+			} // HL
 		}
 	}()
 	return out
@@ -53,15 +53,15 @@ func gen(done chan struct{}, nums ...int) <-chan int {
 
 // sq reads numbers from a channel and emits the square of each on a channel
 // that it returns. Closing the done channel causes sq to stop emitting numbers.
-func sq(done chan struct{}, in <-chan int) <-chan int {
+func sq(done chan struct{}, in <-chan int) <-chan int { // HL
 	out := make(chan int)
 	go func() {
-		defer close(out)
+		defer close(out) // HL
 		for n := range in {
 			select {
-			case out <- n * n:
-			case <-done:
-				return
+			case out <- n * n: // HL
+			case <-done: // Unblocks when closed // HL
+				return // HL
 			}
 		}
 	}()
@@ -70,48 +70,42 @@ func sq(done chan struct{}, in <-chan int) <-chan int {
 
 // merge fans in the values from multiple channels and also allows downstream to
 // indicate that no more values need to be emitted allowing for cancelation.
-func merge(done chan struct{}, cs ...<-chan int) <-chan int {
+func merge(done chan struct{}, cs ...<-chan int) <-chan int { // HL
 	var wg sync.WaitGroup
 	out := make(chan int)
-
-	// Start an output goroutine for each input channel in cs. output copies
-	// values from c to out until c is closed, then calls wg.Done.
 	output := func(c <-chan int) {
-		defer wg.Done()
+		defer wg.Done() // HL
 		for n := range c {
-			select {
-			case out <- n:
-			case <-done:
-				return
-			}
+			select { // HL
+			case out <- n: // HL
+			case <-done: // Unblocks when closed // HL
+				return // HL
+			} // HL
 		}
 	}
 	wg.Add(len(cs))
 	for _, c := range cs {
 		go output(c)
 	}
-
-	// Start a goroutine to close out once all the output goroutines are done.
-	// This must start after the wg.Add call.
 	go func() {
 		wg.Wait()
 		close(out)
 	}()
-
 	return out
 }
 
 func main() {
-	done := make(chan struct{})
-	defer close(done)
-	in := gen(done, 1, 2, 3, 4)
-	a := sq(done, in)
-	b := sq(done, in)
+	done := make(chan struct{}) // HL
+	defer close(done)           // HL
 
-	out := merge(done, a, b)
+	in := gen(done, 1, 2, 3, 4) // HL
+	a := sq(done, in)           // HL
+	b := sq(done, in)           // HL
+	out := merge(done, a, b)    // HL
+
 	// We're only ever going to read one value, so we need to indicate upstream to
 	// stop sending. We do that by closing the done channel. The main routine
 	// effectively unblocks all the senders (the senders' selects alternate on the
 	// done and the outbound channels).
-	fmt.Println(<-out)
+	fmt.Println(<-out) // HL
 }

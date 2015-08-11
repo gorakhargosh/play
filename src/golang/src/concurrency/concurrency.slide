@@ -236,7 +236,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.
 
-- *Buffered* channels (non-blocking send until full; blocking receive; e.g. postal mail)
+- *Buffered*channels* (non-blocking send until full; blocking receive; e.g. postal mail)
 
   bch := make(chan bool, 2)  // Capacity 2.
 
@@ -416,32 +416,61 @@ A very boring function written by Rob Pike.
 - goroutines perform some function on that data, usually producing new values.
 - goroutines send values _downstream_ via _outbound_ channels.
 
-* Example: Unclean pipelines [1/4]
+.image images/pattern-pipeline.png
 
-- stage: emitters and outbound channels
-
-.code pipeline-no-cancellation.go /^func gen/,/^}/
-
-* Example: Unclean pipelines [2/4]
-
-- stage: squaring
-
-.code pipeline-no-cancellation.go /^func sq/,/^}/
-
-* Example: Unclean pipelines [2/4]
-
-- stage: multiplexing N inbound channels onto 1 outbound channel
-
-.code pipeline-no-cancellation.go /^func merge/,/^}/
-
-* Example: Unclean pipelines [2/4]
+* Example: Clogged pipelines [1/4]
 
 - stage: consumer draining inbound channel
 
 .play pipeline-no-cancellation.go /^func main/,/^}/
 
-* But what if we don't want to read all the values...only some?
+* Example: Clogged pipelines [2/4]
 
+- stage: emitters and outbound channels
+
+.code pipeline-no-cancellation.go /^func gen/,/^}/
+
+* Example: Clogged pipelines [3/4]
+
+- stage: squaring
+
+.code pipeline-no-cancellation.go /^func sq/,/^}/
+
+* Example: Clogged pipelines [4/4]
+
+- stage: multiplexing N inbound channels onto 1 outbound channel
+
+.code pipeline-no-cancellation.go /^func merge/,/^}/
+
+* ...but what if we only want some, not all?1;5B
+
+* Example: Pipelines with cancellation [1/4]
+
+- stage: consumer NOT draining inbound channel
+
+.play pipeline-with-cancellation.go /^func main/,/^}/
+
+* Example: Pipelines with cancellation [2/4]
+
+- stage: emitters and outbound channels
+
+.code pipeline-with-cancellation.go /^func gen/,/^}/
+
+* Example: Pipelines with cancellation [3/4]
+
+- stage: squaring
+
+.code pipeline-with-cancellation.go /^func sq/,/^}/
+
+* Example: Pipelines with cancellation [4/4]
+
+- stage: multiplexing N inbound channels onto 1 outbound channel
+
+.code pipeline-with-cancellation.go /^func merge/,/^}/
+
+* Semaphores and rate-control
+
+.image images/single-lane-bridge.jpg
 
 * Example: Semaphore - Worker
 

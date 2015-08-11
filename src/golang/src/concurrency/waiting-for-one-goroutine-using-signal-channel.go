@@ -19,18 +19,17 @@ func init() {
 }
 
 // show A OMIT
-func worker(done chan bool) { // HL
+func worker(done chan struct{}) { // HL
 	d := rand.Intn(1e3)
 	time.Sleep(time.Duration(d) * time.Millisecond)
 	fmt.Printf("Work took %d ms.\n", d)
-	done <- true // HL
+	close(done) // closing instead of sending data // HL
 }
 
 func main() {
-	// This does not need to be a buffered channel.
-	done := make(chan bool, 1) // HL
+	done := make(chan struct{}) // HL
 	go worker(done)
-	<-done // HL
+	<-done // blocks until channel closed // HL
 }
 
 // end show A OMIT

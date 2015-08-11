@@ -38,7 +38,6 @@ func init() {
 // show A OMIT
 func work(i int, pwg *sync.WaitGroup) { // HL
 	defer pwg.Done() // HL
-
 	d := rand.Intn(1e3)
 	time.Sleep(time.Duration(d) * time.Millisecond)
 	fmt.Printf("Work %d took %d ms.\n", i, d)
@@ -47,11 +46,10 @@ func work(i int, pwg *sync.WaitGroup) { // HL
 func main() {
 	var wg sync.WaitGroup // HL
 
-	// Pragmatic if you know the total count.
 	count := 4
-	wg.Add(count) // HL
+	wg.Add(count) // Pragmatic if you know the total count. // HL
 	for i := 0; i < count; i++ {
-		// Update count before scheduling goroutine to prevent race conditions.
+		// Update count before scheduling goroutine to prevent race conditions. // HL
 		// wg.Add(1) // HL
 		go work(i, &wg) // HL
 	}

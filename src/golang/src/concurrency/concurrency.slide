@@ -13,30 +13,16 @@ yesudeep@gmail.com
 
 * "I speak Spanish to God, German to my horse, and Go to connections that might make me wait."      — swdunlop on hackernews
 
-* Mmm... McGophers
-
-.image images/gopher-go.jpg
-
-.image images/mcdonalds-logo.svg
-
-
-* Analysing a McDonald's Outlet
-
-- Not OO; process-oriented.
-- The design and analysis of a McDonald's restaurant.
-- Replicating the restaurant.
-- Pay attention to the flow of data, not so much to the flow of control.
-
-- TODO(yesudeep): Add a diagram here.
-
 * Gratification
 
 - Instant
 - Delayed
 
+* How does Google Search work?
+
 * Google Search: A real demo
 
-.image images/google-albert-einstein.png
+.image images/google-albert-einstein.png 700 _
 
 * Faking Google search
 
@@ -64,81 +50,188 @@ yesudeep@gmail.com
 
 .code example-google-search.go /^func First/,/^}/
 
-* Terminology
+* Real world
 
-* (1/3) Some Terminology: Blocking or non-blocking
+.image images/surgery.jpg 600 _
 
-- Blocking operation (I/O or computation)
+* Mmm... McGophers
 
-  bash$ python -m SimpleHTTPServer
-  Serving HTTP on 0.0.0.0 port 8000 ...
-  ... takes over your command line ...
-  [Interrupt with Ctrl-C to exit]
+.image images/gopher-go.jpg
 
-- Non-blocking operation (I/O or computation)
+.image images/mcdonalds-logo.svg
 
-  bash$ python -m SimpleHTTPServer &
-  bash$ # You can type another command here...
+* Analysing a McDonald's Outlet
 
-* (2/3) Some Terminology: Order in time
+- Not OO; process-oriented.
+- The design and analysis of a McDonald's restaurant.
+- Replicating the restaurant.
+- Pay attention to the flow of data, not so much to the flow of control.
 
-- Time goes left-to-right
+- TODO(yesudeep): Add a diagram here.
 
-- Synchronous (in order)
-
-  |-----A----->||--------B-------->||-------C------->|
-
-- Asynchronous (out-of-order)
-
-  |----A----->|
-     |-----B----------->|
-                             |---C-->|
-
-- Wait group
-
-  |------------A------------->|
-  |-------B-------->|         |
-         |-------C------>|    |
-                              |
-  |----------waiting----------|----resume---->
-
-
-* (3/3) Some Terminology:
-
-- Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
-
-.image images/data-race-dragon.png _ 450
-
-
-- TODO(yesudeep): Add more terminology here.
-
-* When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud race condition. *thud*
-
-* (1/2) Real world: Examples
+* Real world examples
 
 - People working independently of each other while communicating.
 - Should you block waiting for a chat message to arrive before you can respond?
 - Postal mail using mailboxes as a non-blocking operation.
 - Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 
-* Concurrency is about synchronizing work by communicating.
+# Key points.
 
-* (2/2) Real world: Communication is used to
+* Concurrency: Flow-of-data > flow-of-control
 
-- track progress
-- schedule and prioritize tasks
-- resolve conflicts
-- resolve dependencies
+* Patterns: What you can do
 
-* (1/4) Go Primitives: High-Level CSP
+- Pair - one-to-one communication
+- Request-Response - stateless services to process requests
+- Pipeline - aggregation from many sources and load balancing among many destinations
+- Bus - one-to-many communication
+- Pub-Sub - interest based one-to-many communication
 
-- *Goroutines* are independently executing functions in the same address space.
+* Patterns: Pair (one-to-one)
+
+.image images/pattern-pair.png
+
+* Patterns: Request-Response
+
+- Client requests; server responds
+
+.image images/pattern-reqrep.png
+
+* Patterns: Pipeline (one-way data flow)
+
+.image images/pattern-pipeline.png
+
+* Patterns: Bus (many-to-many)
+
+.image images/pattern-bus.png
+
+* Patterns: PubSub (topic broadcasting)
+
+.image images/pattern-pubsub.png
+
+
+* Patterns: How they are implemented
+
+- Message queues (buffered and unbuffered)
+- Generators
+- Multiplexing: fan-in, fan-out
+- Replication (first-come-first-served)
+- Signaling
+- Throttling (rate-control) using semaphores
+- Time-bounding
+- Waiting
+- Idling
+
+* Concurrency: a way to compose structure of software to work in coordination
+
+- Appreciably, a *concurrency*pattern* == _directed_acyclic_graph_ (DAG)
+- Cycles indicate possible deadlocks, but do occur
+
+* Concurrency != parallelism
+
+- Can work with a single processor core (scheduling by timeslicing)
+- Facilitates parallelism if multiple processor cores are available
+- Concurrency that scales over a network is called *distributed*computing*
+- Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
+
+* Parallelism: simultaneous execution of possibly related or unrelated things
+
+- Best suitable for independently executing computation that needs no synchronization
+- Examples: image processing
+
+TODO(yesudeep): Pull examples from haskell concurrency talk.
+
+* Go CSP (Communicating Sequential Processes)
+
+- Based on [[http://www.usingcsp.com/cspbook.pdf][paper]] by [[https://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. "Tony" Hoare]] (inventor of [[https://en.wikipedia.org/wiki/Quicksort][quick sort]] & null reference).
+
+- Schedule blocking operations to run in separate processes (*goroutines* in Go).
+
+- Synchronize by communicating over shared message queues (*channels* in Go).
+
+- Avoiding concurrency within each *sequential* process.
+
+- Do not communicate by sharing memory; instead, share memory by communicating.
+
+* Go gives you tools to shoot yourself in the foot, however
+
+- Shared state
+- Mutexes
+- Pools
+- Atomic operations
+- RW Mutexes
+- Condition variables
+
+* Terminology
+
+* Terminology: Blocking or non-blocking
+
+- Blocking operation (I/O or computation or idling)
+
+    $ python -m SimpleHTTPServer
+    Serving HTTP on 0.0.0.0 port 8000 ...
+    ... takes over your command line ...
+    [Interrupt with Ctrl-C to exit]
+
+- Example idling:
+
+    $ sleep 5
+    ... 5 seconds pass ...
+    $
+
+- Non-blocking operation (I/O or computation)
+
+    $ python -m SimpleHTTPServer &
+    $ # You can type another command here...
+
+* Terminology: Order in time
+
+- Time goes left-to-right
+
+- Synchronous (in order)
+
+ |-----A----->||--------B-------->||-------C------->|
+
+- Asynchronous (out-of-order)
+
+ |----A----->|
+    |-----B----------->|
+                            |---C-->|
+
+- Wait group
+
+ |------------A------------->|
+ |-------B-------->|         |
+        |-------C------>|    |
+                             |
+ |----------waiting----------|----resume---->
+
+
+* Terminology: Race conditions
+
+- When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud *race* *condition*.
+- Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
+
+* Terminology: Deadlock
+
+
+* Concurrency Primitives
+
+* Primitives: High-level operations
+
+- Send
+- Receive
+
+* Primitives: High-Level CSP
+
+- *Goroutines* are independently executing functions in the _same_address_space_.
 
   go func() {
      // Do something.
   }()
 
-- *Channels* (typed message queues; blocking send; blocking receive) for lockstep communication between goroutines (e.g. telephone)
+- *Channels* - typed _message_queues_ (blocking send; blocking receive) for *lockstep* communication between goroutines (e.g. telephone)
 
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.
@@ -153,7 +246,7 @@ yesudeep@gmail.com
   <-ch  // non-blocking on closed channel.
 
 
-* (2/4) Go Primitives: Mutexes, wait groups and pools
+* Primitives: Mutexes, wait groups and pools
 
 - Synchronized memory access: [[https://godoc.org/sync#Mutex][sync.Mutex]]
 - Distributing workload: [[https://godoc.org/sync#Pool][sync.Pool]]
@@ -161,67 +254,19 @@ yesudeep@gmail.com
 - Single-execution goroutines: [[https://godoc.org/sync#Once][sync.Once]]
 - Condition variables: [[https://godoc.org/sync#Cond][sync.Cond]]
 
-* (3/4) Go Primitives: Atomic operations
+* Primitives: Atomic operations
 
-- Atomic operations (increment, decrement, CAS, swaps, pointer dereferencing) [[https://godoc.org/sync/atomic][sync/atomic]]
-- Why CAS (check-and-set)? To avoid race conditions.
-- Example race condition: "Check-and-sit" or "bum-meet-floor".
+- Implemented in hardware instruction set
+- [[https://godoc.org/sync/atomic][sync/atomic]]: (add, CAS, swaps, stores, pointer dereferencing)
+- Why CAS (compare-and-set)? To prevent data races
 
+* Primitives: Example atomic operation (CAS)
 
-* (4/4) Go Primitives: Patterns based on primitives
+- IA-64 bit assembly example:
 
-- Semaphore using buffered channels and communication-guarded worker routines.
-- Multiplexing: fan-in, fan-out
-- Pipelining
-- Futures based on generator functions that return channels as handles for future values.
-- Time-bounding
-- Replication
+.code compare-and-swap-uint64.s
 
-
-# Key points.
-
-* Concurrency is not parallelism.
-
-- Can work with a single processor
-- Facilitates parallelism if multiple processors are available
-- Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
-
-* Concurrency: a way to compose structure of software to work in coordination.
-
-- A directed graph; one without cycles (potential deadlocks) is better (DAG).
-
-* Parallelism: simultaneous execution of possibly related or unrelated things.
-
-- Best suitable for independently executing computation that needs no synchronization.
-- Examples: image processing,
-
-* Do not communicate by sharing memory; instead, share memory by communicating.
-
-- Share synchronized message queues; do not share memory.
-
-* Go gives you tools to shoot yourself in the foot, however.
-
-- Mutexes
-- Pools
-- Atomic operations
-- RW Mutexes
-- Condition variables
-
-* Flow-of-data > flow-of-control.
-
-
-* CSP (Communicating Sequential Processes)
-
-- Based on [[http://www.usingcsp.com/cspbook.pdf][paper]] by [[https://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. "Tony" Hoare]] (inventor of [[https://en.wikipedia.org/wiki/Quicksort][quick sort]] & null reference).
-
-- Schedule blocking operations to run in separate processes (*goroutines* in Go).
-
-- Synchronize by communicating over shared message queues (*channels* in Go).
-
-- Avoiding concurrency within each *sequential* process...
-
-
-* Goroutines and "Please wait..."
+* "Please wait..."
 
 * Example: Blocking I/O or computation
 
@@ -257,9 +302,9 @@ A very boring function written by Rob Pike.
 
 * Example: Using signal channels to wait
 
-- Why this is flow-of-control, not flow-of-data.
-- Resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
-- Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] where possible, instead.
+- Why this is flow-of-control, not flow-of-data: resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
+- Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible, instead.
+- Use this for signalling (upstream in pipelines, for example).
 
 .play waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
@@ -267,8 +312,9 @@ A very boring function written by Rob Pike.
 
 .play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
-* Channels: Talk to my handle.
+* Channels: Talk to my handle
 
+.image images/talk-to-the-hand.jpg 600 _
 
 * Example: Channels
 
@@ -276,6 +322,7 @@ A very boring function written by Rob Pike.
 
 * Example: Channels have direction
 
+* Generating channels
 
 * Example: Generating channels
 
@@ -284,6 +331,8 @@ A very boring function written by Rob Pike.
 * Example: Generators as services
 
 .play generators-as-services.go /show A OMIT/,/end show A OMIT/
+
+* Multiplexing
 
 * Example: Multiplexing (Fan-in)
 
@@ -306,7 +355,9 @@ A very boring function written by Rob Pike.
 
 .play non-blocking-select.go /^func main/,/^}/
 
-* Example: Timeouts
+* Timeouts and moving on
+
+* Example: Timing out a single communication
 
 .play generator-timeout.go /^func main/,/^}/
 
@@ -314,11 +365,13 @@ A very boring function written by Rob Pike.
 
 .play generator-timeout-conversation.go /^func main/,/^}/
 
+* Signalling
+
 * Example: Using quit channels for signaling
 
 .play quit-channels.go /show A OMIT/,/end show A OMIT/
 
-* Example: Using quit channels correctly
+* Example: Using quit channels and cleaning up
 
 .play quit-channels-plus-cleanup.go /show A OMIT/,/end show A OMIT/
 
@@ -330,9 +383,21 @@ A very boring function written by Rob Pike.
 * Example: Closing Channels
 * Example: Reading from closed channels
 
+* Race conditions
+
+.image images/data-race-dragon.png _ 700
+
 * Example: Race condition
 
 .play race-condition-simple.go /^func main/,/^}/
+
+* Example: Detecting race conditions
+
+  $ go (run|build|test...) -race foo.go
+
+- not everything can be detected, but most of it can be.
+
+* Deadlocks
 
 * Example: Ping Pong and Deadlock detection
 
@@ -340,22 +405,32 @@ A very boring function written by Rob Pike.
 
 - source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
 
+
+* Pipelines
+
+* What is a Pipeline?
+
+- series of stages connected by channels, where each stage is a group of goroutines running the same function.
+
+- goroutines receive values from _upstream_ via _inbound_ channels.
+- goroutines perform some function on that data, usually producing new values.
+- goroutines send values _downstream_ via _outbound_ channels.
+
 * Example: Unclean pipelines [1/4]
 
 - stage: emitters and outbound channels
 
 .code pipeline-no-cancellation.go /^func gen/,/^}/
 
-
 * Example: Unclean pipelines [2/4]
 
-- stage: squaring and outbound channels
+- stage: squaring
 
 .code pipeline-no-cancellation.go /^func sq/,/^}/
 
 * Example: Unclean pipelines [2/4]
 
-- multiplexing N inbound channels onto an outbound channel
+- stage: multiplexing N inbound channels onto 1 outbound channel
 
 .code pipeline-no-cancellation.go /^func merge/,/^}/
 

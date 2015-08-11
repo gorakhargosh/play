@@ -24,8 +24,8 @@ var (
 type Result string
 type Search func(query string) Result
 
-func fakeSearch(kind string) Search {
-	return func(query string) Result {
+func fakeSearch(kind string) Search { // HL
+	return func(query string) Result { // HL
 		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
 	}
@@ -34,7 +34,7 @@ func fakeSearch(kind string) Search {
 type SearchFunc func(query string) []Result
 
 // Sequential.
-func Google1(query string) (results []Result) {
+func Google1(query string) (results []Result) { // HL
 	results = append(results, Web1(query))   // HL
 	results = append(results, Image1(query)) // HL
 	results = append(results, Video1(query)) // HL
@@ -42,7 +42,7 @@ func Google1(query string) (results []Result) {
 }
 
 // Concurrent.
-func Google2(query string) (results []Result) {
+func Google2(query string) (results []Result) { // HL
 	c := make(chan Result)
 
 	// Fan-in (multiplexing) pattern.
@@ -58,7 +58,7 @@ func Google2(query string) (results []Result) {
 }
 
 // Concurrent and time-bound.
-func Google3(query string) (results []Result) {
+func Google3(query string) (results []Result) { // HL
 	c := make(chan Result)
 
 	go func() { c <- Web1(query) }()
@@ -90,10 +90,10 @@ func First(query string, replicas ...Search) Result { // varargs // HL
 }
 
 // Concurrent, time-boxed, and replicated.
-func Google4(query string) (results []Result) {
+func Google4(query string) (results []Result) { // HL
 	c := make(chan Result)
 
-	// Fan-in pattern.
+	// Fan-in and replication.
 	go func() { c <- First(query, Web1, Web2, Web3) }()       // HL
 	go func() { c <- First(query, Image1, Image2, Image3) }() // HL
 	go func() { c <- First(query, Video1, Video2, Video3) }() // HL

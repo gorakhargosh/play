@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// Generates endless messages on a channel that it returns.
 func boring(msg string) chan string {
 	c := make(chan string)
 	go func() {

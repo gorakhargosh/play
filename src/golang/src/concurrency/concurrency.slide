@@ -199,7 +199,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
     |-----B----------->|
                             |---C-->|
 
-- Wait group
+- Wait group (or barriers)
 
  |------------A------------->|
  |-------B-------->|         |
@@ -250,7 +250,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 - Synchronized memory access: [[https://godoc.org/sync#Mutex][sync.Mutex]]
 - Distributing workload: [[https://godoc.org/sync#Pool][sync.Pool]]
-- Waiting for multiple goroutines to complete: [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
+- Waiting for multiple goroutines to complete (barriers): [[https://godoc.org/sync#WaitGroup][sync.WaitGroup]]
 - Single-execution goroutines: [[https://godoc.org/sync#Once][sync.Once]]
 - Condition variables: [[https://godoc.org/sync#Cond][sync.Cond]]
 
@@ -266,7 +266,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 .code compare-and-swap-uint64.s
 
-* "Please wait..."
+* Waiting (the infamous "Please wait...")
 
 * Example: Blocking I/O or computation
 
@@ -311,6 +311,12 @@ A very boring function written by Rob Pike.
 * Example: Waiting for groups of goroutines
 
 .play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
+
+* Wait Groups (or barriers)
+
+- In message passing, any global communication (such as reduction or scatter) may imply a wait groups (or barriers).
+
+- muliplexing aggregation and load balancing, for example.
 
 * Channels: Talk to my handle
 
@@ -384,6 +390,8 @@ A very boring function written by Rob Pike.
 * Example: Reading from closed channels
 
 * Race conditions
+
+* Meme time
 
 .image images/data-race-dragon.png _ 700
 

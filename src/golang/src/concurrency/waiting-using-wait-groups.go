@@ -36,8 +36,8 @@ func init() {
 }
 
 // show A OMIT
-func work(i int, pwg *sync.WaitGroup) { // HL
-	defer pwg.Done() // HL
+func work(i int, wg *sync.WaitGroup) { // wg passed as pointer // HL
+	defer wg.Done() // HL
 	d := rand.Intn(1e3)
 	time.Sleep(time.Duration(d) * time.Millisecond)
 	fmt.Printf("Work %d took %d ms.\n", i, d)

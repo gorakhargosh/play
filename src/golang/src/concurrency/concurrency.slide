@@ -1,17 +1,36 @@
-Namasté, Concurrency!
+Namasté, Concurrency in Go!
 One piecemeal at a time (sequentially).
 Tags: go golang concurrency examples patterns
 
 
 Yesudeep Mangalapilly | येसुदीप मंगलापिल्ली
-_Lead_, _Engineering_ — gTech AdSales (DevShop)
+_Lead_, _Engineering_ — DevShop (gTech AdSales)
 yesudeep@google.com
-yesudeep@gmail.com
 
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
 # TODO(yesudeep):
 
-* "I speak Spanish to God, German to my horse, and Go to connections that might make me wait."      — swdunlop on hackernews
+* Why Go in India? Ask Flipkart.
+
+.image images/ask-flipkart-about-go.png 550 _
+
+* Why Go? Ask Apple.
+
+.image images/ask-apple-about-go.png 550 _
+
+* Why Go?
+
+- Ask [[https://github.com/facebookgo/][github.com/facebookgo]]
+- Ask Canonical (makes Ubuntu Linux), CloudFlare (CDN), Docker (Linux containers).
+- Ask SoundCloud (social music platform), Twitter (social network)
+- Ask Uber (cabs anybody?), Stack Exchange (hello stackoverflow.com? :)
+- Ask GitHub, IBM, Dropbox, BBC Worldwide
+
+- A long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
+
+* Pay attention now. You're late to the party. No kidding.
+
+* The free ride is over.
 
 * Gratification
 
@@ -73,7 +92,7 @@ yesudeep@gmail.com
 
 - People working independently of each other while communicating.
 - Should you block waiting for a chat message to arrive before you can respond?
-- Postal mail using mailboxes as a non-blocking operation.
+- Postal mail - non-blocking sends.
 - Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 
 # Key points.
@@ -274,9 +293,9 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 .code compare-and-swap-uint64.s
 
-* Waiting (the infamous "Please wait...")
+* Waiting (infamous "Please wait...")
 
-* Example: Blocking I/O or computation
+* Example: Blocking I/O, computation, or idling
 
 A very boring function written by Rob Pike.
 
@@ -320,13 +339,15 @@ A very boring function written by Rob Pike.
 
 .play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
-* Wait Groups (or barriers)
+* Wait groups (or barriers)
 
 - In message passing, any global communication (such as reduction or scatter) may imply a wait groups (or barriers).
 
 - muliplexing aggregation and load balancing, for example.
 
 * Channels: Talk to my handle
+
+* Lockstep communication
 
 .image images/talk-to-the-hand.jpg 600 _
 
@@ -347,6 +368,12 @@ A very boring function written by Rob Pike.
 .play generators-as-services.go /show A OMIT/,/end show A OMIT/
 
 * Multiplexing
+
+* Fanning-in
+
+- e.g. tmux sharing a single TCP connection between multiple shell sessions
+
+.image images/fan-in-gophers.jpg 300 _
 
 * Example: Multiplexing (Fan-in)
 
@@ -407,15 +434,56 @@ A very boring function written by Rob Pike.
 
 .image images/data-race-dragon.png _ 700
 
-* Example: Race condition
+* Detecting race conditions
 
-.play race-condition-simple.go /^func main/,/^}/
-
-* Example: Detecting race conditions
+- tooling makes Go awesome:
 
   $ go (run|build|test...) -race foo.go
 
-- not everything can be detected, but most of it can be.
+- not everything can be detected, but quite a bit can be.
+- HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [[https://github.com/dvyukov][github.com/dvyukov]]) for making this possible.
+
+
+* Example: Unsynchronized counter
+
+.play race-condition-simple.go /^func main/,/^}/
+
+* Example: Insidious goroutine closures
+
+- closures share memory
+
+.play race-condition-closure.go /^func raceClosure/,/^}/
+
+* Example: Safe goroutine closures
+
+- pass values as arguments
+
+.play race-condition-closure.go /^func noRaceClosurePassArgument/,/^}/
+
+* Example: Careful goroutine closures
+
+- unique variable per iteration
+
+.play race-condition-closure.go /^func noRaceClosureUniqueVariable/,/^}/
+
+* Example: Careful with wait groups (barriers) too
+
+- call `wg.Add(N)` *before* `go function()`
+
+.play waiting-using-wait-groups.go /^func main/,/^}/
+
+* Example: Careful with wait groups (barriers) too
+
+- call `wg.Done()` before each goroutine returns (presumably using `defer`).
+
+.play waiting-using-wait-groups.go /^func work/,/^}/
+
+* Example: Loading Web service configuration non-racily
+
+- when loading configuration for Web service into a map use a wait group to avoid a data race
+- because goroutines can access map even before fully-loaded
+- anywhere aggregation or scattering is involved along with non-synchronized shared memory, a wait group may be required to prevent data races
+- use `init()` if possible; no goroutines can run before all `init()` functions executed.
 
 * Mutexes (and shared state)
 

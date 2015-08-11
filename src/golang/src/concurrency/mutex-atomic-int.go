@@ -13,8 +13,8 @@ type AtomicCounter struct { // HL
 
 // Add adds an integer to the counter.
 func (c *AtomicCounter) Add(n int) {
-	c.mu.Lock() // HL
-	c.n += n
+	c.mu.Lock()   // HL
+	c.n += n      // mutation // HL
 	c.mu.Unlock() // HL
 }
 
@@ -22,7 +22,7 @@ func (c *AtomicCounter) Value() int {
 	c.mu.Lock()         // HL
 	defer c.mu.Unlock() // HL
 	n := c.n            // What if the op here fails? defer helps. // HL
-	return n
+	return n            // Also a read op. // HL
 }
 
 // end show A OMIT

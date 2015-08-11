@@ -34,7 +34,8 @@ import (
 	"sync"
 )
 
-// gen emits the specified numbers on a channel that it returns.
+// gen emits the specified numbers on a channel that it returns. Closing the
+// done signal channel causes gen to stop emitting more numbers.
 func gen(done chan struct{}, nums ...int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -51,7 +52,7 @@ func gen(done chan struct{}, nums ...int) <-chan int {
 }
 
 // sq reads numbers from a channel and emits the square of each on a channel
-// that it returns.
+// that it returns. Closing the done channel causes sq to stop emitting numbers.
 func sq(done chan struct{}, in <-chan int) <-chan int {
 	out := make(chan int)
 	go func() {

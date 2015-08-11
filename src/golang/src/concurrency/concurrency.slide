@@ -92,12 +92,12 @@ yesudeep@gmail.com
 
   |----A----->|
      |-----B----------->|
-         |-------C------>|
+                             |---C-->|
 
 - Wait group
 
   |------------A------------->|
-  |------------B----------->| |
+  |-------B-------->|         |
          |-------C------>|    |
                               |
   |----------waiting----------|----resume---->
@@ -110,7 +110,6 @@ yesudeep@gmail.com
 .image images/data-race-dragon.png _ 450
 
 
-
 - TODO(yesudeep): Add more terminology here.
 
 * When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud race condition. *thud*
@@ -118,7 +117,7 @@ yesudeep@gmail.com
 * (1/2) Real world: Examples
 
 - People working independently of each other while communicating.
-- Should you waiting for a chat message to arrive as a blocking operation before you can respond?
+- Should you block waiting for a chat message to arrive before you can respond?
 - Postal mail using mailboxes as a non-blocking operation.
 - Async callbacks akin to SMS notification (when your Amazon order is out for delivery).
 

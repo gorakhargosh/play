@@ -87,6 +87,7 @@ yesudeep@gmail.com
 - Pipeline - aggregation from many sources and load balancing among many destinations
 - Bus - one-to-many communication
 - Pub-Sub - interest based one-to-many communication
+- Survey - query multiple sources
 
 * Patterns: Pair (one-to-one)
 

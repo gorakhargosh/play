@@ -127,6 +127,9 @@ yesudeep@gmail.com
 
 - Appreciably, a *concurrency*pattern* == _directed_acyclic_graph_ (DAG)
 - Cycles indicate possible deadlocks, but do occur
+- As acyclic as possible
+
+.image images/deadlocked-trains.jpg 300 _
 
 * Concurrency != parallelism
 
@@ -361,6 +364,10 @@ A very boring function written by Rob Pike.
 
 .play non-blocking-select.go /^func main/,/^}/
 
+* Example: Multiplexing (Fan-out; load balancing)
+
+- TODO(yesudeep): stackoverflow.
+
 * Timeouts and moving on
 
 * Example: Timing out a single communication
@@ -389,7 +396,7 @@ A very boring function written by Rob Pike.
 * Example: Closing Channels
 * Example: Reading from closed channels
 
-* Race conditions
+* Race conditions (and shared state)
 
 * Meme time
 
@@ -405,6 +412,17 @@ A very boring function written by Rob Pike.
 
 - not everything can be detected, but most of it can be.
 
+* Mutexes (and shared state)
+
+* Example: Synchronized shared state
+
+.play mutex-atomic-int.go /^func main/,/^}/
+
+* Example: Using mutexes to synchronize access
+
+.code mutex-atomic-int.go /show A OMIT/,/end show A OMIT/
+
+
 * Deadlocks
 
 * Example: Ping Pong and Deadlock detection
@@ -413,38 +431,39 @@ A very boring function written by Rob Pike.
 
 - source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
 
+* Starvation
 
 * Pipelines
 
 * What is a Pipeline?
 
-- series of stages connected by channels, where each stage is a group of goroutines running the same function.
+- A *pipeline* is a series of stages connected by channels, where each stage is a group of goroutines running the same function.
 
-- goroutines receive values from _upstream_ via _inbound_ channels.
-- goroutines perform some function on that data, usually producing new values.
-- goroutines send values _downstream_ via _outbound_ channels.
+- Goroutines *receive* values from _upstream_ via _inbound_ channels.
+- Goroutines *perform*some*function* on that data, usually producing new values.
+- Goroutines *send* values _downstream_ via _outbound_ channels.
 
 .image images/pattern-pipeline.png
 
-* Example: Clogged pipelines [1/4]
+* Example: Draining pipelines [1/4]
 
 - stage: consumer draining inbound channel
 
 .play pipeline-no-cancellation.go /^func main/,/^}/
 
-* Example: Clogged pipelines [2/4]
+* Example: Draining pipelines [2/4]
 
 - stage: emitters and outbound channels
 
 .code pipeline-no-cancellation.go /^func gen/,/^}/
 
-* Example: Clogged pipelines [3/4]
+* Example: Draining pipelines [3/4]
 
 - stage: squaring
 
 .code pipeline-no-cancellation.go /^func sq/,/^}/
 
-* Example: Clogged pipelines [4/4]
+* Example: Draining pipelines [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
@@ -476,19 +495,21 @@ A very boring function written by Rob Pike.
 
 .code pipeline-with-cancellation.go /^func merge/,/^}/
 
-* Semaphores and rate-control
+* Semaphores (and rate-control)
+
+* Why?
 
 .image images/single-lane-bridge.jpg
 
-* Example: Semaphore - Worker
+* Example: Semaphore Worker
 
 .play semaphores-for-throttling-goroutines.go /^func worker/,/^}/
 
-* Example: Semaphore - Throttling goroutines
+* Example: Throttling goroutines using buffered channels
 
 .play semaphores-for-throttling-goroutines.go /^func main/,/^}/
 
-* Example: Semaphore - Atomic counting
+* Example: Atomic counting to ensure semaphore works
 
 - All or nothing.
 - Check-and-set in hardware.
@@ -497,7 +518,6 @@ A very boring function written by Rob Pike.
 
 
 * Example: Spinlock and atomic operations
-* Pattern: Fan-out
 * Pattern: PubSub
 
 

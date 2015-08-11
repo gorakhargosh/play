@@ -20,7 +20,7 @@ func boring(msg string) chan string {
 // show A OMIT
 // Multiplexes reading from multiple channels fanning into a single channel
 // for the reader.
-func fanIn(a, b <-chan string) <-chan string {
+func fanIn(a, b <-chan string) <-chan string { // HL
 	c := make(chan string)
 	go func() { // HL
 		for { // HL

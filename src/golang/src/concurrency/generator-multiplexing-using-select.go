@@ -19,7 +19,7 @@ func boring(msg string) chan string {
 }
 
 // show A OMIT
-func fanIn(a, b <-chan string) <-chan string {
+func fanIn(a, b <-chan string) <-chan string { // HL
 	c := make(chan string)
 	go func() { // HL
 		for { // HL

@@ -28,7 +28,7 @@ func noRaceClosurePassArgument() { // HL
 		go func(n int) { // Use local variable // HL
 			fmt.Print(n) // HL
 			wg.Done()
-		}(i) // pass by value // HL
+		}(i) // pass as argument // HL
 	}
 	wg.Wait()
 	fmt.Println()

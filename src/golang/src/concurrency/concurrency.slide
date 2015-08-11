@@ -410,6 +410,10 @@ A very boring function written by Rob Pike.
 
 .play generator-timeout-conversation.go /^func main/,/^}/
 
+* Timing out: How it works
+
+.play timeout-after.go /show A OMIT/,/end show A OMIT/
+
 * Signalling
 
 * Example: Using quit channels for signaling

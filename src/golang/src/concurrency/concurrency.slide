@@ -156,7 +156,7 @@ yesudeep@google.com
 
 * Concurrency != parallelism
 
-- More about *topology*; less about execution.
+- More about *topology*; less about execution
 - Can work with a single processor core (scheduling by *timeslicing*); e.g. _beatboxing_
 - *Facilitates*parallelism* if multiple processor cores are available
 - Concurrency that scales over a network is called *distributed*computing*

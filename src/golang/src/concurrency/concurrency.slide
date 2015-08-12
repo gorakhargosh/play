@@ -75,6 +75,14 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .code example-google-search.go /^func First/,/^}/
 
+* Google Search: Replicated but avoiding wasted effort
+
+.play example-google-search.go /^func Google5/,/^}/
+
+* Google Search: Replicated with cancellation
+
+.code example-google-search.go /^func FirstWithCancel/,/^}/
+
 * Real world
 
 .image images/surgery.jpg 600 _
@@ -662,8 +670,12 @@ A very boring function written by Rob Pike.
 
 
 * Spinlock and atomic operations
+
+TODO(yesudeep): Add spinlock example from github.
+
 * Pattern: PubSub
 
+TODO(yesudeep): This is currently hard to implement.
 
 * Hype 1: There is a "No" in "NodeJS"
 
@@ -682,3 +694,4 @@ A very boring function written by Rob Pike.
 - [[http://gophervids.appspot.com/][gophervids.appspot.com]]
 - [[http://go-meetups.appspot.com/][go-meetups.appspot.com]]
 - Go Wiki: [[https://github.com/golang/go/wiki/LearnConcurrency][Learn Concurrency]]
+- [[https://gist.github.com/kachayev/21e7fe149bc5ae0bd878][Drawbacks and improvements]]

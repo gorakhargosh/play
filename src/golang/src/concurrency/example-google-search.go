@@ -110,6 +110,9 @@ func Google4(query string) (results []Result) { // HL
 	return
 }
 
+func FirstWithCancel() {
+}
+
 // Concurrent, time-bound, replicated, and non-wasteful.
 func Google5() {
 	// TODO(yesudeep): Cancellation using context.

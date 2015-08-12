@@ -677,6 +677,8 @@ A very boring function written by Rob Pike.
 
 * Links:
 
-- Additional patterns: [[http://www.golangpatterns.info/concurrency/futures][Go Patterns]]
-- A lot of videos: [[http://gophervids.appspot.com/][GopherVids]]
-- Meetups: [[http://go-meetups.appspot.com/][Go Meetups]]
+- [[https://golang.org][golang.org]]
+- [[http://www.golangpatterns.info/concurrency/futures][golangpatterns.info]]
+- [[http://gophervids.appspot.com/][gophervids.appspot.com]]
+- [[http://go-meetups.appspot.com/][go-meetups.appspot.com]]
+- Go Wiki: [[https://github.com/golang/go/wiki/LearnConcurrency][Learn Concurrency]]

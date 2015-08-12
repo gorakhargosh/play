@@ -81,12 +81,11 @@ func Google3(query string) (results []Result) { // HL
 // Uses the first response from the replicas.
 func First(query string, replicas ...Search) Result { // varargs // HL
 	c := make(chan Result)
-	for index := range replicas { // HL
-		go func(i int) { // HL
-			c <- replicas[i](query) // HL
-		}(index) // HL
+	search := func(replica Search) { c <- replica(query) } // HL
+	for _, replica := range replicas {                     // HL
+		go search(replica) // HL
 	} // HL
-	return <-c
+	return <-c // The value is returned, not the channel. // HL
 }
 
 // Concurrent, time-boxed, and replicated.

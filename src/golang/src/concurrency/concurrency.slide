@@ -28,9 +28,13 @@ yesudeep@google.com
 
 - A long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
 
-* Pay attention. You're late to the party. No kidding.
+* The free hardware-accelerated lunch is over.
 
-* The free (hardware-accelerated) ride is over.
+* More cores; limited speed improvements.
+
+- Moore's Law
+- Need for concurrent systems programming languages
+- [[http://dave.cheney.net/2015/08/08/performance-without-the-event-loop][Performance without the event loop]] by Dave Cheney
 
 * Gratification
 
@@ -44,6 +48,8 @@ yesudeep@google.com
 .image images/google-albert-einstein.png 700 _
 
 * Faking Google search
+
+Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patterns]]
 
 .code example-google-search.go /^func fakeSearch/,/^}/
 
@@ -262,7 +268,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
   fmt.Println(chachacha.Name)
 
-- Closure
+- Closing
 
   close(channel)
 
@@ -284,11 +290,39 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
   bch := make(chan bool, 2)  // Capacity 2.
 
-- Receiving from a channel always blocks unless the channel is closed.
+* Primitives: go keyword
 
-  close(ch)
-  <-ch  // non-blocking on closed channel.
+Think of it like the `&` character bash shell.
 
+  $ command &             # run 'command' in the background
+
+Blocking function calls can be scheduled using `go` keyword.
+
+  go blocking()           // schedule to run independently
+
+Blocking immediate functions can be scheduled similarly:
+
+  go func() {
+    // Do something.
+  }()
+
+No guarantee that new goroutine scheduled immediately.
+
+* Scheduling goroutines
+
+Goroutines are cooperatively scheduled; not by kernel. Closer to coroutines (see [[https://www.youtube.com/watch?v=MCs5OvhV9S4][Python Concurrency Talk]]), but _conceptually_like_threads_.
+
+Points at which goroutines can be switched:
+
+- _Blocking_ send and receive channel operations
+- `go` statement
+- Blocking syscalls like file and network operations
+- After being stopped for a garbage collection cycle
+- Explicit calls to `runtime.Gosched()`
+
+In other words, places where the goroutine cannot continue until it has more data, or more space to put data.
+
+More information in [[http://go-talks.appspot.com/github.com/davecheney/presentations/performance-without-the-event-loop.slide][Slides: Performance without the event loop]]
 
 * Primitives: Mutexes, wait groups and pools
 
@@ -643,4 +677,6 @@ A very boring function written by Rob Pike.
 
 * Links:
 
-- [[http://www.golangpatterns.info/concurrency/futures][Go Patterns]]
+- Additional patterns: [[http://www.golangpatterns.info/concurrency/futures][Go Patterns]]
+- A lot of videos: [[http://gophervids.appspot.com/][GopherVids]]
+- Meetups: [[http://go-meetups.appspot.com/][Go Meetups]]

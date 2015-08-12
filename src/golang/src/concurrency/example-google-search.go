@@ -110,6 +110,11 @@ func Google4(query string) (results []Result) { // HL
 	return
 }
 
+// Concurrent, time-bound, replicated, and non-wasteful.
+func Google5() {
+	// TODO(yesudeep): Cancellation using context.
+}
+
 func Timeit(label string, fn SearchFunc, query string) []Result {
 	start := time.Now()
 	results := fn(query)

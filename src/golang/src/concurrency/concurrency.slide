@@ -394,7 +394,7 @@ A very boring function written by Rob Pike.
 
 .play closing-channels.go /^func main/,/^}/
 
-* for...range until closure
+* Draining a channel with for...range
 
 .play for-range-channel.go /show A OMIT/,/end show A OMIT/
 

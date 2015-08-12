@@ -245,10 +245,27 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 * Concurrency Primitives
 
-* Primitives: High-level operations
+* Primitives: Typed message passing
 
-- Send
-- Receive
+- Creation
+
+  type Monkey struct {Name string}
+  channel := make(chan Monkey)
+
+- Send (blocking and non-blocking)
+
+  channel <- Monkey{Name: "Chichichi"}
+
+- Receive (always blocks, unless channel closed)
+
+  chachacha := <-channel
+
+  fmt.Println(chachacha.Name)
+
+- Closure
+
+  close(channel)
+
 
 * Primitives: High-Level CSP
 
@@ -295,19 +312,19 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 * Waiting (infamous "Please wait...")
 
-* Example: Blocking I/O, computation, or idling
+* Blocking I/O, computation, or idling
 
 A very boring function written by Rob Pike.
 
 .play blocking-main.go /show A OMIT/,/end show A OMIT/
 
-* Example: Non-blocking exit
+* Non-blocking exit
 
 - comes as a neat surprise
 
 .play non-blocking-main.go /show A OMIT/,/end show A OMIT/
 
-* Example: Using `os.Stdin` to wait
+* Using `os.Stdin` to wait
 
 - avoid
 - quirky
@@ -317,7 +334,7 @@ A very boring function written by Rob Pike.
 
 .play waiting-using-stdin.go /show A OMIT/,/end show A OMIT/
 
-* Example: Using `time.Sleep` to wait
+* Using `time.Sleep` to wait
 
 - avoid
 - unreliable
@@ -327,7 +344,7 @@ A very boring function written by Rob Pike.
 
 .play waiting-using-sleep.go /show A OMIT/,/end show A OMIT/
 
-* Example: Using signal channels to wait
+* Using signal channels to wait
 
 - Why this is flow-of-control, not flow-of-data: resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
 - Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible, instead.
@@ -335,7 +352,7 @@ A very boring function written by Rob Pike.
 
 .play waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
-* Example: Waiting for groups of goroutines
+* Waiting for groups of goroutines
 
 .play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
@@ -351,19 +368,37 @@ A very boring function written by Rob Pike.
 
 .image images/talk-to-the-hand.jpg 600 _
 
-* Example: Channels
+* Channels
 
 .play channels.go
 
-* Example: Channels have direction
+* Channels have direction
+
+  chan Monkey     // can be use to send and receive values of type Monkey.
+  chan <- Monkey  // can only be used to send values of type Monkey.
+  <-chan Monkey   // can only be used to receive values of type Monkey.
+
+- We we will see examples of usage later.
+
+* Buffered channels
+
+.play buffered-channels.go /^func main/,/^}/
 
 * Generating channels
 
-* Example: Generating channels
+* Generator pattern
 
 .play generator-pattern.go /show A OMIT/,/end show A OMIT/
 
-* Example: Generators as services
+* Closing Channels
+
+.play closing-channels.go /^func main/,/^}/
+
+* for...range until closure
+
+.play for-range-channel.go /show A OMIT/,/end show A OMIT/
+
+* Generators as services
 
 .play generators-as-services.go /show A OMIT/,/end show A OMIT/
 
@@ -375,38 +410,38 @@ A very boring function written by Rob Pike.
 
 .image images/fan-in-gophers.jpg 300 _
 
-* Example: Multiplexing (Fan-in)
+* Multiplexing (Fan-in)
 
 .code generator-multiplexing-fan-in.go /^func fanIn/,/^}/
 
-* Example: Multiplexing (Fan-in continued)
+* Multiplexing (Fan-in continued)
 
 .play generator-multiplexing-fan-in.go /^func main/,/^}/
 
-* Example: Multiplexing (Fan-in using select)
+* Multiplexing (Fan-in using select)
 
 - Selecting communication.
 - Pseudorandomly if multiple communications are ready.
 
 .play generator-multiplexing-using-select.go /^func fanIn/,/^}/
 
-* Example: Non-blocking select
+* Non-blocking select
 
 - Selecting communication without waiting.
 
 .play non-blocking-select.go /^func main/,/^}/
 
-* Example: Multiplexing (Fan-out; load balancing)
+* Multiplexing (Fan-out; load balancing)
 
 - TODO(yesudeep): stackoverflow.
 
 * Timeouts and moving on
 
-* Example: Timing out a single communication
+* Timing out a single communication
 
 .play generator-timeout.go /^func main/,/^}/
 
-* Example: Timing out entire conversations
+* Timing out entire conversations
 
 .play generator-timeout-conversation.go /^func main/,/^}/
 
@@ -422,21 +457,13 @@ A very boring function written by Rob Pike.
 
 * Signalling
 
-* Example: Using quit channels for signaling
+* Using quit channels for signaling
 
 .play quit-channels.go /show A OMIT/,/end show A OMIT/
 
-* Example: Using quit channels and cleaning up
+* Using quit channels and cleaning up
 
 .play quit-channels-plus-cleanup.go /show A OMIT/,/end show A OMIT/
-
-* Example: Buffered channels
-
-.play buffered-channels.go /^func main/,/^}/
-
-* Example: `nil` channels
-* Example: Closing Channels
-* Example: Reading from closed channels
 
 * Race conditions (and shared state)
 
@@ -454,41 +481,41 @@ A very boring function written by Rob Pike.
 - HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [[https://github.com/dvyukov][github.com/dvyukov]]) for making this possible.
 
 
-* Example: Unsynchronized counter
+* Unsynchronized counter
 
 .play race-condition-simple.go /^func main/,/^}/
 
-* Example: Insidious goroutine closures
+* Insidious goroutine closures
 
 - closures share memory
 
 .play race-condition-closure.go /^func raceClosure/,/^}/
 
-* Example: Safe goroutine closures
+* Safe goroutine closures
 
 - pass values as arguments
 
 .play race-condition-closure.go /^func noRaceClosurePassArgument/,/^}/
 
-* Example: Careful goroutine closures
+* Careful goroutine closures
 
 - unique variable per iteration
 
 .play race-condition-closure.go /^func noRaceClosureUniqueVariable/,/^}/
 
-* Example: Careful with wait groups (barriers) too
+* Careful with wait groups (barriers) too
 
 - call `wg.Add(N)` *before* `go function()`
 
 .play waiting-using-wait-groups.go /^func main/,/^}/
 
-* Example: Careful with wait groups (barriers) too
+* Careful with wait groups (barriers) too
 
 - call `wg.Done()` before each goroutine returns (presumably using `defer`).
 
 .play waiting-using-wait-groups.go /^func work/,/^}/
 
-* Example: Loading Web service configuration non-racily
+* Loading Web service configuration non-racily
 
 - when loading configuration for Web service into a map use a wait group to avoid a data race
 - because goroutines can access map even before fully-loaded
@@ -497,18 +524,18 @@ A very boring function written by Rob Pike.
 
 * Mutexes (and shared state)
 
-* Example: Synchronized shared state
+* Synchronized shared state
 
 .play mutex-atomic-int.go /^func main/,/^}/
 
-* Example: Using mutexes to synchronize access
+* Using mutexes to synchronize access
 
 .code mutex-atomic-int.go /show A OMIT/,/end show A OMIT/
 
 
 * Deadlocks
 
-* Example: Ping Pong and Deadlock detection
+* Ping Pong and Deadlock detection
 
 .play ping-pong.go /show A OMIT/,/end show A OMIT/
 
@@ -528,25 +555,25 @@ A very boring function written by Rob Pike.
 
 .image images/pattern-pipeline.png
 
-* Example: Draining pipelines [1/4]
+* Draining pipelines [1/4]
 
 - stage: consumer draining inbound channel
 
 .play pipeline-no-cancellation.go /^func main/,/^}/
 
-* Example: Draining pipelines [2/4]
+* Draining pipelines [2/4]
 
 - stage: emitters and outbound channels
 
 .code pipeline-no-cancellation.go /^func gen/,/^}/
 
-* Example: Draining pipelines [3/4]
+* Draining pipelines [3/4]
 
 - stage: squaring
 
 .code pipeline-no-cancellation.go /^func sq/,/^}/
 
-* Example: Draining pipelines [4/4]
+* Draining pipelines [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
@@ -554,25 +581,25 @@ A very boring function written by Rob Pike.
 
 * ...but what if we only want some, not all?
 
-* Example: Pipelines with cancellation [1/4]
+* Pipelines with cancellation [1/4]
 
 - stage: consumer NOT draining inbound channel
 
 .play pipeline-with-cancellation.go /^func main/,/^}/
 
-* Example: Pipelines with cancellation [2/4]
+* Pipelines with cancellation [2/4]
 
 - stage: emitters and outbound channels
 
 .code pipeline-with-cancellation.go /^func gen/,/^}/
 
-* Example: Pipelines with cancellation [3/4]
+* Pipelines with cancellation [3/4]
 
 - stage: squaring
 
 .code pipeline-with-cancellation.go /^func sq/,/^}/
 
-* Example: Pipelines with cancellation [4/4]
+* Pipelines with cancellation [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
@@ -584,15 +611,15 @@ A very boring function written by Rob Pike.
 
 .image images/single-lane-bridge.jpg
 
-* Example: Semaphore Worker
+* Semaphore Worker
 
 .play semaphores-for-throttling-goroutines.go /^func worker/,/^}/
 
-* Example: Throttling goroutines using buffered channels
+* Throttling goroutines using buffered channels
 
 .play semaphores-for-throttling-goroutines.go /^func main/,/^}/
 
-* Example: Atomic counting to ensure semaphore works
+* Atomic counting to ensure semaphore works
 
 - All or nothing.
 - Check-and-set in hardware.
@@ -600,7 +627,7 @@ A very boring function written by Rob Pike.
 .play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
 
 
-* Example: Spinlock and atomic operations
+* Spinlock and atomic operations
 * Pattern: PubSub
 
 

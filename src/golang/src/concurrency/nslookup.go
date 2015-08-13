@@ -10,7 +10,6 @@ import (
 	"os"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"time"
 )
 
@@ -28,8 +27,6 @@ type TaskGenerator func(line string) Task
 func run(r io.Reader, f TaskGenerator, workerCount int) {
 	var wg sync.WaitGroup
 
-	var count int64 = 0
-
 	in := make(chan Task)
 	wg.Add(1)
 	go func() {
@@ -37,7 +34,6 @@ func run(r io.Reader, f TaskGenerator, workerCount int) {
 		for s.Scan() {
 			if len(strings.TrimSpace(s.Text())) > 0 {
 				in <- f(s.Text())
-				atomic.AddInt64(&count, 1)
 			}
 		}
 		if s.Err() != nil {
@@ -69,7 +65,6 @@ func run(r io.Reader, f TaskGenerator, workerCount int) {
 	for t := range out {
 		t.Print()
 	}
-	fmt.Printf("Done %d tasks\n", count)
 }
 
 type lookupTask struct {

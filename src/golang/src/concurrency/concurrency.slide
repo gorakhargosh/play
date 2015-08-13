@@ -71,11 +71,17 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .play example-google-search.go /^func Google4/,/^}/
 
-* Google Search: Replication and first-come-first-served
+* Google Search: Replication and reducing tail latency (first-come-first-served)
 
 .code example-google-search.go /^func First/,/^}/
 
 * Google Search: Replicated but avoiding wasted effort
+
+- hedging against multiple resources works all of them
+
+- first-come-first-served discards the work of laggards
+
+- we need a way to abort the laggards
 
 .play example-google-search.go /^func Google5/,/^}/
 
@@ -424,17 +430,49 @@ A very boring function written by Rob Pike.
 
 * Buffered channels
 
+Behave like mailboxes.
+
+Sends will not block until capacity full.
+
+Receive will block until receiver ready.
+
+Can be used to:
+- simulate semaphores
+- ensure non-blocking sends upto capacity
+
 .play buffered-channels.go /^func main/,/^}/
+
+
+* nil channels
+
+
+* Closing Channels
+
+Closing a channel works as a broadcast signal; any number of goroutines can
+select on a signal channel that is closed.
+
+After the last value has been received from a closed channel, any receive from
+it will succeed without blocking, returning the zero value.
+
+.play closing-channels.go /^func main/,/^}/
+
+* Carefully closing channels
+
+Using `close(channel)` requires care:
+
+- closing a nil channel panics
+
+- closing a closed channel panics
+
+- a nil channel is never ready for communication
+
+.play close-panics.go /^func main/,/^}/
 
 * Generating channels
 
 * Generator pattern
 
 .play generator-pattern.go /show A OMIT/,/end show A OMIT/
-
-* Closing Channels
-
-.play closing-channels.go /^func main/,/^}/
 
 * Draining a channel with for...range
 

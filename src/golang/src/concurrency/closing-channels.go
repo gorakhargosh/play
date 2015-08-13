@@ -7,6 +7,7 @@ func main() {
 	go func() {
 		ch <- "Meow!"
 		close(ch) // indicate end of communication // HL
+		// ch <- "uncomment to panic!" // HL
 	}()
 	fmt.Println(<-ch)
 
@@ -16,4 +17,16 @@ func main() {
 	fmt.Println(<-ch) // HL
 	v, ok := <-ch     // v is "", ok is false // HL
 	fmt.Printf("value %q from channel? %v", v, ok)
+
+	c := make(chan int, 2)
+
+	go func() {
+		c <- 1
+		c <- 2
+	}()
+
+	fmt.Println(<-c)
+	close(c)         // Indicate the closing of the channel.
+	fmt.Println(<-c) // channel will flush values before actually "closing."
+	fmt.Println(<-c) // zero value.
 }

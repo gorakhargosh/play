@@ -159,8 +159,7 @@ func Google4(query string) (results []Result) { // HL
 	return
 }
 
-// Concurrent, time-bound, replicated, and non-wasteful.
-// Concurrent, time-boxed, and replicated.
+// Concurrent, time-bound, replicated, and tail-latency reduction.
 func Google5(query string) (results []Result) { // HL
 	c := make(chan Result)
 	ctx, cancel := context.WithCancel(context.Background())                      // HL

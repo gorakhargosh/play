@@ -73,13 +73,11 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Google Search: First-come-first-served
 
-.code example-google-search.go /^func First/,/^}/
+.code example-google-search.go /show firstComeFirstServed OMIT/,/end show firstComeFirstServed OMIT/
 
 * Google Search: Reducing tail latency
 
-- hedging requests work all backends
-
-- first-come-first-served discards the work of laggards
+- hedging requests work all backends, discards the work of laggards
 
 - abort the laggards, save resources, and avoid contention
 
@@ -88,7 +86,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Google Search: Replication with cancellation
 
-.code example-google-search.go /^func FirstWithCancel/,/^}/
+.code example-google-search.go /^func CancellableFirst/,/^}/
 
 * Real world
 

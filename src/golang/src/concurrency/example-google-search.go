@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"golang.org/x/net/context"
 )
 
 // show fakeEngines OMIT
@@ -21,13 +23,71 @@ var (
 
 // end show fakeEngines OMIT
 
-type Result string
-type Search func(query string) Result
+var (
+	CWeb1   = makeCancellableBackend("c_web1") // HL
+	CWeb2   = makeCancellableBackend("c_web2")
+	CWeb3   = makeCancellableBackend("c_web3")
+	CImage1 = makeCancellableBackend("c_image1") // HL
+	CImage2 = makeCancellableBackend("c_image2")
+	CImage3 = makeCancellableBackend("c_image3")
+	CVideo1 = makeCancellableBackend("c_video1") // HL
+	CVideo2 = makeCancellableBackend("c_video2")
+	CVideo3 = makeCancellableBackend("c_video3")
+)
+
+// show firstComeFirstServed OMIT
+type Result struct {
+	Err   error
+	Value string
+}                                     // HL
+type Search func(query string) Result // HL
+
+// Uses the first response from the replicas.
+func First(query string, replicas ...Search) Result { // varargs // HL
+	// Buffered channel to hold obtained results.
+	c := make(chan Result, len(replicas))
+	search := func(replica Search) { c <- replica(query) } // HL
+	for _, replica := range replicas {                     // HL
+		go search(replica) // HL
+	} // HL
+	return <-c // The value is returned, not the channel. // HL
+}
+
+// end show firstComeFirstServed OMIT
+
+type CancellableSearch func(ctx context.Context, query string) Result // HL
+
+func CancellableFirst(ctx context.Context, query string, replicas ...CancellableSearch) Result {
+	c := make(chan Result, len(replicas))
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+	search := func(replica CancellableSearch) { c <- replica(ctx, query) }
+	for _, replica := range replicas {
+		go search(replica)
+	}
+	select {
+	case <-ctx.Done():
+		fmt.Printf("Cancelled background request\n")
+		return Result{Err: ctx.Err()}
+	case r := <-c:
+		return r
+	}
+}
 
 func makeBackend(kind string) Search { // HL
 	return func(query string) Result { // HL
 		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
-		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
+		return Result{Value: fmt.Sprintf("%s result for %q\n", kind, query)}
+	}
+}
+
+func makeCancellableBackend(kind string) CancellableSearch { // HL
+	return func(ctx context.Context, query string) Result { // HL
+		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		return Result{
+			Err:   ctx.Err(),
+			Value: fmt.Sprintf("%s result for %q\n", kind, query),
+		}
 	}
 }
 
@@ -78,17 +138,6 @@ func Google3(query string) (results []Result) { // HL
 	return
 }
 
-// Uses the first response from the replicas.
-func First(query string, replicas ...Search) Result { // varargs // HL
-	// Buffered channel to hold obtained results.
-	c := make(chan Result, len(replicas))
-	search := func(replica Search) { c <- replica(query) } // HL
-	for _, replica := range replicas {                     // HL
-		go search(replica) // HL
-	} // HL
-	return <-c // The value is returned, not the channel. // HL
-}
-
 // Concurrent, time-boxed, and replicated.
 func Google4(query string) (results []Result) { // HL
 	c := make(chan Result)
@@ -111,12 +160,26 @@ func Google4(query string) (results []Result) { // HL
 	return
 }
 
-func FirstWithCancel() {
-}
-
 // Concurrent, time-bound, replicated, and non-wasteful.
-func Google5() {
-	// TODO(yesudeep): Cancellation using context.
+// Concurrent, time-boxed, and replicated.
+func Google5(query string) (results []Result) { // HL
+	c := make(chan Result)
+	ctx, cancel := context.WithCancel(context.Background())                      // HL
+	defer cancel()                                                               // HL
+	go func() { c <- CancellableFirst(ctx, query, CWeb1, CWeb2, CWeb3) }()       // HL
+	go func() { c <- CancellableFirst(ctx, query, CImage1, CImage2, CImage3) }() // HL
+	go func() { c <- CancellableFirst(ctx, query, CVideo1, CVideo2, CVideo3) }() // HL
+	timeout := time.After(80 * time.Millisecond)
+	for i := 0; i < 3; i++ {
+		select {
+		case result := <-c:
+			results = append(results, result)
+		case <-timeout:
+			fmt.Println("timed out")
+			return
+		}
+	}
+	return
 }
 
 func Timeit(label string, fn SearchFunc, query string) []Result {
@@ -134,4 +197,5 @@ func main() {
 	Timeit("2: concurrent", Google2, query)
 	Timeit("3: concurrent, time-bound", Google3, query)
 	Timeit("4: concurrent, time-bound, replicated", Google4, query)
+	Timeit("5: concurrent, time-bound, replicated, cancellable", Google5, query)
 }

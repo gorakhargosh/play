@@ -94,11 +94,15 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Concurrent NS Lookup
 
-Small list
+Stdin
+
+  $ go run nslookup.go
+
+Tiny list
 
   $ go run nslookup.go < domains.list
 
-Medium list
+Small list
 
   $ go run nslookup.go < topsites.list
 

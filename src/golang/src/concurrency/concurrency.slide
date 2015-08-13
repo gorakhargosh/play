@@ -163,6 +163,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 - Time-bounding
 - Waiting
 - Idling
+- Cancellation
 
 * Concurrency: a way to compose structure of software to work in coordination
 
@@ -261,6 +262,12 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 - Multiple processes/threads waiting for each other to obtain and release resources, but nobody ever does--the state of no progress that ensues is a *deadlock*.
 
 .image images/deadlocked-trains.jpg
+
+* Terminology: Cancellation
+
+- abort background API call tree if unused
+
+.image images/cancellation.png _ 250
 
 * Concurrency Primitives
 

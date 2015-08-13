@@ -1,0 +1,71 @@
+digraph flow {
+        graph [
+               fontname="Ubuntu,Roboto-Light,HelveticaNeue-Light,Helvetica,sans-serif",
+               fontsize="28px"
+               ];
+        node [
+              fontname="Ubuntu,Roboto,HelveticaNeue,Helvetica,sans-serif",
+              fontsize="12px",
+              penwidth="1.0",
+              margin="0.2",
+              shape=rectangle
+              ];
+        edge [
+              fontname="Ubuntu,Roboto-Light,HelveticaNeue-Light,Helvetica,sans-serif",
+              fontsize="11px",
+              fontcolor=darkgray,
+              penwidth="0.8"
+              ];
+
+        subgraph cluster_http_server {
+                color=cornflowerblue;
+                fontcolor=cornflowerblue;
+                fillcolor="#e5e5e5";
+                label="Web server";
+
+                http_service;
+                request_handler;
+                goroutine;
+                rpc_call;
+                blocking_call;
+
+        }
+
+        subgraph cluster_rpc_server {
+                color=cornflowerblue;
+                fontcolor=cornflowerblue;
+                fillcolor="#e5e5e5";
+                label="API Server";
+
+                rpc_service;
+        }
+
+        // ---------------------------------------------------------------------
+        // Nodes.
+        http_service [label="HTTP Service"]
+        request_handler
+        rpc_service [label="RPC service"]
+
+        // Landing nodes.
+        client [label="Client",style=filled,fillcolor=cornflowerblue,color=cornflowerblue,fontcolor=white]
+
+        client -> http_service [label="http"]
+        http_service -> request_handler
+        request_handler -> goroutine
+        goroutine -> rpc_call
+        rpc_call -> rpc_service [label="rpc"]
+        request_handler -> blocking_call
+
+        // Internal services.
+        // auth_google [label="Google Authentication",style=filled,fillcolor=gray,color=gray,fontcolor=white]
+
+        // Nodes outside the system.
+        // android_search [label="Android Search",style=filled,fillcolor=black,fontcolor=white]
+
+
+        // Define this at the end:
+        // See: http://stackoverflow.com/questions/4714262/graphviz-dot-captions
+        label="";
+        labelloc=top;
+        labeljust=left;
+}

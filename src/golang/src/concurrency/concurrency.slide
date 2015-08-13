@@ -10,6 +10,11 @@ yesudeep@google.com
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
 # TODO(yesudeep):
 
+
+* Slides
+
+[[https://j.mp/goconcur][j.mp/goconcur]]
+
 * Why Go? Ask Flipkart.
 
 .image images/ask-flipkart-about-go.png 550 _
@@ -739,6 +744,7 @@ TODO(yesudeep): This is currently hard to implement.
 
 * Links:
 
+- Slides: [[https://j.mp/goconcur][j.mp/goconcur]]
 - [[https://golang.org][golang.org]]
 - [[http://www.golangpatterns.info/concurrency/futures][golangpatterns.info]]
 - [[http://gophervids.appspot.com/][gophervids.appspot.com]]

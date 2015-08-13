@@ -5,6 +5,8 @@ import "fmt"
 // show A OMIT
 type Paratha string
 
+func (p Paratha) String() string { return string(p) + " paratha" }
+
 func ParatheWaaliGali() <-chan Paratha { // HL
 	ch := make(chan Paratha)
 	go func() {
@@ -19,7 +21,7 @@ func ParatheWaaliGali() <-chan Paratha { // HL
 
 func main() {
 	for paratha := range ParatheWaaliGali() { // HL
-		fmt.Printf("%s paratha bhi khaaya.\n", paratha)
+		fmt.Printf("%v bhi khaaya.\n", paratha)
 	}
 	fmt.Println("\nYaar, pet badh gaya.")
 }

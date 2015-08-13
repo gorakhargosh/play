@@ -538,10 +538,6 @@ Selecting communication without waiting:
 
 .play non-blocking-select.go /^func main/,/^}/
 
-* Multiplexing (Fan-out; load balancing)
-
-- TODO(yesudeep): stackoverflow.
-
 * Timeouts and moving on
 
 * Timing out a single communication
@@ -741,7 +737,11 @@ TODO(yesudeep): Add spinlock example from github.
 
 * Pattern: PubSub
 
-TODO(yesudeep): This is currently hard to implement.
+TODO(yesudeep): This is currently hard to implement. Libraries available.
+
+* Pattern: Fan-out.
+
+TODO(yesudeep): Load-balancing example.
 
 * Hype 1: There is a "No" in "NodeJS"
 

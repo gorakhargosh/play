@@ -25,13 +25,18 @@ yesudeep@google.com
 
 * Why Go?
 
-- Ask [[https://github.com/facebookgo/][github.com/facebookgo]]
-- Ask Canonical (makes Ubuntu Linux), CloudFlare (CDN), Docker (Linux containers).
-- Ask SoundCloud (social music platform), Twitter (social network)
-- Ask Uber (cabs anybody?), Stack Exchange (hello stackoverflow.com? :)
-- Ask GitHub, IBM, Dropbox, BBC Worldwide
+Ask:
 
-- A long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
+- [[https://github.com/facebookgo/][github.com/facebookgo]]
+- Canonical, CloudFlare, Docker
+- SoundCloud, Twitter
+- Uber, Stack Exchange
+- GitHub, IBM, Dropbox
+- BBC Worldwide (source Kunal Anand, Ex-Director of Technology)
+
+See [[http://golangprojects.com][golangprojects.com]] and a growing long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
+
+
 
 * The free hardware-accelerated lunch is over.
 
@@ -76,7 +81,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .play example-google-search.go /^func Google4/,/^}/
 
-* Google Search: First-come-first-served
+* Google Search: First-come, first-served
 
 .code example-google-search.go /show firstComeFirstServed OMIT/,/end show firstComeFirstServed OMIT/
 
@@ -90,7 +95,14 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Google Search: Replication with cancellation
 
+- try to design synchronous, abortable APIs.
+
 .code example-google-search.go /^func CancellableFirst/,/^}/
+
+Google Context: [[https://golang.org/x/net/context][golang.org/x/net/context]]
+
+See [[https://talks.golang.org/2014/gotham-context.slide][slides]] and [[https://vimeo.com/115309491][video]] by Sameer Ajmani.
+
 
 * Concurrent NS Lookup
 
@@ -140,7 +152,7 @@ Small list
 
 - Pair - one-to-one communication
 - Request-Response - stateless services to process requests
-- Pipeline - aggregation from many sources and load balancing among many destinations
+- Pipeline - staged processing from producer to consumer, possibly involving aggregation from many sources and load-balancing among many destinations
 - Bus - one-to-many communication
 - Pub-Sub - interest based one-to-many communication
 - Survey - query multiple sources
@@ -173,16 +185,16 @@ Small list
 
 * Patterns: Adding behavior
 
-- Message queues (buffered and unbuffered)
-- Generators
+- Message queues (typed, buffered and unbuffered FIFO queues)
+- Generators (lazy computation, I/O)
 - Signaling
-- Time-bounding
+- Time-bounding (timeouts)
 - Waiting
 - Idling
-- Throttling (rate-control) using semaphores
-- Multiplexing: fan-in, fan-out
-- Replication (first-come-first-served)
-- Cancellation (reducing tail latency)
+- Throttling (rate-control)
+- Multiplexing (fan-in, fan-out)
+- Replication (first-come, first-served)
+- Cancellation (reducing tail latency, saving resources, and avoiding contention)
 
 * Concurrency: a way to compose structure of software to work in coordination
 
@@ -198,14 +210,16 @@ Small list
 - Can work with a single processor core (scheduling by *timeslicing*); e.g. _beatboxing_
 - *Facilitates*parallelism* if multiple processor cores are available
 - Concurrency that scales over a network is called *distributed*computing*
-- Video: [[https://www.youtube.com/watch?v=cN_DpYBzKso][Rob Pike explains why]]
+- Rob Pike explains why in this [[https://www.youtube.com/watch?v=cN_DpYBzKso][video]]
 
 * Parallelism: simultaneous execution of possibly related or unrelated things
 
-- Best suitable for independently executing computation that needs no synchronization
-- Examples: image processing
+Best suitable for independently executing computation that needs no synchronization.
 
-TODO(yesudeep): Pull examples from haskell concurrency talk.
+* Concurrency vs parallelism
+
+- Web servers, GUIs, chat servers, telephone exchanges, & other interactive scenarios => concurrency
+- image manipulation, machine learning, database joins, spreadsheet calculation, etc. => parallelism
 
 * Go CSP (Communicating Sequential Processes)
 
@@ -215,7 +229,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 - Synchronize by communicating over shared message queues (*channels* in Go).
 
-- Do not communicate by sharing memory; instead, share memory by communicating.
+- _Do_not_communicate_by_sharing_memory;_instead,_share_memory_by_communicating_.
 
 * Go gives you tools to shoot yourself in the foot, however
 
@@ -254,7 +268,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 - Synchronous (in order)
 
- |-----A----->||--------B-------->||-------C------->|
+ |-----A----->|--------B-------->|-------C------->|
 
 - Asynchronous (out-of-order)
 
@@ -268,7 +282,7 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
  |-------B-------->|         |
         |-------C------>|    |
                              |
- |----------waiting----------|----resume---->
+ |? ? ? ? ? waiting ? ? ? ? ?|----resume---->
 
 
 * Terminology: Race conditions
@@ -374,9 +388,15 @@ More information in [[http://go-talks.appspot.com/github.com/davecheney/presenta
 
 * Primitives: Atomic operations
 
-Implemented in hardware instruction set - [[https://godoc.org/sync/atomic][sync/atomic]]: (add, CAS, swaps, stores, pointer dereferencing)
+Implemented in hardware instruction set: [[https://godoc.org/sync/atomic][sync/atomic]]
 
-Why CAS (compare-and-set)? To prevent data races
+- add
+- compare-and-swap (CAS)
+- swaps
+- stores
+- pointer dereferencing
+
+Why CAS? Prevents data races.
 
 * Primitives: Example atomic operation (CAS)
 
@@ -518,15 +538,15 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 
 .image images/fan-in-gophers.jpg 300 _
 
-* Multiplexing (Fan-in)
+* Simple fan-in implementation
 
 .code generator-multiplexing-fan-in.go /^func fanIn/,/^}/
 
-* Multiplexing (Fan-in continued)
+* Fan-in in action
 
 .play generator-multiplexing-fan-in.go /^func main/,/^}/
 
-* Multiplexing (Fan-in using select)
+* Fanning-in using select
 
 Selecting communication _pseudorandomly_ if multiple communications are ready:
 

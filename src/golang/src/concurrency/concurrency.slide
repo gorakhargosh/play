@@ -124,7 +124,6 @@ Small list
 - Replicating the restaurant.
 - Pay attention to the flow-of-data, then to the flow-of-control.
 
-- TODO(yesudeep): Add a diagram here.
 
 * Real world examples
 
@@ -471,6 +470,7 @@ Can be used to:
 
 * nil channels
 
+.play nil-channel-send-receive-panics.go /^func main/,/^}/
 
 * Closing Channels
 
@@ -487,8 +487,6 @@ it will succeed without blocking, returning the zero value.
 .play closed-channel-drains-values-before-closing.go /^func main/,/^}/
 
 * Carefully closing channels
-
-Using `close(channel)` requires care:
 
 - closing a nil channel panics
 

@@ -57,6 +57,10 @@ See [[http://golangprojects.com][golangprojects.com]] and a growing long list of
 
 .image images/google-albert-einstein.png 700 _
 
+* Visualization
+
+.image images/google-search-visualized.jpg 600 _
+
 * Faking Google search
 
 Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patterns]]

@@ -11,3 +11,5 @@ include build_defs/c.tup
 include build_defs/cplusplus.tup
 include build_defs/go.tup
 include build_defs/java.tup
+
+include build_defs/graphviz.tup

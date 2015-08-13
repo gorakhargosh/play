@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	ch := make(chan int, 2)
-	var nc chan int // nil channel
+	// var nc chan int // nil channel
 
 	go func() {
 		ch <- 1

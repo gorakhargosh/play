@@ -1,0 +1,4 @@
+include_rules
+
+: foreach *.dot |> !dot_svg |> %B.svg
+: foreach *.dot |> !dot_png |> %B.png

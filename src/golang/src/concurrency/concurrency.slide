@@ -83,7 +83,6 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .play example-google-search.go /^func Google5/,/^}/
 
-
 * Google Search: Replication with cancellation
 
 .code example-google-search.go /^func CancellableFirst/,/^}/

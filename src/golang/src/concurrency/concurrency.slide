@@ -456,6 +456,10 @@ it will succeed without blocking, returning the zero value.
 
 .play closing-channels.go /^func main/,/^}/
 
+* Closed channel flushes values before "closing"
+
+.play closed-channel-drains-values-before-closing.go /^func main/,/^}/
+
 * Carefully closing channels
 
 Using `close(channel)` requires care:

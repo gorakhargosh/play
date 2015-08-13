@@ -94,7 +94,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Concurrent NS Lookup
 
-Stdin
+Standard input
 
   $ go run nslookup.go
 

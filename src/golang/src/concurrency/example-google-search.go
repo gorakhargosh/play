@@ -43,13 +43,13 @@ type Result struct {
 type Search func(query string) Result // HL
 
 // Uses the first response from the replicas.
-func First(query string, replicas ...Search) Result { // varargs // HL
+func First(query string, replicas ...Search) Result { // HL
 	// Buffered channel to hold obtained results.
-	c := make(chan Result, len(replicas))
+	c := make(chan Result, len(replicas))                  // HL
 	search := func(replica Search) { c <- replica(query) } // HL
-	for _, replica := range replicas {                     // HL
+	for _, replica := range replicas {
 		go search(replica) // HL
-	} // HL
+	}
 	return <-c // The value is returned, not the channel. // HL
 }
 
@@ -57,20 +57,19 @@ func First(query string, replicas ...Search) Result { // varargs // HL
 
 type CancellableSearch func(ctx context.Context, query string) Result // HL
 
-func CancellableFirst(ctx context.Context, query string, replicas ...CancellableSearch) Result {
+func CancellableFirst(ctx context.Context, query string, replicas ...CancellableSearch) Result { // HL
 	c := make(chan Result, len(replicas))
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-	search := func(replica CancellableSearch) { c <- replica(ctx, query) }
+	ctx, cancel := context.WithCancel(ctx)                                 // HL
+	defer cancel()                                                         // HL
+	search := func(replica CancellableSearch) { c <- replica(ctx, query) } // HL
 	for _, replica := range replicas {
 		go search(replica)
 	}
-	select {
-	case <-ctx.Done():
-		fmt.Printf("Cancelled background request\n")
-		return Result{Err: ctx.Err()}
-	case r := <-c:
-		return r
+	select { // HL
+	case <-ctx.Done(): // HL
+		return Result{Err: ctx.Err()} // HL
+	case r := <-c: // HL
+		return r // HL
 	}
 }
 

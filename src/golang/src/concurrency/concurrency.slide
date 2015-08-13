@@ -258,6 +258,9 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 * Terminology: Deadlock
 
+- Multiple processes/threads waiting for each other to obtain and release resources, but nobody ever does--the state of no progress that ensues is a *deadlock*.
+
+.image images/deadlocked-trains.jpg
 
 * Concurrency Primitives
 

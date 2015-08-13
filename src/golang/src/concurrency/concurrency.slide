@@ -273,12 +273,13 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 * Terminology: Race conditions
 
-- When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud *race* *condition*.
-- Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
+When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud *race*condition*.
+
+Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
 
 * Terminology: Deadlock
 
-- Multiple processes/threads waiting for each other to obtain and release resources, but nobody ever does--the state of no progress that ensues is a *deadlock*.
+Multiple processes/threads waiting for each other to obtain and release resources, but nobody ever does--the state of no progress that ensues is a *deadlock*.
 
 .image images/deadlocked-trains.jpg
 
@@ -314,18 +315,18 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 
 * Primitives: High-Level CSP
 
-- *Goroutines* are independently executing functions in the _same_address_space_.
+*Goroutines* are independently executing functions in the _same_address_space_.
 
   go func() {
      // Do something.
   }()
 
-- *Channels* - _typed_message_queues_ (blocking send; blocking receive) for *lockstep* communication between goroutines (e.g. telephone)
+*Channels* - _typed_message_queues_ (blocking send; blocking receive) for *lockstep* communication between goroutines (e.g. telephone)
 
   a := <-ch     // Receive from a channel.
   ch <- 3       // Send to a channel.
 
-- *Buffered*channels* (non-blocking send until full; blocking receive; e.g. postal mail)
+*Buffered*channels* (non-blocking send until full; blocking receive; e.g. postal mail)
 
   bch := make(chan bool, 2)  // Capacity 2.
 
@@ -373,13 +374,13 @@ More information in [[http://go-talks.appspot.com/github.com/davecheney/presenta
 
 * Primitives: Atomic operations
 
-- Implemented in hardware instruction set
-- [[https://godoc.org/sync/atomic][sync/atomic]]: (add, CAS, swaps, stores, pointer dereferencing)
-- Why CAS (compare-and-set)? To prevent data races
+Implemented in hardware instruction set - [[https://godoc.org/sync/atomic][sync/atomic]]: (add, CAS, swaps, stores, pointer dereferencing)
+
+Why CAS (compare-and-set)? To prevent data races
 
 * Primitives: Example atomic operation (CAS)
 
-- IA-64 bit assembly example:
+IA-64 bit assembly example:
 
 .code compare-and-swap-uint64.s
 
@@ -431,9 +432,9 @@ A very boring function written by Rob Pike.
 
 * Wait groups (or barriers)
 
-- In message passing, any global communication (such as reduction or scatter) may imply a wait groups (or barriers).
+In message passing, any global communication (such as reduction or scatter) may imply a wait group (or barrier).
 
-- muliplexing aggregation and load balancing, for example.
+Muliplexing aggregation and load-balancing, for example.
 
 * Channels: Talk to my handle
 
@@ -451,34 +452,33 @@ A very boring function written by Rob Pike.
   chan <- Monkey  // can only be used to send values of type Monkey.
   <-chan Monkey   // can only be used to receive values of type Monkey.
 
-- We we will see examples of usage later.
+We will see examples of usage later.
 
 * Buffered channels
 
 Behave like mailboxes.
 
-Sends will not block until capacity full.
+*Send* non-blocking until capacity; *receive* blocks until receiver ready.
 
-Receive will block until receiver ready.
-
-Can be used to:
-- simulate semaphores
-- ensure non-blocking sends upto capacity
+Uses:
+- simulating semaphores
+- non-blocking sends upto capacity
+- receiving only some values from a channel, not all, without blocking senders
 
 .play buffered-channels.go /^func main/,/^}/
 
-
 * nil channels
+
+nil channels are never ready for communication. Expect deadlocks.
 
 .play nil-channel-send-receive-panics.go /^func main/,/^}/
 
 * Closing Channels
 
-Closing a channel works as a broadcast signal; any number of goroutines can
+Closing a channel works as a _broadcast_signal_; any number of goroutines can
 select on a signal channel that is closed.
 
-After the last value has been received from a closed channel, any receive from
-it will succeed without blocking, returning the zero value.
+_After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_it_will_succeed_without_blocking,_returning_the_zero_value_.
 
 .play closing-channels.go /^func main/,/^}/
 
@@ -492,9 +492,7 @@ it will succeed without blocking, returning the zero value.
 
 - closing a closed channel panics
 
-- a nil channel is never ready for communication
-
-- only one goroutine should close a channel
+- only 1 goroutine should close a channel
 
 .play close-panics.go /^func main/,/^}/
 
@@ -530,14 +528,13 @@ it will succeed without blocking, returning the zero value.
 
 * Multiplexing (Fan-in using select)
 
-- Selecting communication.
-- Pseudorandomly if multiple communications are ready.
+Selecting communication _pseudorandomly_ if multiple communications are ready:
 
 .play generator-multiplexing-using-select.go /^func fanIn/,/^}/
 
 * Non-blocking select
 
-- Selecting communication without waiting.
+Selecting communication without waiting:
 
 .play non-blocking-select.go /^func main/,/^}/
 
@@ -583,12 +580,13 @@ it will succeed without blocking, returning the zero value.
 
 * Detecting race conditions
 
-- tooling makes Go awesome:
+Tooling makes Go awesome:
 
   $ go (run|build|test...) -race foo.go
 
-- not everything can be detected, but quite a bit can be.
-- HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [[https://github.com/dvyukov][github.com/dvyukov]]) for making this possible.
+Not everything can be detected, but quite a bit can be.
+
+HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [[https://github.com/dvyukov][github.com/dvyukov]]) for making this possible.
 
 
 * Unsynchronized counter

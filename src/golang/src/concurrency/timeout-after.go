@@ -22,8 +22,7 @@ func gen(n int) <-chan time.Duration { // HL
 
 // show A OMIT
 
-// Use time.After() instead. Only for demonstration. Actual implementation
-// is different.
+// Use time.After() instead. Only for demonstration. Actual implementation differs.
 func After(t time.Duration) <-chan bool { // HL
 	// buffer = 1; goroutine won't hang around forever if alternative
 	// communication happens before the timeout is reached. The timeout channel

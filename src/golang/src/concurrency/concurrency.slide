@@ -229,7 +229,8 @@ Best suitable for independently executing computation that needs no synchronizat
 
 - Synchronize by communicating over shared message queues (*channels* in Go).
 
-- _Do_not_communicate_by_sharing_memory;_instead,_share_memory_by_communicating_.
+
+_Do_not_communicate_by_sharing_memory;_instead,_share_memory_by_communicating_.
 
 * Go gives you tools to shoot yourself in the foot, however
 
@@ -289,7 +290,7 @@ Best suitable for independently executing computation that needs no synchronizat
 
 When someone quietly shifts your chair from underneath you right before you sit, you are about to experience a very loud *race*condition*.
 
-Data race: When multiple goroutines access the same memory concurrently and at least one of them is a write.
+When multiple goroutines access the same memory concurrently & at least 1 of them performs a write.
 
 * Terminology: Deadlock
 

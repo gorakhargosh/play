@@ -51,7 +51,7 @@ yesudeep@google.com
 
 Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patterns]]
 
-.code example-google-search.go /^func fakeSearch/,/^}/
+.code example-google-search.go /^func makeBackend/,/^}/
 
 .code example-google-search.go /show fakeEngines OMIT/,/end show fakeEngines OMIT/
 
@@ -81,9 +81,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 - first-come-first-served discards the work of laggards
 
-- we need a way to abort the laggards
-
-- efficient use of resources to avoid contention
+- abort the laggards, save resources, and avoid contention
 
 .play example-google-search.go /^func Google5/,/^}/
 
@@ -199,8 +197,6 @@ TODO(yesudeep): Pull examples from haskell concurrency talk.
 - Schedule blocking operations to run in separate processes (*goroutines* in Go).
 
 - Synchronize by communicating over shared message queues (*channels* in Go).
-
-- Avoiding concurrency within each *sequential* process.
 
 - Do not communicate by sharing memory; instead, share memory by communicating.
 
@@ -472,6 +468,8 @@ Using `close(channel)` requires care:
 - closing a closed channel panics
 
 - a nil channel is never ready for communication
+
+- only one goroutine should close a channel
 
 .play close-panics.go /^func main/,/^}/
 

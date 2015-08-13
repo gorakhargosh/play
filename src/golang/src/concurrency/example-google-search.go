@@ -8,15 +8,15 @@ import (
 
 // show fakeEngines OMIT
 var (
-	Web1   = fakeSearch("web1") // HL
-	Web2   = fakeSearch("web2")
-	Web3   = fakeSearch("web3")
-	Image1 = fakeSearch("image1") // HL
-	Image2 = fakeSearch("image2")
-	Image3 = fakeSearch("image3")
-	Video1 = fakeSearch("video1") // HL
-	Video2 = fakeSearch("video2")
-	Video3 = fakeSearch("video3")
+	Web1   = makeBackend("web1") // HL
+	Web2   = makeBackend("web2")
+	Web3   = makeBackend("web3")
+	Image1 = makeBackend("image1") // HL
+	Image2 = makeBackend("image2")
+	Image3 = makeBackend("image3")
+	Video1 = makeBackend("video1") // HL
+	Video2 = makeBackend("video2")
+	Video3 = makeBackend("video3")
 )
 
 // end show fakeEngines OMIT
@@ -24,7 +24,7 @@ var (
 type Result string
 type Search func(query string) Result
 
-func fakeSearch(kind string) Search { // HL
+func makeBackend(kind string) Search { // HL
 	return func(query string) Result { // HL
 		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
@@ -80,7 +80,8 @@ func Google3(query string) (results []Result) { // HL
 
 // Uses the first response from the replicas.
 func First(query string, replicas ...Search) Result { // varargs // HL
-	c := make(chan Result)
+	// Buffered channel to hold obtained results.
+	c := make(chan Result, len(replicas))
 	search := func(replica Search) { c <- replica(query) } // HL
 	for _, replica := range replicas {                     // HL
 		go search(replica) // HL

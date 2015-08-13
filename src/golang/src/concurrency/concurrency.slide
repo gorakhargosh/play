@@ -176,14 +176,14 @@ Small list
 
 - Message queues (buffered and unbuffered)
 - Generators
-- Multiplexing: fan-in, fan-out
-- Replication (first-come-first-served)
 - Signaling
-- Throttling (rate-control) using semaphores
 - Time-bounding
 - Waiting
 - Idling
-- Cancellation
+- Throttling (rate-control) using semaphores
+- Multiplexing: fan-in, fan-out
+- Replication (first-come-first-served)
+- Cancellation (reducing tail latency)
 
 * Concurrency: a way to compose structure of software to work in coordination
 

@@ -512,7 +512,7 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 
 * Multiplexing
 
-* Fanning-in
+* Fanning-in (aggregation)
 
 - e.g. tmux sharing a single TCP connection between multiple shell sessions
 

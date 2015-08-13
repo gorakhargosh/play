@@ -569,12 +569,11 @@ Selecting communication without waiting:
 
 .play generator-timeout-conversation.go /^func main/,/^}/
 
-* Timing out: How it works
-
+* How it works
 
 .play timeout-after.go /show A OMIT/,/end show A OMIT/
 
-* Timing out: The emitter
+* The emitter
 
 .code timeout-after.go /^func gen/,/^}/
 

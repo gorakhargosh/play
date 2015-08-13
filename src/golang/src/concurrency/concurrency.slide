@@ -92,6 +92,14 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .code example-google-search.go /^func CancellableFirst/,/^}/
 
+* Concurrent NS Lookup
+
+  $ go run nslookup.go < domains.list
+
+
+  $ go run nslookup.go < topsites.list
+
+
 * Real world
 
 .image images/surgery.jpg 600 _

@@ -69,7 +69,7 @@ func run(r io.Reader, f TaskGenerator, workerCount int) {
 	for t := range out {
 		t.Print()
 	}
-	fmt.Printf("Done %d tasks", count)
+	fmt.Printf("Done %d tasks\n", count)
 }
 
 type lookupTask struct {

@@ -77,7 +77,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Google Search: Reducing tail latency
 
-- hedging against multiple resources works all of them
+- hedging requests work all backends
 
 - first-come-first-served discards the work of laggards
 
@@ -86,6 +86,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 - efficient use of resources to avoid contention
 
 .play example-google-search.go /^func Google5/,/^}/
+
 
 * Google Search: Replication with cancellation
 

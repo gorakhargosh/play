@@ -488,11 +488,11 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 
 * Carefully closing channels
 
-- closing a nil channel panics
+- closing a _nil_ channel panics
 
-- closing a closed channel panics
+- closing a _closed_ channel panics
 
-- only 1 goroutine should close a channel
+- only *1*goroutine* should close a channel
 
 .play close-panics.go /^func main/,/^}/
 

@@ -11,9 +11,7 @@ func ParatheWaaliGali() <-chan Paratha { // HL
 		ch <- Paratha("Aloo")
 		ch <- Paratha("Paneer")
 		ch <- Paratha("Amritsari")
-		ch <- Paratha("Chana Daal")
-		ch <- Paratha("Chicken")
-		ch <- Paratha("Garlic")
+		ch <- Paratha("Cukdukoo")
 		close(ch) // indicate end of communication // HL
 	}()
 	return ch

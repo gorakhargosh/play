@@ -124,8 +124,13 @@ Google Context: [[https://golang.org/x/net/context][golang.org/x/net/context]]
 
 See [[https://talks.golang.org/2014/gotham-context.slide][slides]] and [[https://vimeo.com/115309491][video]] by Sameer Ajmani.
 
+* Looking up name servers, concurrently
 
-* Concurrent NS Lookup
+* Visualization
+
+.image images/concurrent-nslookup.png 500 _
+
+* Demo
 
 Standard input
 

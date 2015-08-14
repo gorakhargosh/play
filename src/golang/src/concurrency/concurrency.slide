@@ -37,8 +37,21 @@ Ask:
 See [[http://golangprojects.com][golangprojects.com]] and a growing long list of [[https://github.com/golang/go/wiki/GoUsers][users]].
 
 
+* When I first started learning...
 
-* The free hardware-accelerated lunch is over.
+  .
+
+
+                          ¯\_(ツ)_/¯
+
+
+  .
+
+
+Umm...  [[https://www.youtube.com/watch?v=nupqLGHXSvs][tilt head]]
+
+
+* The free hardware-accelerated ride is over.
 
 * More cores; limited speed improvements.
 
@@ -57,9 +70,13 @@ See [[http://golangprojects.com][golangprojects.com]] and a growing long list of
 
 .image images/google-albert-einstein.png 700 _
 
-* Visualization
+* Visualization: A Search
 
-.image images/google-search-visualized.jpg 600 _
+.image images/yjm-google-search.jpg 600 _
+
+* Visualization: Services at work
+
+.image images/yjm-services-at-work.jpg 600 _
 
 * Faking Google search
 
@@ -172,6 +189,8 @@ Small list
 .image images/pattern-reqrep.png
 
 * Patterns: Pipeline (one-way data flow)
+
+.image images/yjm-pipeline.jpg 600 _
 
 .image images/pattern-pipeline.png
 

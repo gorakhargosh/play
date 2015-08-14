@@ -385,7 +385,7 @@ Multiple processes/threads waiting for each other to obtain and release resource
 
 * Primitives: go keyword
 
-Think of it like the `&` character bash shell.
+Think of it like the `&` operator in bash.
 
   $ command &             # run 'command' in the background
 

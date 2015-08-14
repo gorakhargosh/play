@@ -17,11 +17,11 @@ yesudeep@google.com
 
 * Why Go? Ask Flipkart.
 
-.image images/ask-flipkart-about-go.png 550 _
+.image images/ask-flipkart-about-go.png 650 _
 
 * Why Go? Ask Apple.
 
-.image images/ask-apple-about-go.png 550 _
+.image images/ask-apple-about-go.png 700 _
 
 * Why Go?
 
@@ -55,8 +55,8 @@ Umm...  [[https://www.youtube.com/watch?v=nupqLGHXSvs][tilt head]]
 
 * More cores; limited speed improvements.
 
-- Moore's Law
-- Need for concurrent systems programming languages
+- [[https://en.wikipedia.org/wiki/Moore%27s_law][Moore's Law]]
+- Need for concurrent systems programming languages: Haskell, Go, Clojure
 - [[http://dave.cheney.net/2015/08/08/performance-without-the-event-loop][Performance without the event loop]] by Dave Cheney
 
 * Gratification

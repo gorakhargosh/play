@@ -120,9 +120,9 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 * Google Search: Reducing tail latency
 
-- hedging requests work all backends, discards the work of laggards
+- hedging requests works all backends, discards the work of laggards
 
-- abort the laggards, save resources, and avoid contention
+- abort laggards, save resources, and avoid contention
 
 .play example-google-search.go /^func Google5/,/^}/
 

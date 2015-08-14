@@ -42,7 +42,19 @@ See [[http://golangprojects.com][golangprojects.com]] and a growing long list of
   .
 
 
-                          ¯\_(ツ)_/¯
+
+
+
+
+
+
+                                             ¯\_(ツ)_/¯
+
+
+
+
+
+
 
 
   .
@@ -145,23 +157,9 @@ Small list
   $ go run nslookup.go < topsites.list
 
 
-* Real world
+* Real world concurrency
 
 .image images/surgery.jpg 600 _
-
-* Mmm... McGophers
-
-.image images/gopher-go.jpg
-
-.image images/mcdonalds-logo.svg
-
-* Analysing a McDonald's Outlet
-
-- Real world is not object-oriented; it is concurrent.
-- The design and analysis of a McDonald's restaurant.
-- Replicating the restaurant.
-- Pay attention to the flow-of-data, then to the flow-of-control.
-
 
 * Real world examples
 
@@ -208,6 +206,20 @@ Small list
 * Patterns: Survey (query a group)
 
 .image images/pattern-survey.png
+
+* Mmm... McGophers
+
+.image images/gopher-go.jpg
+
+.image images/mcdonalds-logo.svg
+
+* Analysing a McDonald's Outlet
+
+- Real world is _not_object-oriented_; it is concurrent
+- Analysis of a McDonald's restaurant
+- Replicating the restaurant
+
+_Pay_attention_to_the_flow-of-data,_then_to_the_flow-of-control_.
 
 * Patterns: Adding behavior
 

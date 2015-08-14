@@ -157,7 +157,7 @@ Small list
 
 * Analysing a McDonald's Outlet
 
-- Real world is NOT object-oriented; it is concurrent.
+- Real world is not object-oriented; it is concurrent.
 - The design and analysis of a McDonald's restaurant.
 - Replicating the restaurant.
 - Pay attention to the flow-of-data, then to the flow-of-control.

@@ -192,8 +192,6 @@ Small list
 
 .image images/yjm-pipeline.jpg 600 _
 
-.image images/pattern-pipeline.png
-
 * Patterns: Bus (many-to-many)
 
 .image images/pattern-bus.png

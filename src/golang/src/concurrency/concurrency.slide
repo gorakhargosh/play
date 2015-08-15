@@ -528,7 +528,7 @@ Uses:
 
 * Avoiding goroutine leaks using buffered channels
 
-.play avoiding-goroutine-leaks-with-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
+.play avoiding-goroutine-leaks-using-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
 
 * nil channels
 

@@ -480,8 +480,8 @@ A very boring function written by Rob Pike.
 * Using signal channels to wait
 
 - Why this is flow-of-control, not flow-of-data: resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
-- Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible, instead.
-- Use this for signalling (upstream in pipelines, for example).
+- Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible.
+- Use this for signalling (upstream cancellation in a pipelines, for example).
 
 .play waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
@@ -525,6 +525,10 @@ Uses:
 - receiving only some values from a channel, not all, without blocking senders
 
 .play buffered-channels.go /^func main/,/^}/
+
+Avoiding goroutine leaks with buffered channels
+
+.play avoiding-goroutine-leaks-with-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
 
 * nil channels
 

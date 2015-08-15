@@ -526,7 +526,7 @@ Uses:
 
 .play buffered-channels.go /^func main/,/^}/
 
-Avoiding goroutine leaks with buffered channels
+* Avoiding goroutine leaks using buffered channels
 
 .play avoiding-goroutine-leaks-with-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
 

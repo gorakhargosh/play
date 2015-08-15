@@ -17,16 +17,14 @@ func sendMsg(msg, addr string) error {
 }
 
 // SHOW1 OMIT
-func broadcastMsg(msg string, addrs []string) error {
-	errc := make(chan error, len(addrs))
-
+func broadcastMsg(msg string, addrs []string) error { // HL
+	errc := make(chan error, len(addrs)) // HL
 	for _, addr := range addrs {
 		go func(addr string) {
 			errc <- sendMsg(msg, addr) // non-blocking, non-leaky. // HL
 			fmt.Println("done")
 		}(addr)
 	}
-
 	for _ = range addrs {
 		if err := <-errc; err != nil {
 			return err
@@ -35,7 +33,7 @@ func broadcastMsg(msg string, addrs []string) error {
 	return nil
 }
 
-func main() {
+func main() { // HL
 	addrs := []string{"localhost:8080", "google.com:80"}
 	err := broadcastMsg("hi", addrs)
 	time.Sleep(time.Second)

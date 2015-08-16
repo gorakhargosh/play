@@ -1,4 +1,4 @@
-// The following is a three-stage pipeline with cancellation. That is, a
+// The following is a three-stage pipeline with cancelation. That is, a
 // downstream stage can signal all upstream stages to stop sending data down the
 // pipes.
 //

@@ -126,7 +126,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 .play google/google.go /^func Google5/,/^}/
 
-* Google Search: Replication with cancellation
+* Google Search: Replication with cancelation
 
 - try to design synchronous, abortable APIs.
 
@@ -232,7 +232,7 @@ _Pay_attention_to_the_flow-of-data,_then_to_the_flow-of-control_.
 - Throttling (rate-control)
 - Multiplexing (fan-in, fan-out)
 - Replication (first-come, first-served)
-- Cancellation (reducing tail latency, saving resources, and avoiding contention)
+- Cancelation (reducing tail latency, saving resources, and avoiding contention)
 
 * Concurrency: a way to compose structure of software to work in coordination
 
@@ -336,11 +336,11 @@ Multiple processes/threads waiting for each other to obtain and release resource
 
 .image images/deadlocked-trains.jpg
 
-* Terminology: Cancellation
+* Terminology: Cancelation
 
 - abort background API call tree if unused
 
-.image images/cancellation.png _ 250
+.image images/cancelation.png _ 250
 
 * Concurrency Primitives
 
@@ -481,7 +481,7 @@ A very boring function written by Rob Pike.
 
 - Why this is flow-of-control, not flow-of-data: resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
 - Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible.
-- Use this for signaling (upstream cancellation in a pipelines, for example).
+- Use this for signaling (upstream cancelation in a pipelines, for example).
 
 .play waiting/for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
@@ -725,51 +725,51 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 - stage: consumer draining inbound channel
 
-.play pipeline/no-cancellation.go /^func main/,/^}/
+.play pipeline/no-cancelation.go /^func main/,/^}/
 
 * Draining pipelines [2/4]
 
 - stage: emitters and outbound channels
 
-.code pipeline/no-cancellation.go /^func gen/,/^}/
+.code pipeline/no-cancelation.go /^func gen/,/^}/
 
 * Draining pipelines [3/4]
 
 - stage: squaring
 
-.code pipeline/no-cancellation.go /^func sq/,/^}/
+.code pipeline/no-cancelation.go /^func sq/,/^}/
 
 * Draining pipelines [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
-.code pipeline/no-cancellation.go /^func merge/,/^}/
+.code pipeline/no-cancelation.go /^func merge/,/^}/
 
 * ...but what if we only want some, not all?
 
-* Pipelines with cancellation [1/4]
+* Pipelines with cancelation [1/4]
 
 - stage: consumer NOT draining inbound channel
 
-.play pipeline/with-cancellation.go /^func main/,/^}/
+.play pipeline/with-cancelation.go /^func main/,/^}/
 
-* Pipelines with cancellation [2/4]
+* Pipelines with cancelation [2/4]
 
 - stage: emitters and outbound channels
 
-.code pipeline/with-cancellation.go /^func gen/,/^}/
+.code pipeline/with-cancelation.go /^func gen/,/^}/
 
-* Pipelines with cancellation [3/4]
+* Pipelines with cancelation [3/4]
 
 - stage: squaring
 
-.code pipeline/with-cancellation.go /^func sq/,/^}/
+.code pipeline/with-cancelation.go /^func sq/,/^}/
 
-* Pipelines with cancellation [4/4]
+* Pipelines with cancelation [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
-.code pipeline/with-cancellation.go /^func merge/,/^}/
+.code pipeline/with-cancelation.go /^func merge/,/^}/
 
 * Semaphores (and rate-control)
 

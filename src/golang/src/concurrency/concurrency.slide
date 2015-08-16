@@ -605,30 +605,30 @@ Selecting communication without waiting:
 
 * Timing out a single communication
 
-.play generator-timeout.go /^func main/,/^}/
+.play timeouts/imeout.go /^func main/,/^}/
 
 * Timing out entire conversations
 
-.play generator-timeout-conversation.go /^func main/,/^}/
+.play timeouts/timeout-conversation.go /^func main/,/^}/
 
 * How it works
 
-.play timeout-after.go /show A OMIT/,/end show A OMIT/
+.play timeouts/timeout-after.go /show A OMIT/,/end show A OMIT/
 
 * The emitter
 
-.code timeout-after.go /^func gen/,/^}/
+.code timeouts/timeout-after.go /^func gen/,/^}/
 
 
 * Signalling
 
 * Using quit channels for signaling
 
-.play quit-channels.go /show A OMIT/,/end show A OMIT/
+.play quit_channels/quit-channels.go /show A OMIT/,/end show A OMIT/
 
 * Using quit channels and cleaning up
 
-.play quit-channels-plus-cleanup.go /show A OMIT/,/end show A OMIT/
+.play quit_channels/quit-channels-plus-cleanup.go /show A OMIT/,/end show A OMIT/
 
 * Race conditions (and shared state)
 

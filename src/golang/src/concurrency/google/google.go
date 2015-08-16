@@ -24,15 +24,15 @@ var (
 // end show fakeEngines OMIT
 
 var (
-	CWeb1   = makeCancellableBackend("c_web1") // HL
-	CWeb2   = makeCancellableBackend("c_web2")
-	CWeb3   = makeCancellableBackend("c_web3")
-	CImage1 = makeCancellableBackend("c_image1") // HL
-	CImage2 = makeCancellableBackend("c_image2")
-	CImage3 = makeCancellableBackend("c_image3")
-	CVideo1 = makeCancellableBackend("c_video1") // HL
-	CVideo2 = makeCancellableBackend("c_video2")
-	CVideo3 = makeCancellableBackend("c_video3")
+	CWeb1   = makeCancelableBackend("c_web1") // HL
+	CWeb2   = makeCancelableBackend("c_web2")
+	CWeb3   = makeCancelableBackend("c_web3")
+	CImage1 = makeCancelableBackend("c_image1") // HL
+	CImage2 = makeCancelableBackend("c_image2")
+	CImage3 = makeCancelableBackend("c_image3")
+	CVideo1 = makeCancelableBackend("c_video1") // HL
+	CVideo2 = makeCancelableBackend("c_video2")
+	CVideo3 = makeCancelableBackend("c_video3")
 )
 
 // show firstComeFirstServed OMIT
@@ -55,13 +55,13 @@ func First(query string, replicas ...Search) Result { // HL
 
 // end show firstComeFirstServed OMIT
 
-type CancellableSearch func(ctx context.Context, query string) Result // HL
+type CancelableSearch func(ctx context.Context, query string) Result // HL
 
-func CancellableFirst(ctx context.Context, query string, replicas ...CancellableSearch) Result { // HL
+func CancelableFirst(ctx context.Context, query string, replicas ...CancelableSearch) Result { // HL
 	c := make(chan Result, len(replicas))
-	ctx, cancel := context.WithCancel(ctx)                                 // HL
-	defer cancel()                                                         // HL
-	search := func(replica CancellableSearch) { c <- replica(ctx, query) } // HL
+	ctx, cancel := context.WithCancel(ctx)                                // HL
+	defer cancel()                                                        // HL
+	search := func(replica CancelableSearch) { c <- replica(ctx, query) } // HL
 	for _, replica := range replicas {
 		go search(replica)
 	}
@@ -80,7 +80,7 @@ func makeBackend(kind string) Search { // HL
 	}
 }
 
-func makeCancellableBackend(kind string) CancellableSearch { // HL
+func makeCancelableBackend(kind string) CancelableSearch { // HL
 	return func(ctx context.Context, query string) Result { // HL
 		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 		return Result{
@@ -162,11 +162,11 @@ func Google4(query string) (results []Result) { // HL
 // Concurrent, time-bound, replicated, and tail-latency reduction.
 func Google5(query string) (results []Result) { // HL
 	c := make(chan Result)
-	ctx, cancel := context.WithCancel(context.Background())                      // HL
-	defer cancel()                                                               // HL
-	go func() { c <- CancellableFirst(ctx, query, CWeb1, CWeb2, CWeb3) }()       // HL
-	go func() { c <- CancellableFirst(ctx, query, CImage1, CImage2, CImage3) }() // HL
-	go func() { c <- CancellableFirst(ctx, query, CVideo1, CVideo2, CVideo3) }() // HL
+	ctx, cancel := context.WithCancel(context.Background())                     // HL
+	defer cancel()                                                              // HL
+	go func() { c <- CancelableFirst(ctx, query, CWeb1, CWeb2, CWeb3) }()       // HL
+	go func() { c <- CancelableFirst(ctx, query, CImage1, CImage2, CImage3) }() // HL
+	go func() { c <- CancelableFirst(ctx, query, CVideo1, CVideo2, CVideo3) }() // HL
 	timeout := time.After(80 * time.Millisecond)
 	for i := 0; i < 3; i++ {
 		select {

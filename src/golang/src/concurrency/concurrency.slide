@@ -130,7 +130,7 @@ Example from [[https://www.youtube.com/watch?v=f6kdp27TYZs][Go Concurrency Patte
 
 - try to design synchronous, abortable APIs.
 
-.code google/google.go /^func CancellableFirst/,/^}/
+.code google/google.go /^func CancelableFirst/,/^}/
 
 Google Context: [[https://golang.org/x/net/context][golang.org/x/net/context]]
 

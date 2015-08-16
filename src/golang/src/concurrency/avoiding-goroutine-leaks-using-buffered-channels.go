@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func sendMsg(msg, addr string) error {
+func sendMessage(msg, addr string) error {
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
 		return err
@@ -17,11 +17,11 @@ func sendMsg(msg, addr string) error {
 }
 
 // SHOW1 OMIT
-func broadcastMsg(msg string, addrs []string) error { // HL
+func broadcastMessage(msg string, addrs []string) error { // HL
 	errc := make(chan error, len(addrs)) // HL
 	for _, addr := range addrs {
 		go func(addr string) {
-			errc <- sendMsg(msg, addr) // non-blocking, non-leaky. // HL
+			errc <- sendMessage(msg, addr) // non-blocking, non-leaky. // HL
 			fmt.Println("done")
 		}(addr)
 	}
@@ -35,7 +35,7 @@ func broadcastMsg(msg string, addrs []string) error { // HL
 
 func main() { // HL
 	addrs := []string{"localhost:8080", "google.com:80"}
-	err := broadcastMsg("hi", addrs)
+	err := broadcastMessage("hi", addrs)
 	time.Sleep(time.Second)
 	if err != nil {
 		fmt.Println(err)

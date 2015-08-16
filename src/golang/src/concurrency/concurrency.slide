@@ -481,19 +481,19 @@ A very boring function written by Rob Pike.
 
 - Why this is flow-of-control, not flow-of-data: resembles the *goto* statement [[http://dl.acm.org/citation.cfm?id=362947&dl=ACM&coll=DL&CFID=698007377&CFTOKEN=71204148][advised against by Djikstra]].
 - Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible.
-- Use this for signaling (upstream cancelation in a pipelines, for example).
+- Use this for signaling (upstream cancelation in a pipeline, for example).
 
 .play waiting/for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
-
-* Waiting for groups of goroutines
-
-.play waiting/using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
 * Wait groups (or barriers)
 
 In message passing, any global communication (such as reduction or scatter) may imply a wait group (or barrier).
 
 Muliplexing aggregation and load-balancing, for example.
+
+* Waiting for groups of goroutines
+
+.play waiting/using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
 * Channels: Talk to my handle
 

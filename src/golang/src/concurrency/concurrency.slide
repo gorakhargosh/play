@@ -779,18 +779,18 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 * Semaphore Worker
 
-.play semaphores-for-throttling-goroutines.go /^func worker/,/^}/
+.play semaphores/throttling-goroutines.go /^func worker/,/^}/
 
 * Throttling goroutines using buffered channels
 
-.play semaphores-for-throttling-goroutines.go /^func main/,/^}/
+.play semaphores/throttling-goroutines.go /^func main/,/^}/
 
 * Atomic counting to ensure semaphore works
 
 - All or nothing.
 - Check-and-set in hardware.
 
-.play semaphores-for-throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
+.play semaphores/throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
 
 
 * Spinlock and atomic operations

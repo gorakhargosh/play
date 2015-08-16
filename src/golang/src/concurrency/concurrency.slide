@@ -583,23 +583,23 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 
 * Simple fan-in implementation
 
-.code generator-multiplexing-fan-in.go /^func fanIn/,/^}/
+.code multiplexing/fan-in.go /^func fanIn/,/^}/
 
 * Fan-in in action
 
-.play generator-multiplexing-fan-in.go /^func main/,/^}/
+.play multiplexing/fan-in.go /^func main/,/^}/
 
 * Fanning-in using select
 
 Selecting communication _pseudorandomly_ if multiple communications are ready:
 
-.play generator-multiplexing-using-select.go /^func fanIn/,/^}/
+.play multiplexing/fan-in-using-select.go /^func fanIn/,/^}/
 
 * Non-blocking select
 
 Selecting communication without waiting:
 
-.play non-blocking-select.go /^func main/,/^}/
+.play multiplexing/non-blocking-select.go /^func main/,/^}/
 
 * Timeouts and moving on
 

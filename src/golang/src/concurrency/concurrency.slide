@@ -449,13 +449,13 @@ IA-64 bit assembly example:
 
 A very boring function written by Rob Pike.
 
-.play blocking-main.go /show A OMIT/,/end show A OMIT/
+.play waiting/blocking-main.go /show A OMIT/,/end show A OMIT/
 
 * Non-blocking exit
 
 - comes as a neat surprise
 
-.play non-blocking-main.go /show A OMIT/,/end show A OMIT/
+.play waiting/non-blocking-main.go /show A OMIT/,/end show A OMIT/
 
 * Using `os.Stdin` to wait
 
@@ -465,7 +465,7 @@ A very boring function written by Rob Pike.
 - human/stdin error-prone
 - dependency on presence of a human being/standard input
 
-.play waiting-using-stdin.go /show A OMIT/,/end show A OMIT/
+.play waiting/waiting-using-stdin.go /show A OMIT/,/end show A OMIT/
 
 * Using `time.Sleep` to wait
 
@@ -475,7 +475,7 @@ A very boring function written by Rob Pike.
 - what if the goroutine takes a lot less time than we're waiting?
 - surely, there must be something better.
 
-.play waiting-using-sleep.go /show A OMIT/,/end show A OMIT/
+.play waiting/waiting-using-sleep.go /show A OMIT/,/end show A OMIT/
 
 * Using signal channels to wait
 
@@ -483,11 +483,11 @@ A very boring function written by Rob Pike.
 - Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible.
 - Use this for signalling (upstream cancellation in a pipelines, for example).
 
-.play waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
+.play waiting/waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
 * Waiting for groups of goroutines
 
-.play waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
+.play wiating/waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
 * Wait groups (or barriers)
 
@@ -503,7 +503,7 @@ Muliplexing aggregation and load-balancing, for example.
 
 * Channels
 
-.play channels.go
+.play channels/channels.go
 
 * Channels have direction
 
@@ -524,17 +524,17 @@ Uses:
 - non-blocking sends upto capacity
 - receiving only some values from a channel, not all, without blocking senders
 
-.play buffered-channels.go /^func main/,/^}/
+.play channels/buffered-channels.go /^func main/,/^}/
 
 * Avoiding goroutine leaks using buffered channels
 
-.play avoiding-goroutine-leaks-using-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
+.play channels/avoiding-goroutine-leaks-using-buffered-channels.go /SHOW1 OMIT/,/END SHOW1 OMIT/
 
 * nil channels
 
 nil channels are never ready for communication. Expect deadlocks.
 
-.play nil-channel-send-receive-panics.go /^func main/,/^}/
+.play channels/nil-channel-send-receive-panics.go /^func main/,/^}/
 
 * Closing Channels
 
@@ -543,11 +543,11 @@ select on a signal channel that is closed.
 
 _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_it_will_succeed_without_blocking,_returning_the_zero_value_.
 
-.play closing-channels.go /^func main/,/^}/
+.play channels/closing-channels.go /^func main/,/^}/
 
 * Closed channel flushes values before "closing"
 
-.play closed-channel-drains-values-before-closing.go /^func main/,/^}/
+.play channels/closed-channel-drains-values-before-closing.go /^func main/,/^}/
 
 * Carefully closing channels
 
@@ -557,21 +557,21 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 
 - only *1*goroutine* should close a channel
 
-.play close-panics.go /^func main/,/^}/
+.play channels/close-panics.go /^func main/,/^}/
 
 * Generating channels
 
 * Generator pattern
 
-.play generator-pattern.go /show A OMIT/,/end show A OMIT/
+.play channels/generator-pattern.go /show A OMIT/,/end show A OMIT/
 
 * Draining a channel with for...range
 
-.play for-range-channel.go /show A OMIT/,/end show A OMIT/
+.play channels/for-range-channel.go /show A OMIT/,/end show A OMIT/
 
 * Generators as services
 
-.play generators-as-services.go /show A OMIT/,/end show A OMIT/
+.play channels/generators-as-services.go /show A OMIT/,/end show A OMIT/
 
 * Multiplexing
 

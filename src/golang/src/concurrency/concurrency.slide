@@ -483,7 +483,7 @@ A very boring function written by Rob Pike.
 - Prefer using [[https://godoc.org/sync#WaitGroup][wait groups]] for waiting, where possible.
 - Use this for signalling (upstream cancellation in a pipelines, for example).
 
-.play waiting/waiting-for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
+.play waiting/for-one-goroutine-using-signal-channel.go /show A OMIT/,/end show A OMIT/
 
 * Waiting for groups of goroutines
 
@@ -692,11 +692,11 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 * Synchronized shared state
 
-.play mutex-atomic-int.go /^func main/,/^}/
+.play mutexes/atomic-int.go /^func main/,/^}/
 
 * Using mutexes to synchronize access
 
-.code mutex-atomic-int.go /show A OMIT/,/end show A OMIT/
+.code mutexes/atomic-int.go /show A OMIT/,/end show A OMIT/
 
 
 * Deadlocks

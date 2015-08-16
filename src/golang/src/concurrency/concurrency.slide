@@ -465,7 +465,7 @@ A very boring function written by Rob Pike.
 - human/stdin error-prone
 - dependency on presence of a human being/standard input
 
-.play waiting/waiting-using-stdin.go /show A OMIT/,/end show A OMIT/
+.play waiting/using-stdin.go /show A OMIT/,/end show A OMIT/
 
 * Using `time.Sleep` to wait
 
@@ -475,7 +475,7 @@ A very boring function written by Rob Pike.
 - what if the goroutine takes a lot less time than we're waiting?
 - surely, there must be something better.
 
-.play waiting/waiting-using-sleep.go /show A OMIT/,/end show A OMIT/
+.play waiting/using-sleep.go /show A OMIT/,/end show A OMIT/
 
 * Using signal channels to wait
 
@@ -487,7 +487,7 @@ A very boring function written by Rob Pike.
 
 * Waiting for groups of goroutines
 
-.play wiating/waiting-using-wait-groups.go /show A OMIT/,/end show A OMIT/
+.play waiting/using-wait-groups.go /show A OMIT/,/end show A OMIT/
 
 * Wait groups (or barriers)
 
@@ -605,7 +605,7 @@ Selecting communication without waiting:
 
 * Timing out a single communication
 
-.play timeouts/imeout.go /^func main/,/^}/
+.play timeouts/timeout-communication.go /^func main/,/^}/
 
 * Timing out entire conversations
 
@@ -649,37 +649,37 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 * Unsynchronized counter
 
-.play race-condition-simple.go /^func main/,/^}/
+.play races/simple.go /^func main/,/^}/
 
 * Insidious goroutine closures
 
 - closures share memory
 
-.play race-condition-closure.go /^func raceClosure/,/^}/
+.play races/closure.go /^func raceClosure/,/^}/
 
 * Safe goroutine closures
 
 - pass values as arguments
 
-.play race-condition-closure.go /^func noRaceClosurePassArgument/,/^}/
+.play races/closure.go /^func noRaceClosurePassArgument/,/^}/
 
 * Careful goroutine closures
 
 - unique variable per iteration
 
-.play race-condition-closure.go /^func noRaceClosureUniqueVariable/,/^}/
+.play races/closure.go /^func noRaceClosureUniqueVariable/,/^}/
 
 * Careful with wait groups (barriers) too
 
 - call `wg.Add(N)` *before* `go function()`
 
-.play waiting-using-wait-groups.go /^func main/,/^}/
+.play waiting/using-wait-groups.go /^func main/,/^}/
 
 * Careful with wait groups (barriers) too
 
 - call `wg.Done()` before each goroutine returns (presumably using `defer`).
 
-.play waiting-using-wait-groups.go /^func work/,/^}/
+.play waiting/using-wait-groups.go /^func work/,/^}/
 
 * Loading Web service configuration non-racily
 

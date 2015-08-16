@@ -13,6 +13,8 @@ logfile=${TOP_DIR}/.bootstrap.log
 golang_tp=(
   github.com/gin-gonic/gin
   github.com/go-sql-driver/mysql
+  github.com/golang/protobuf/proto
+  github.com/golang/protobuf/protoc-gen-go
   github.com/gorilla/websocket
   github.com/julienschmidt/httprouter
   github.com/mattn/go-sqlite3

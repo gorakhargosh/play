@@ -703,7 +703,7 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 * Ping Pong and Deadlock detection
 
-.play ping-pong.go /show A OMIT/,/end show A OMIT/
+.play deadlocks/ping-pong.go /show A OMIT/,/end show A OMIT/
 
 - source: [[http://blog.golang.org/advanced-go-concurrency-patterns][Advanced Go Concurrency Patterns - Sameer Ajmani]]
 
@@ -725,25 +725,25 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 - stage: consumer draining inbound channel
 
-.play pipeline-no-cancellation.go /^func main/,/^}/
+.play pipeline/no-cancellation.go /^func main/,/^}/
 
 * Draining pipelines [2/4]
 
 - stage: emitters and outbound channels
 
-.code pipeline-no-cancellation.go /^func gen/,/^}/
+.code pipeline/no-cancellation.go /^func gen/,/^}/
 
 * Draining pipelines [3/4]
 
 - stage: squaring
 
-.code pipeline-no-cancellation.go /^func sq/,/^}/
+.code pipeline/no-cancellation.go /^func sq/,/^}/
 
 * Draining pipelines [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
-.code pipeline-no-cancellation.go /^func merge/,/^}/
+.code pipeline/no-cancellation.go /^func merge/,/^}/
 
 * ...but what if we only want some, not all?
 
@@ -751,25 +751,25 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 - stage: consumer NOT draining inbound channel
 
-.play pipeline-with-cancellation.go /^func main/,/^}/
+.play pipeline/with-cancellation.go /^func main/,/^}/
 
 * Pipelines with cancellation [2/4]
 
 - stage: emitters and outbound channels
 
-.code pipeline-with-cancellation.go /^func gen/,/^}/
+.code pipeline/with-cancellation.go /^func gen/,/^}/
 
 * Pipelines with cancellation [3/4]
 
 - stage: squaring
 
-.code pipeline-with-cancellation.go /^func sq/,/^}/
+.code pipeline/with-cancellation.go /^func sq/,/^}/
 
 * Pipelines with cancellation [4/4]
 
 - stage: multiplexing N inbound channels onto 1 outbound channel
 
-.code pipeline-with-cancellation.go /^func merge/,/^}/
+.code pipeline/with-cancellation.go /^func merge/,/^}/
 
 * Semaphores (and rate-control)
 

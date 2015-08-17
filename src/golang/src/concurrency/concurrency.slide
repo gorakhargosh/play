@@ -8,7 +8,8 @@ _Lead_, _Engineering_ — DevShop (gTech AdSales)
 yesudeep@google.com
 
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
-# TODO(yesudeep):
+# TODO(yesudeep): read the kernel synchronization chapters from LKD3.
+# TODO(yesudeep): read seven concurrency models in seven weeks.
 
 
 * Slides
@@ -805,6 +806,11 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 * A better throttler
 
 # TODO(yesudeep): A better throttler: http://code.websrvr.in/2014/11/06/a-better-throttler/
+
+
+* Cancelation
+
+# TODO(yesudeep): Leaking Goroutines: http://openmymind.net/Leaking-Goroutines/
 
 * Spinlock and atomic operations
 

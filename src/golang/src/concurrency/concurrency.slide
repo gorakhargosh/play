@@ -698,6 +698,8 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 .code mutexes/atomic-int.go /show A OMIT/,/end show A OMIT/
 
+# TODO(yesudeep): See: http://www.alexedwards.net/blog/understanding-mutexes
+
 
 * Deadlocks
 

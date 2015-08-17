@@ -792,6 +792,17 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 .play semaphores/throttling-goroutines.go /show atomicCounting OMIT/,/end show atomicCounting OMIT/
 
+* Wrapping up throttling.
+
+# TODO(yesudeep): http://code.websrvr.in/2014/11/04/simple-function-throttler-in-golang/
+
+* Condition variables
+
+# TODO(yesudeep): http://openmymind.net/Condition-Variables/
+
+* A better throttler
+
+# TODO(yesudeep): A better throttler: http://code.websrvr.in/2014/11/06/a-better-throttler/
 
 * Spinlock and atomic operations
 

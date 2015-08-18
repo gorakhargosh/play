@@ -18,5 +18,5 @@ type Config struct {
 	Port int
 
 	// The directory that contains the templates.
-	TemplatesDir string
+	TemplatesPath string
 }

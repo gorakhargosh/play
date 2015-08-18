@@ -11,7 +11,10 @@ import (
 	"net/http"
 )
 
-// Holds the configuration for the application.
+// The HTTP server mux.
+var mux http.ServeMux
+
+// Holds application configuration.
 var config Config
 
 func init() {
@@ -20,21 +23,16 @@ func init() {
 	flag.IntVar(&config.Port, "port", 8080, "the port on which to listen")
 	flag.BoolVar(&config.Debug, "debug", false, "turns on debugging")
 	flag.StringVar(
-		&config.TemplatesDir,
+		&config.TemplatesPath,
 		"templatesDir",
 		"templates", "the directory that contains the templates")
 	flag.Parse()
+	mux = getMux(config)
 }
 
 func main() {
 	hostAddr := fmt.Sprintf("%s:%d", config.Host, config.Port)
 
-	mux := http.NewServeMux()
-	mux.Handle("/", &templateHandler{
-		debug:        config.Debug,
-		filenames:    []string{"index.html"},
-		templatesDir: config.TemplatesDir,
-	})
 	log.Printf("starting HTTP server on %s...\n", hostAddr)
 	err := http.ListenAndServe(hostAddr, mux)
 	if err != nil {

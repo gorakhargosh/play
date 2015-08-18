@@ -28,17 +28,17 @@ type templateHandler struct {
 	debug bool
 	once  sync.Once
 
-	filenames    []string
-	templatesDir string
-	template     *template.Template
+	filenames     []string
+	templatesPath string
+	template      *template.Template
 }
 
 func (h *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if h.debug {
-		h.template = compileHTMLTemplate(h.templatesDir, h.filenames...)
+		h.template = compileHTMLTemplate(h.templatesPath, h.filenames...)
 	} else {
 		h.once.Do(func() {
-			h.template = compileHTMLTemplate(h.templatesDir, h.filenames...)
+			h.template = compileHTMLTemplate(h.templatesPath, h.filenames...)
 		})
 	}
 	h.template.Execute(w, r)

@@ -774,6 +774,8 @@ HUGE shout out to Dmitry Vyukov ([[https://twitter.com/dvyukov][@dvyukov]] and [
 
 .code pipeline/with-cancelation.go /^func merge/,/^}/
 
+# TODO(yesudeep): Example daisy-chain.go
+
 * Semaphores (and rate-control)
 
 * Why?

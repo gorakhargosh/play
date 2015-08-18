@@ -1,0 +1,6 @@
+# application: carmine
+
+dispatch:
+# Default module serves typical Web resources and all static resources.
+- url: "*/*"
+  module: default

@@ -1,41 +1,54 @@
-// HTTP server implementation for the Blood emergency application.
-//
-// +build !appengine
-
 package main
 
 import (
-	"flag"
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 )
 
-// The HTTP server mux.
-var mux http.ServeMux
-
-// Holds application configuration.
-var config Config
-
-func init() {
-	config = Config{}
-	flag.StringVar(&config.Host, "host", "", "the host on which to listen")
-	flag.IntVar(&config.Port, "port", 8080, "the port on which to listen")
-	flag.BoolVar(&config.Debug, "debug", false, "turns on debugging")
-	flag.StringVar(
-		&config.TemplatesPath,
-		"templatesDir",
-		"templates", "the directory that contains the templates")
-	flag.Parse()
-	mux = getMux(config)
+// Server implements a carmine application server.
+type Server struct {
+	config   Config
+	template struct {
+		index *template.Template
+	}
 }
 
-func main() {
-	hostAddr := fmt.Sprintf("%s:%d", config.Host, config.Port)
+// NewServer constructs a new server using the specified configuration.
+func NewServer(config Config) (*Server, error) {
+	s := &Server{
+		config: config,
+	}
 
-	log.Printf("starting HTTP server on %s...\n", hostAddr)
-	err := http.ListenAndServe(hostAddr, mux)
+	s.template.index = parse(config.TemplatesPath, "base.html", "index.html")
+	return s, nil
+}
+
+// ServeHTTPError handles HTTP errors by rendering custom pages.
+func (s *Server) ServeHTTPError(w http.ResponseWriter, r *http.Request, status int, err string) {
+	w.WriteHeader(status)
+	switch status {
+	case http.StatusNotFound:
+		// render custom template.
+	case http.StatusInternalServerError:
+		// render custom template.
+	}
+}
+
+// ServeHTTP implements the http.Handler interface.
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var t *template.Template
+
+	switch p := r.URL.Path; p {
+	case "/":
+		t = s.template.index
+		w.Header().Set("Content-Type", "text/html")
+	default:
+		s.ServeHTTPError(w, r, http.StatusNotFound, "Not found")
+	}
+
+	err := t.Execute(w, nil)
 	if err != nil {
-		log.Fatalf("cannot start HTTP server: error - %s", err)
+		log.Println(err)
 	}
 }

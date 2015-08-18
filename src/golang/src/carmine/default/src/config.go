@@ -1,5 +1,3 @@
-// Configuration types and definitions.
-
 package main
 
 // Config is a container type for configuration information.
@@ -10,12 +8,6 @@ type Config struct {
 	// 1. Templates are compiled per request instead of per process instance
 	//    allowing reloading the templates as you make changes.
 	Debug bool
-
-	// The host interface to which the HTTP server will bind.
-	Host string
-
-	// The host port on which the HTTP server will listen.
-	Port int
 
 	// The directory that contains the templates.
 	TemplatesPath string

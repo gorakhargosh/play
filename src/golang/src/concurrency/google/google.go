@@ -191,9 +191,9 @@ func Timeit(label string, fn SearchFunc, query string) []Result {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	query := "golang"
-	Timeit("1: sequential", Google1, query)
-	Timeit("2: concurrent", Google2, query)
-	Timeit("3: concurrent, time-bound", Google3, query)
-	Timeit("4: concurrent, time-bound, replicated", Google4, query)
-	Timeit("5: concurrent, time-bound, replicated, cancellable", Google5, query)
+	Timeit("Google1", Google1, query)
+	Timeit("Google2", Google2, query)
+	Timeit("Google3", Google3, query)
+	Timeit("Google4", Google4, query)
+	Timeit("Google5", Google5, query)
 }

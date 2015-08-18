@@ -10,7 +10,7 @@ import (
 
 var (
 	serverInitOnce sync.Once
-	server         *http.Handler
+	server         http.Handler
 )
 
 // serverInit initializes a server instance.

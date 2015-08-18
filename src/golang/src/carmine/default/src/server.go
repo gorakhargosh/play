@@ -2,7 +2,6 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 )
 
@@ -24,31 +23,21 @@ func NewServer(config Config) (*Server, error) {
 	return s, nil
 }
 
-// ServeHTTPError handles HTTP errors by rendering custom pages.
-func (s *Server) ServeHTTPError(w http.ResponseWriter, r *http.Request, status int, err string) {
-	w.WriteHeader(status)
-	switch status {
-	case http.StatusNotFound:
-		// render custom template.
-	case http.StatusInternalServerError:
-		// render custom template.
-	}
-}
-
 // ServeHTTP implements the http.Handler interface.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var t *template.Template
 
-	switch p := r.URL.Path; p {
+	switch r.URL.Path {
 	case "/":
 		t = s.template.index
 		w.Header().Set("Content-Type", "text/html")
 	default:
-		s.ServeHTTPError(w, r, http.StatusNotFound, "Not found")
+		// This can be replaced later.
+		http.NotFound(w, r)
 	}
 
 	err := t.Execute(w, nil)
 	if err != nil {
-		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

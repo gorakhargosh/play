@@ -3,7 +3,7 @@ package main
 
 import "net/http"
 
-// An HTTP error handler interface that allows middleware-style error-handling.
+// HTTPErrorHandler allows middleware-style error-handling.
 type HTTPErrorHandler interface {
 	// ServeHTTP does exactly what http.Handler.ServeHTTP does, except, it also
 	// returns an error for our error handlers to handle it.

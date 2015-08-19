@@ -504,6 +504,8 @@ Muliplexing aggregation and load-balancing, for example.
 
 * Channels
 
+# TODO(yesudeep): More channel examples: https://talks.golang.org/2012/10things.slide#2
+
 .play channels/channels.go
 
 * Channels have direction
@@ -567,6 +569,8 @@ _After_the_last_value_has_been_received_from_a_closed_channel,_any_receive_from_
 .play channels/generator-pattern.go /show A OMIT/,/end show A OMIT/
 
 * Draining a channel with for...range
+
+- `range` blocks until value can be received
 
 .play channels/for-range-channel.go /show A OMIT/,/end show A OMIT/
 

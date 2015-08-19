@@ -9,27 +9,27 @@ import (
 )
 
 var (
-	serverInitOnce sync.Once
+	initServerOnce sync.Once
 	server         http.Handler
 )
 
-// serverInit initializes a server instance.
-func serverInit() {
-	// TODO(yesudeep): Determine the goroot using the runtime and use that here to
-	// determine the templates directory filepath.
+// initServer initializes a server instance.
+func initServer() {
 	s, err := NewServer(Config{
-		Debug:         true,
+		Debug: true,
+
+		// TODO(yesudeep): make runtime.GOROOT()-relative.
 		TemplatesPath: "templates",
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	server = s
+	server = &ErrorHandler{s}
 }
 
 func init() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		serverInitOnce.Do(serverInit)
+		initServerOnce.Do(initServer)
 		server.ServeHTTP(w, r)
 	})
 }

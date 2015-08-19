@@ -20,26 +20,16 @@ func NewServer(config Config) (*Server, error) {
 	return s, nil
 }
 
-// NotFound writes as error resonse: 404.
-func (s *Server) NotFound(w http.ResponseWriter, r *http.Request) {
-	// TODO(yesudeep): Replace this with a custom template rendering later.
-	http.NotFound(w, r)
-}
-
-// ServeHTTP implements the http.Handler interface.
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+// ServeHTTP implements the HTTPErrorHandler interface.
+func (s Server) ServeHTTP(w http.ResponseWriter, r *http.Request) error {
 	var t *template.Template
-
+	contentType := "text/html"
 	switch r.URL.Path {
 	case "/":
 		t = s.template.index
-		w.Header().Set("Content-Type", "text/html")
 	default:
-		s.NotFound(w, r)
+		return NewHTTPError(http.StatusNotFound, "Not found")
 	}
-
-	err := t.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	w.Header().Set("Content-Type", contentType)
+	return t.Execute(w, nil)
 }

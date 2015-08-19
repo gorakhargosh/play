@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Server implements a carmine application server.
+// Server implements the application server.
 type Server struct {
 	config   Config
 	template struct {

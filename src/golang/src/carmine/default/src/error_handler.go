@@ -4,6 +4,13 @@ package main
 import "net/http"
 
 // HTTPErrorHandler allows middleware-style error-handling.
+//
+// ErrorHandlerFunc or ErrorHandler must be the first in the stack of
+// middleware you use because it accommodates for the change in method
+// signature.  Wrapping your handlers or handler functions with the
+// implementations before others allows other middleware to continue working
+// with the regular http.Handler interface that ErrorHandler and
+// ErrorHandlerFunc implement.
 type HTTPErrorHandler interface {
 	// ServeHTTP does exactly what http.Handler.ServeHTTP does, except, it also
 	// returns an error for our error handlers to handle it.

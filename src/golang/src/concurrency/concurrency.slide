@@ -10,6 +10,7 @@ yesudeep@google.com
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
 # TODO(yesudeep): read the kernel synchronization chapters from LKD3.
 # TODO(yesudeep): read seven concurrency models in seven weeks.
+# TODO(yesudeep): Read effective go semaphores: https://golang.org/doc/effective_go.html#concurrency.
 
 # Buffer pools (free lists)
 # TODO(yesudeep): Free lists for memory pooling: http://golang.org/doc/effective_go.html#leaky_buffer

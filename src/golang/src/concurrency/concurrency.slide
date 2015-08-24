@@ -10,9 +10,17 @@ yesudeep@google.com
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
 # TODO(yesudeep): read the kernel synchronization chapters from LKD3.
 # TODO(yesudeep): read seven concurrency models in seven weeks.
+
+# Buffer pools (free lists)
 # TODO(yesudeep): Free lists for memory pooling: http://golang.org/doc/effective_go.html#leaky_buffer
 # TODO(yesudeep): bufpools using sync.Pool (see adg's Towards 1.3 talk)
 # TODO(yesudeep): Example with https://github.com/oxtoacart/bpool
+
+# Higher abstractions
+# TODO(yesudeep): higher abstractions using par: https://github.com/savaki/par
+# TODO(yesudeep): easier higher abstractions using async: https://github.com/egonelbre/async
+# TODO(yesudeep): more from juju: https://github.com/juju/utils/tree/master/parallel
+
 
 * Slides
 

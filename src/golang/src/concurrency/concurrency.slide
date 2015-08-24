@@ -10,7 +10,9 @@ yesudeep@google.com
 # TODO(yesudeep): Telnet chat example http://synflood.at/tmp/golang-slides/mrmcd2012.html#1
 # TODO(yesudeep): read the kernel synchronization chapters from LKD3.
 # TODO(yesudeep): read seven concurrency models in seven weeks.
-
+# TODO(yesudeep): Free lists for memory pooling: http://golang.org/doc/effective_go.html#leaky_buffer
+# TODO(yesudeep): bufpools using sync.Pool (see adg's Towards 1.3 talk)
+# TODO(yesudeep): Example with https://github.com/oxtoacart/bpool
 
 * Slides
 
@@ -267,6 +269,8 @@ Best suitable for independently executing computation that needs no synchronizat
 - Schedule blocking operations to run in separate processes (*goroutines* in Go).
 
 - Synchronize by communicating over shared message queues (*channels* in Go).
+
+- Avoid concurrency within the *sequential* process.
 
 
 _Do_not_communicate_by_sharing_memory;_instead,_share_memory_by_communicating_.

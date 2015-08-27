@@ -22,6 +22,10 @@ yesudeep@google.com
 # TODO(yesudeep): easier higher abstractions using async: https://github.com/egonelbre/async
 # TODO(yesudeep): more from juju: https://github.com/juju/utils/tree/master/parallel
 
+# Goroutines and selection
+# TODO(yesudeep): Function calls in select: http://golang-examples.tumblr.com/post/125470498174/when-are-functions-in-case-called
+# TODO(yesudeep): Sleep forever: http://golang-examples.tumblr.com/post/43110284482/sleep-forever
+
 
 * Slides
 

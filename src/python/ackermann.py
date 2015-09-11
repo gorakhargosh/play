@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import time
 
 def ackermann(m, n):
@@ -22,4 +23,5 @@ def ack():
 
 
 if __name__ == '__main__':
+  sys.setrecursionlimit(1500)
   ack()

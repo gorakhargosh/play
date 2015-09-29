@@ -13,19 +13,31 @@ func NewWeightedQuickUnion(size int) Partition {
 		weight: make([]int, size),
 	}
 	for i := 0; i < size; i++ {
-		p.id[i] = i
-		p.weight[i] = 1
+		p.id[i] = i     // Each node starts partitioned.
+		p.weight[i] = 1 // Each tree starts at weight 1.
 	}
 	return p
 }
 
 func (p *weightedQuickUnion) Union(x, y int) {
+	a := p.FindSet(x)
+	b := p.FindSet(y)
+	if p.weight[a] < p.weight[b] {
+		p.id[a] = b
+		p.weight[b] += p.weight[a]
+	} else {
+		p.id[b] = a
+		p.weight[a] += p.weight[b]
+	}
 }
 
 func (p weightedQuickUnion) FindSet(x int) int {
-	return 0
+	for x != p.id[x] {
+		x = p.id[x]
+	}
+	return x
 }
 
 func (p weightedQuickUnion) Connected(x, y int) bool {
-	return false
+	return p.FindSet(x) == p.FindSet(y)
 }

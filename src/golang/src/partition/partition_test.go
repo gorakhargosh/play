@@ -29,6 +29,7 @@ func TestConnectivity(t *testing.T) {
 	checkConnectivity(NewQuickUnion(), t)
 	checkConnectivity(NewWeightedQuickUnion(), t)
 	checkConnectivity(NewPartition(), t)
+	checkConnectivity(NewBSTPartition(), t)
 }
 
 func benchmarkConnectivity(p Partition, b *testing.B) {
@@ -61,4 +62,8 @@ func BenchmarkWeightedQuickUnion(b *testing.B) {
 
 func BenchmarkPartition(b *testing.B) {
 	benchmarkConnectivity(NewPartition(), b)
+}
+
+func BenchmarkBSTPartition(b *testing.B) {
+	benchmarkConnectivity(NewBSTPartition(), b)
 }

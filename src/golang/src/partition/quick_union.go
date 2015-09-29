@@ -1,6 +1,6 @@
 package partition
 
-// quickUnion is a quick-union disjoint set partitioner
+// quickUnion is a quick-union disjoint set partitioner based on trees.
 type quickUnion struct {
 	id []int
 }
@@ -17,12 +17,16 @@ func NewQuickUnion(size int) Partition {
 }
 
 func (p *quickUnion) Union(x, y int) {
+	p.id[p.FindSet(y)] = p.FindSet(x)
 }
 
 func (p quickUnion) FindSet(x int) int {
-	return 0
+	for x != p.id[x] {
+		x = p.id[x]
+	}
+	return x
 }
 
 func (p quickUnion) Connected(x, y int) bool {
-	return false
+	return p.FindSet(x) == p.FindSet(y)
 }

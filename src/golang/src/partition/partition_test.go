@@ -18,7 +18,7 @@ func checkConnectivity(p Partition, t *testing.T) {
 	p.Union(7, 2)
 	p.Union(6, 1)
 	p.Union(1, 0)
-	// retest previous connection now.
+	// Retest previous connection now.
 	if p.Connected(0, 7) != true {
 		t.Errorf("error: not connected: %d-%d", 0, 7)
 	}
@@ -28,4 +28,22 @@ func TestConnectivity(t *testing.T) {
 	checkConnectivity(NewQuickFind(), t)
 	checkConnectivity(NewQuickUnion(), t)
 	checkConnectivity(NewWeightedQuickUnion(), t)
+	checkConnectivity(NewPartition(), t)
+}
+
+func createNetwork(p Partition) {
+	p.Union(4, 3)
+	p.Union(3, 8)
+	p.Union(6, 5)
+	p.Union(9, 4)
+	p.Union(2, 1)
+	p.Union(5, 0)
+	p.Union(7, 2)
+	p.Union(6, 1)
+	p.Union(1, 0)
+}
+
+func BenchmarkQuickFind(b *testing.B) {
+
+	b.ResetTimer()
 }

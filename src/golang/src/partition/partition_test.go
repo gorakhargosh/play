@@ -43,7 +43,26 @@ func createNetwork(p Partition) {
 	p.Union(1, 0)
 }
 
-func BenchmarkQuickFind(b *testing.B) {
-
+func benchmarkConnectivity(p Partition, b *testing.B) {
+	createNetwork(p)
 	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		p.Connected(0, 7)
+	}
+}
+
+func BenchmarkQuickFind(b *testing.B) {
+	benchmarkConnectivity(NewQuickFind(), b)
+}
+
+func BenchmarkQuickUnion(b *testing.B) {
+	benchmarkConnectivity(NewQuickUnion(), b)
+}
+
+func BenchmarkWeightedQuickUnion(b *testing.B) {
+	benchmarkConnectivity(NewWeightedQuickUnion(), b)
+}
+
+func BenchmarkPartition(b *testing.B) {
+	benchmarkConnectivity(NewPartition(), b)
 }

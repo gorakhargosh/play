@@ -27,4 +27,5 @@ func checkConnectivity(p Partition, t *testing.T) {
 func TestConnectivity(t *testing.T) {
 	checkConnectivity(NewQuickFind(), t)
 	checkConnectivity(NewQuickUnion(), t)
+	checkConnectivity(NewWeightedQuickUnion(), t)
 }

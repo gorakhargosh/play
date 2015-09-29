@@ -1,9 +1,10 @@
 package partition
 
+// quickUnion is a quick-union disjoint set partitioner
 type quickUnion struct {
 }
 
-// NewQuickUnion generates a quick-find slow union partitioner.
+// NewQuickUnion creates a new partition.
 func NewQuickUnion() Partition {
 	return &quickUnion{}
 }

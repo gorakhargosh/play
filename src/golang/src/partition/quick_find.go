@@ -1,9 +1,10 @@
 package partition
 
+// quickFind is a quick-find slow-union partitioner.
 type quickFind struct {
 }
 
-// NewQuickFind generates a quick-find slow union partitioner.
+// NewQuickFind creates a new partition.
 func NewQuickFind() Partition {
 	return &quickFind{}
 }

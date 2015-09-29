@@ -31,7 +31,7 @@ func TestConnectivity(t *testing.T) {
 	checkConnectivity(NewPartition(), t)
 }
 
-func createNetwork(p Partition) {
+func benchmarkConnectivity(p Partition, b *testing.B) {
 	p.Union(4, 3)
 	p.Union(3, 8)
 	p.Union(6, 5)
@@ -41,10 +41,6 @@ func createNetwork(p Partition) {
 	p.Union(7, 2)
 	p.Union(6, 1)
 	p.Union(1, 0)
-}
-
-func benchmarkConnectivity(p Partition, b *testing.B) {
-	createNetwork(p)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		p.Connected(0, 7)

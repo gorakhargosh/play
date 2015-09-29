@@ -3,20 +3,30 @@ package partition
 // pathCompressedPartition is a path-compressed weighted quick-union disjoint set
 // partitioner.
 type pathCompressedPartition struct {
+	id     []int
+	weight []int
 }
 
 // NewPathCompressedPartition generates a new partition.
 func NewPathCompressedPartition(size int) Partition {
-	return &pathCompressedPartition{}
+	p := &pathCompressedPartition{
+		id:     make([]int, size),
+		weight: make([]int, size),
+	}
+	for i := 0; i < size; i++ {
+		p.id[i] = i
+		p.weight[i] = 1
+	}
+	return p
 }
 
-func (q *pathCompressedPartition) Union(x, int int) {
+func (p *pathCompressedPartition) Union(x, y int) {
 }
 
-func (q pathCompressedPartition) FindSet(x int) int {
+func (p pathCompressedPartition) FindSet(x int) int {
 	return 0
 }
 
-func (q pathCompressedPartition) Connected(x, y int) bool {
+func (p pathCompressedPartition) Connected(x, y int) bool {
 	return false
 }

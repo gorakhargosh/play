@@ -9,13 +9,13 @@ func NewBSTPartition(size int) Partition {
 	return &bstPartition{}
 }
 
-func (q *bstPartition) Union(x, int int) {
+func (p *bstPartition) Union(x, y int) {
 }
 
-func (q bstPartition) FindSet(x int) int {
+func (p bstPartition) FindSet(x int) int {
 	return 0
 }
 
-func (q bstPartition) Connected(x, y int) bool {
+func (p bstPartition) Connected(x, y int) bool {
 	return false
 }

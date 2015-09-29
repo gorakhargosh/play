@@ -44,6 +44,10 @@ func TestPathCompressedPartitionConnectivity(t *testing.T) {
 	checkConnectivity(NewPathCompressedPartition(N), t)
 }
 
+func TestPathShortenedPartitionConnectivity(t *testing.T) {
+	checkConnectivity(NewPathShortenedPartition(N), t)
+}
+
 func TestBSTConnectivity(t *testing.T) {
 	checkConnectivity(NewBSTPartition(N), t)
 }
@@ -78,6 +82,10 @@ func BenchmarkWeightedQuickUnion(b *testing.B) {
 
 func BenchmarkPathCompressedPartition(b *testing.B) {
 	benchmarkConnectivity(NewPathCompressedPartition(N), b)
+}
+
+func BenchmarkPathShortenedPartition(b *testing.B) {
+	benchmarkConnectivity(NewPathShortenedPartition(N), b)
 }
 
 func BenchmarkBSTPartition(b *testing.B) {

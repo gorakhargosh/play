@@ -3,6 +3,21 @@
 import sys
 import time
 
+def factorial(n):
+  """factorial calculates the factorial of n."""
+  if n == 0:
+    return 1
+  else:
+    return n * factorial(n - 1)
+
+
+def fibonacci(n):
+  """Fibonacci calculates the nth fibonacci number."""
+  if n < 2:
+    return n
+  return fibonacci(n - 2) + fibonacci(n - 1)
+
+
 def ackermann(m, n):
   """ackermann computes ackermann computes ackermann."""
   if m == 0:

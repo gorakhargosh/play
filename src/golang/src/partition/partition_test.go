@@ -24,11 +24,23 @@ func checkConnectivity(p Partition, t *testing.T) {
 	}
 }
 
-func TestConnectivity(t *testing.T) {
+func TestQuickFindConnectivity(t *testing.T) {
 	checkConnectivity(NewQuickFind(), t)
+}
+
+func TestQuickUnionConnectivity(t *testing.T) {
 	checkConnectivity(NewQuickUnion(), t)
+}
+
+func TestWeightedQuickUnionConnectivity(t *testing.T) {
 	checkConnectivity(NewWeightedQuickUnion(), t)
+}
+
+func TestPartitionConnectivity(t *testing.T) {
 	checkConnectivity(NewPartition(), t)
+}
+
+func TestBSTConnectivity(t *testing.T) {
 	checkConnectivity(NewBSTPartition(), t)
 }
 

@@ -19,8 +19,8 @@ func NewQuickFind(size int) Partition {
 }
 
 func (p *quickFind) Union(x, y int) {
-	xid := p.id[x]
-	yid := p.id[y]
+	xid := p.FindSet(x)
+	yid := p.FindSet(y)
 	for i := 0; i < len(p.id); i++ {
 		if p.id[i] == xid {
 			p.id[i] = yid

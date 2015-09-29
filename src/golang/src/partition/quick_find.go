@@ -2,11 +2,14 @@ package partition
 
 // quickFind is a quick-find slow-union partitioner.
 type quickFind struct {
+	id []int
 }
 
 // NewQuickFind creates a new partition.
-func NewQuickFind() Partition {
-	return &quickFind{}
+func NewQuickFind(size int) Partition {
+	return &quickFind{
+		id: make([]int, size),
+	}
 }
 
 func (q *quickFind) Union(x, int int) {

@@ -2,6 +2,10 @@ package partition
 
 import "testing"
 
+const (
+	N = 10
+)
+
 func checkConnectivity(p Partition, t *testing.T) {
 	p.Union(4, 3)
 	p.Union(3, 8)
@@ -25,23 +29,23 @@ func checkConnectivity(p Partition, t *testing.T) {
 }
 
 func TestQuickFindConnectivity(t *testing.T) {
-	checkConnectivity(NewQuickFind(), t)
+	checkConnectivity(NewQuickFind(N), t)
 }
 
 func TestQuickUnionConnectivity(t *testing.T) {
-	checkConnectivity(NewQuickUnion(), t)
+	checkConnectivity(NewQuickUnion(N), t)
 }
 
 func TestWeightedQuickUnionConnectivity(t *testing.T) {
-	checkConnectivity(NewWeightedQuickUnion(), t)
+	checkConnectivity(NewWeightedQuickUnion(N), t)
 }
 
-func TestPartitionConnectivity(t *testing.T) {
-	checkConnectivity(NewPartition(), t)
+func TestPathCompressedPartitionConnectivity(t *testing.T) {
+	checkConnectivity(NewPathCompressedPartition(N), t)
 }
 
 func TestBSTConnectivity(t *testing.T) {
-	checkConnectivity(NewBSTPartition(), t)
+	checkConnectivity(NewBSTPartition(N), t)
 }
 
 func benchmarkConnectivity(p Partition, b *testing.B) {
@@ -61,21 +65,21 @@ func benchmarkConnectivity(p Partition, b *testing.B) {
 }
 
 func BenchmarkQuickFind(b *testing.B) {
-	benchmarkConnectivity(NewQuickFind(), b)
+	benchmarkConnectivity(NewQuickFind(N), b)
 }
 
 func BenchmarkQuickUnion(b *testing.B) {
-	benchmarkConnectivity(NewQuickUnion(), b)
+	benchmarkConnectivity(NewQuickUnion(N), b)
 }
 
 func BenchmarkWeightedQuickUnion(b *testing.B) {
-	benchmarkConnectivity(NewWeightedQuickUnion(), b)
+	benchmarkConnectivity(NewWeightedQuickUnion(N), b)
 }
 
-func BenchmarkPartition(b *testing.B) {
-	benchmarkConnectivity(NewPartition(), b)
+func BenchmarkPathCompressedPartition(b *testing.B) {
+	benchmarkConnectivity(NewPathCompressedPartition(N), b)
 }
 
 func BenchmarkBSTPartition(b *testing.B) {
-	benchmarkConnectivity(NewBSTPartition(), b)
+	benchmarkConnectivity(NewBSTPartition(N), b)
 }

@@ -1,22 +1,22 @@
 package partition
 
-// optimalPartition is a path-compressed weighted quick-union disjoint set
+// pathCompressedPartition is a path-compressed weighted quick-union disjoint set
 // partitioner.
-type optimalPartition struct {
+type pathCompressedPartition struct {
 }
 
-// NewPartition generates a new partition.
-func NewPartition() Partition {
-	return &optimalPartition{}
+// NewPathCompressedPartition generates a new partition.
+func NewPathCompressedPartition(size int) Partition {
+	return &pathCompressedPartition{}
 }
 
-func (q *optimalPartition) Union(x, int int) {
+func (q *pathCompressedPartition) Union(x, int int) {
 }
 
-func (q optimalPartition) FindSet(x int) int {
+func (q pathCompressedPartition) FindSet(x int) int {
 	return 0
 }
 
-func (q optimalPartition) Connected(x, y int) bool {
+func (q pathCompressedPartition) Connected(x, y int) bool {
 	return false
 }

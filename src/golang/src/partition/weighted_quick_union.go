@@ -5,7 +5,7 @@ type weightedQuickUnion struct {
 }
 
 // NewWeightedQuickUnion generates a new partition.
-func NewWeightedQuickUnion() Partition {
+func NewWeightedQuickUnion(size int) Partition {
 	return &weightedQuickUnion{}
 }
 

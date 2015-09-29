@@ -5,7 +5,7 @@ type quickUnion struct {
 }
 
 // NewQuickUnion creates a new partition.
-func NewQuickUnion() Partition {
+func NewQuickUnion(size int) Partition {
 	return &quickUnion{}
 }
 

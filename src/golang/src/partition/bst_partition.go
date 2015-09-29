@@ -5,7 +5,7 @@ type bstPartition struct {
 }
 
 // NewBSTPartition generates a new partition.
-func NewBSTPartition() Partition {
+func NewBSTPartition(size int) Partition {
 	return &bstPartition{}
 }
 

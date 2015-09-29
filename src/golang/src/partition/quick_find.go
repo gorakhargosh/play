@@ -33,5 +33,5 @@ func (p quickFind) FindSet(x int) int {
 }
 
 func (p quickFind) Connected(x, y int) bool {
-	return p.id[x] == p.id[y]
+	return p.FindSet(x) == p.FindSet(y)
 }

@@ -28,10 +28,7 @@ func NewForestPartition(size int) Partition {
 	}
 	for i := 0; i < size; i++ {
 		p.id[i] = i
-
-		// Weights start as 0. Default initialization does the same thing, so we
-		// don't do this again.
-		// p.weight[i] = 0
+		p.weight[i] = 1
 	}
 	return p
 }

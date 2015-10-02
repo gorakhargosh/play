@@ -5,8 +5,8 @@ type quickFind struct {
 	id []int
 }
 
-// NewQuickFind creates a new partition.
-func NewQuickFind(size int) Partition {
+// NewLinearPartition creates a new partition.
+func NewLinearPartition(size int) Partition {
 	p := &quickFind{
 		id: make([]int, size),
 	}

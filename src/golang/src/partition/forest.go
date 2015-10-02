@@ -1,15 +1,14 @@
 package partition
 
-// pathShortenedPartition is a path-compressed weighted quick-union disjoint set
-// partitioner.
-type pathShortenedPartition struct {
+// forest is a path-compressed weighted quick-union disjoint set partitioner.
+type forest struct {
 	id     []int
 	weight []int
 }
 
-// NewPathShortenedPartition generates a new partition.
-func NewPathShortenedPartition(size int) Partition {
-	p := &pathShortenedPartition{
+// NewForestPartition generates a new partition.
+func NewForestPartition(size int) Partition {
+	p := &forest{
 		id:     make([]int, size),
 		weight: make([]int, size),
 	}
@@ -20,7 +19,7 @@ func NewPathShortenedPartition(size int) Partition {
 	return p
 }
 
-func (p *pathShortenedPartition) Union(x, y int) {
+func (p *forest) Union(x, y int) {
 	a := p.FindSet(x)
 	b := p.FindSet(y)
 	if p.weight[a] < p.weight[b] {
@@ -32,7 +31,19 @@ func (p *pathShortenedPartition) Union(x, y int) {
 	}
 }
 
-func (p *pathShortenedPartition) FindSet(x int) int {
+// findRoot determines the root of the set while performing a lazy, one-pass
+// point-at-grandparent path compression.
+func (p *forest) findRoot(x int) int {
+	for x != p.id[x] {
+		p.id[x] = p.id[p.id[x]]
+		x = p.id[x]
+	}
+	return x
+}
+
+// findRoot2 determines the root of the set while performing an eager, two-pass
+// iterative point-all-nodes-at-root path compression.
+func (p *forest) findRoot2(x int) int {
 	// Two pass variant that sets root for all traversed elements.
 	i := x
 	for x != p.id[x] {
@@ -46,6 +57,19 @@ func (p *pathShortenedPartition) FindSet(x int) int {
 	return x
 }
 
-func (p pathShortenedPartition) Connected(x, y int) bool {
+// findRoot2R determines the root of the set while performing an eager, two-pass
+// recursive point-all-nodes-at-root path compression.
+func (p *forest) findRoot2R(x int) int {
+	if x != p.id[x] {
+		p.id[x] = p.findRoot2R(p.id[x])
+	}
+	return p.id[x]
+}
+
+func (p *forest) FindSet(x int) int {
+	return p.findRoot2(x)
+}
+
+func (p forest) Connected(x, y int) bool {
 	return p.FindSet(x) == p.FindSet(y)
 }

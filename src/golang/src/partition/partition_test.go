@@ -28,24 +28,12 @@ func checkConnectivity(p Partition, t *testing.T) {
 	}
 }
 
-func TestQuickFindConnectivity(t *testing.T) {
-	checkConnectivity(NewQuickFind(N), t)
+func TestLinearConnectivity(t *testing.T) {
+	checkConnectivity(NewLinearPartition(N), t)
 }
 
-func TestQuickUnionConnectivity(t *testing.T) {
-	checkConnectivity(NewQuickUnion(N), t)
-}
-
-func TestWeightedQuickUnionConnectivity(t *testing.T) {
-	checkConnectivity(NewWeightedQuickUnion(N), t)
-}
-
-func TestPathCompressedPartitionConnectivity(t *testing.T) {
-	checkConnectivity(NewPathCompressedPartition(N), t)
-}
-
-func TestPathShortenedPartitionConnectivity(t *testing.T) {
-	checkConnectivity(NewPathShortenedPartition(N), t)
+func TestForestPartitionConnectivity(t *testing.T) {
+	checkConnectivity(NewForestPartition(N), t)
 }
 
 func TestBSTConnectivity(t *testing.T) {
@@ -68,26 +56,10 @@ func benchmarkConnectivity(p Partition, b *testing.B) {
 	}
 }
 
-func BenchmarkQuickFind(b *testing.B) {
-	benchmarkConnectivity(NewQuickFind(N), b)
+func BenchmarkLinearPartition(b *testing.B) {
+	benchmarkConnectivity(NewLinearPartition(N), b)
 }
 
-func BenchmarkQuickUnion(b *testing.B) {
-	benchmarkConnectivity(NewQuickUnion(N), b)
-}
-
-func BenchmarkWeightedQuickUnion(b *testing.B) {
-	benchmarkConnectivity(NewWeightedQuickUnion(N), b)
-}
-
-func BenchmarkPathCompressedPartition(b *testing.B) {
-	benchmarkConnectivity(NewPathCompressedPartition(N), b)
-}
-
-func BenchmarkPathShortenedPartition(b *testing.B) {
-	benchmarkConnectivity(NewPathShortenedPartition(N), b)
-}
-
-func BenchmarkBSTPartition(b *testing.B) {
-	benchmarkConnectivity(NewBSTPartition(N), b)
+func BenchmarkForestPartition(b *testing.B) {
+	benchmarkConnectivity(NewForestPartition(N), b)
 }

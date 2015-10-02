@@ -2,7 +2,8 @@ package partition
 
 // quickFind is a quick-find slow-union partitioner.
 type quickFind struct {
-	id []int
+	id       []int
+	capacity int
 }
 
 // NewLinearPartition creates a new partition.

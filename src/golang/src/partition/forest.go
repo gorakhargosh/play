@@ -8,23 +8,30 @@ type forest struct {
 	id []int
 
 	// Stores the weights for node ids that have been seen.
-	weight []uint64
+	weight []uint
 
 	// The presence of a node id in this map indicates that
 	// the element has been previously seen in a union operation.
 	seen map[int]bool
+
+	// The capacity of the partition.
+	capacity int
 }
 
 // NewForestPartition generates a new partition.
 func NewForestPartition(size int) Partition {
 	p := &forest{
-		id:     make([]int, size),
-		weight: make([]uint64, size),
-		seen:   make(map[int]bool),
+		id:       make([]int, size),
+		weight:   make([]uint, size),
+		seen:     make(map[int]bool),
+		capacity: size,
 	}
 	for i := 0; i < size; i++ {
 		p.id[i] = i
-		p.weight[i] = 1
+
+		// Weights start as 0. Default initialization does the same thing, so we
+		// don't do this again.
+		// p.weight[i] = 0
 	}
 	return p
 }
@@ -56,7 +63,8 @@ func (p *forest) findRoot2(x int) int {
 }
 
 // findRoot2R determines the root of the set while performing an eager, two-pass
-// recursive point-all-nodes-at-root path compression.
+// recursive point-all-nodes-at-root path compression when unwinding the
+// recursion stack.
 func (p *forest) findRoot2R(x int) int {
 	if x != p.id[x] {
 		p.id[x] = p.findRoot2R(p.id[x])
@@ -78,11 +86,73 @@ func (p forest) Connected(x, y int) bool {
 func (p *forest) Union(x, y int) {
 	a := p.FindSet(x)
 	b := p.FindSet(y)
-	if p.weight[a] < p.weight[b] {
-		p.id[a] = b
-		p.weight[b] += p.weight[a]
-	} else {
-		p.id[b] = a
-		p.weight[a] += p.weight[b]
+
+	if a != b { // equivalent to !p.Connected(a, b)
+		// We perform a union only if the two sets are not already connected. A
+		// union of two disjoint sets without this check would result in an
+		// unbalanced tree.
+
+		// Mark these elements as seen when performing their union.
+		p.seen[a] = true
+		p.seen[b] = true
+
+		if p.weight[a] < p.weight[b] {
+			p.id[a] = b
+			p.weight[b] += p.weight[a]
+			// Reduce the number of disjoint sets by 1.
+		} else {
+			p.id[b] = a
+			p.weight[a] += p.weight[b]
+			// Reduce the number of disjoint sets by 1.
+		}
 	}
+}
+
+func (p *forest) Weight(x int) uint {
+	return p.weight[p.FindSet(x)]
+}
+
+func (p *forest) MinWeight() uint {
+	weight := uint(0)
+	minWeight := uint(0)
+	for i := 0; i < p.capacity; i++ {
+		if _, ok := p.seen[i]; ok && p.id[i] == i {
+			// We have a root element.
+			weight = p.weight[i]
+			if minWeight == 0 || weight < minWeight {
+				minWeight = weight
+			}
+		}
+	}
+	return weight
+}
+
+func (p *forest) MaxWeight() uint {
+	weight := uint(0)
+	maxWeight := uint(0)
+
+	for i := 0; i < p.capacity; i++ {
+		if _, ok := p.seen[i]; ok && p.id[i] == i {
+			weight = p.weight[i]
+			if maxWeight == 0 || weight > maxWeight {
+				maxWeight = weight
+			}
+		}
+	}
+	return weight
+}
+
+func (p *forest) Capacity() int {
+	return p.capacity
+}
+
+// Determines the number of disjoint sets in the partition.
+func (p *forest) Count() int {
+	roots := make(map[int]int)
+	for i := 0; i < p.capacity; i++ {
+		if _, ok := p.seen[i]; ok && p.id[i] == i {
+			roots[i] = i
+		}
+	}
+	return len(roots)
 }

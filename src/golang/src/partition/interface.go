@@ -8,4 +8,19 @@ type Partition interface {
 	FindSet(x int) int
 	// Connected determines whether two elements, x and y, are connected.
 	Connected(x, y int) bool
+
+	// Determines the weight of the disjoint set represented by x.
+	Weight(x int) uint
+
+	// Calculates the weight of the smallest disjoint set within the partition.
+	MinWeight() uint
+
+	// Calculates the weight of the largest disjoint set within the partition.
+	MaxWeight() uint
+
+	// Determines the capacity of the partition.
+	Capacity() int
+
+	// Determines the number of disjoint sets in the partition.
+	Count() int
 }

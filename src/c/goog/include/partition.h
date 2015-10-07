@@ -1,7 +1,7 @@
-#include <stdbool.h>
+#ifndef _GOOG_PARTITION_H_
+#define _GOOG_PARTITION_H_
 
-#ifndef _X_PARTITION_H_
-#define _X_PARTITION_H_
+#include <stdbool.h>
 
 #include "types.h"
 
@@ -19,11 +19,11 @@
 typedef struct {
   // Each element is represented by its ordinal and the set representative of
   // each element is the root of the set tree.
-  Ordinal *id;
+  goog_ordinal_t *id;
 
   // Each tree set in the partition carries a weight that indicates the number
   // of elements in that set.
-  Weight *weight;
+  goog_weight_t *weight;
 
   // A seen array, for the lack of a hash-table, represents whether each
   // element of the set has been "seen" in a previous union operation.
@@ -31,57 +31,57 @@ typedef struct {
                // when we have an implementation.
 
   // The capacity of the partition.
-  Ordinal capacity;
+  goog_ordinal_t capacity;
 
-} Partition;
+} goog_partition_t;
 
 // Internal API.
 
-// partition_findSet1 finds the representative of the disjoint set while
+// goog_partition_find_set1 finds the representative of the disjoint set while
 // compressing the path lazily.
-Ordinal partition_findSet1(Partition *p, Ordinal x);
+goog_ordinal_t goog_partition_find_set1(goog_partition_t *p, goog_ordinal_t x);
 
-// partition_findSet2 finds the representative of the disjoint set while
+// goog_partition_find_set2 finds the representative of the disjoint set while
 // compressing the path eagerly.
-Ordinal partition_findSet2(Partition *p, Ordinal x);
+goog_ordinal_t goog_partition_find_set2(goog_partition_t *p, goog_ordinal_t x);
 
-// partition_FindSetRecursive finds the representative of the disjoint set while
-// compressing the path eagerly and recursively.
-Ordinal partition_findSetRecursive(Partition *p, Ordinal x);
-
-// partition_printWeights displays the weights of the entire partition.
-void partition_printWeights(Partition *p);
-
-// partition_printParents displays the weights of the entire partition.
-void partition_printParents(Partition *p);
+// goog_partition_find_set_recursive finds the representative of the disjoint
+// set while compressing the path eagerly and recursively.
+goog_ordinal_t goog_partition_find_set_recursive(goog_partition_t *p,
+                                                 goog_ordinal_t x);
 
 // Public API.
 
-// Partition_FindSet determines the representative element of a disjoint set.
-#define Partition_FindSet partition_findSetRecursive
+// goog_partition_find_set determines the representative element of a disjoint
+// set.
+#define goog_partition_find_set goog_partition_find_set_recursive
 
-Partition *NewPartition(Ordinal n);
+goog_partition_t *goog_partition_new(goog_ordinal_t n);
 
-// Partition_Weight determines the weight of the set to which x belongs.
-Weight Partition_Weight(Partition *p, Ordinal x);
+// goog_partition_weight determines the weight of the set to which x belongs.
+goog_weight_t goog_partition_weight(goog_partition_t *p, goog_ordinal_t x);
 
-// Partition_MinWeight determines the minimum weight in the partition.
-Weight Partition_MinWeight(Partition *p, bool countIndividuals);
+// goog_partition_min_weight determines the minimum weight in the partition.
+goog_weight_t goog_partition_min_weight(goog_partition_t *p,
+                                        bool countIndividuals);
 
-// Partition_MaxWeight determines the maximum weight in the partition.
-Weight Partition_MaxWeight(Partition *p, bool countIndividuals);
+// goog_partition_max_weight determines the maximum weight in the partition.
+goog_weight_t goog_partition_max_weight(goog_partition_t *p,
+                                        bool countIndividuals);
 
-// Partition_Union performs a union of the sets represented by x and y.
-void Partition_Union(Partition *p, Ordinal x, Ordinal y);
+// goog_partition_union performs a union of the sets represented by x and y.
+void goog_partition_union(goog_partition_t *p, goog_ordinal_t x,
+                          goog_ordinal_t y);
 
-// Partition_Connected determines whether the elements x and y belong to the
-// same disjoint set.
-bool Partition_Connected(Partition *p, Ordinal x, Ordinal y);
+// goog_partition_connected determines whether the elements x and y belong to
+// the same disjoint set.
+bool goog_partition_connected(goog_partition_t *p, goog_ordinal_t x,
+                              goog_ordinal_t y);
 
-// Partition_Destroy destroys and deallocates the partition.
-void Partition_Destroy(Partition *p);
+// goog_partition_destroy destroys and deallocates the partition.
+void goog_partition_destroy(goog_partition_t *p);
 
-// Partition_Capacity determines the capacity of the partition.
-Ordinal Partition_Capacity(Partition *p);
+// goog_partition_capacity determines the capacity of the partition.
+goog_ordinal_t goog_partition_capacity(goog_partition_t *p);
 
-#endif /* _X_PARTITION_H_ */
+#endif /* _GOOG_PARTITION_H_ */

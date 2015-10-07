@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#include "partition.h"
+#include <goog/partition.h>
 
 void Partition_Test() {
   Partition *p = NewPartition(10);

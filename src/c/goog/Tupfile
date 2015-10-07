@@ -6,7 +6,7 @@ LIB_SRCS += \
 partition.c \
 io.c
 
-C_FLAGS += -I$(TUP_CWD)/include
+C_FLAGS += -I$(TUP_CWD)/include/
 
 : foreach $(LIB_SRCS) |> $(CC) $(C_FLAGS) -g -c -o %o %f |> %B.o
 

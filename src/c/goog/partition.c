@@ -6,37 +6,37 @@
 #include "macros.h"
 #include "partition.h"
 
-// NewPartition creates a new partition of size n.
-Partition *NewPartition(Ordinal n) {
+// goog_partition_new creates a new partition of size n.
+goog_partition_t *goog_partition_new(goog_ordinal_t n) {
   assert(n > 0);
-  Partition *p = calloc(1, sizeof(Partition));
-  goog_return_val_if_null(p, NULL);
+  goog_partition_t *p = calloc(1, sizeof(goog_partition_t));
+  goog_return_if_null(p, NULL);
 
   if (p) {
     p->capacity = n;
 
-    p->id = calloc(n, sizeof(Ordinal));
+    p->id = calloc(n, sizeof(goog_ordinal_t));
     if (!p->id) {
-      goog_free(p);
+      free(p);
       return NULL;
     }
 
-    p->weight = calloc(n, sizeof(Weight));
+    p->weight = calloc(n, sizeof(goog_weight_t));
     if (!p->weight) {
-      goog_free(p->id);
-      goog_free(p);
+      free(p->id);
+      free(p);
       return NULL;
     }
 
     p->seen = calloc(n, sizeof(bool));
     if (!p->seen) {
-      goog_free(p->weight);
-      goog_free(p->id);
-      goog_free(p);
+      free(p->weight);
+      free(p->id);
+      free(p);
       return NULL;
     }
 
-    for (Ordinal i = 0; i < n; i++) {
+    for (goog_ordinal_t i = 0; i < n; i++) {
       p->id[i] = i;
       p->weight[i] = 1;
       // p->seen[i] = false; // calloc does this automatically.
@@ -45,7 +45,7 @@ Partition *NewPartition(Ordinal n) {
   return p;
 }
 
-Ordinal partition_findSet1(Partition *p, Ordinal x) {
+goog_ordinal_t goog_partition_find_set1(goog_partition_t *p, goog_ordinal_t x) {
   // Single-pass point-at-grandparent path compression.
   while (x != p->id[x]) {
     p->id[x] = p->id[p->id[x]];
@@ -54,40 +54,44 @@ Ordinal partition_findSet1(Partition *p, Ordinal x) {
   return x;
 }
 
-Ordinal partition_findSet2(Partition *p, Ordinal x) {
+goog_ordinal_t goog_partition_find_set2(goog_partition_t *p, goog_ordinal_t x) {
   // Two-pass point-at-root path compression.
   while (x != p->id[x]) {
     x = p->id[x];
   }
   // x is now root.
-  for (Ordinal i = x; i != p->id[i];) {
+  for (goog_ordinal_t i = x; i != p->id[i];) {
     i = p->id[i];
     p->id[i] = x;
   }
   return x;
 }
 
-Ordinal partition_findSetRecursive(Partition *p, Ordinal x) {
+goog_ordinal_t goog_partition_find_set_recursive(goog_partition_t *p,
+                                                 goog_ordinal_t x) {
   // Two-pass recursive point-all-nodes-at-root path compression. Unwinding the
   // recursion causes all the nodes in the path to point at root. This
   // implementation can be found in CLRS Chapter 21 and is particularly clean.
   if (x != p->id[x]) {
-    p->id[x] = partition_findSetRecursive(p, p->id[x]);
+    p->id[x] = goog_partition_find_set_recursive(p, p->id[x]);
   }
   return p->id[x];
 }
 
-Ordinal Partition_Capacity(Partition *p) { return p->capacity; }
-
-Weight Partition_Weight(Partition *p, Ordinal x) {
-  return p->weight[Partition_FindSet(p, x)];
+goog_ordinal_t goog_partition_capacity(goog_partition_t *p) {
+  return p->capacity;
 }
 
-Weight Partition_MinWeight(Partition *p, bool countIndividuals) {
-  Weight min_weight = 0;
-  Weight weight = 0;
-  for (Ordinal i = 0; i < p->capacity; i++) {
-    if (p->id[i] == i && (countIndividuals || p->seen[i])) {
+goog_weight_t goog_partition_weight(goog_partition_t *p, goog_ordinal_t x) {
+  return p->weight[goog_partition_find_set(p, x)];
+}
+
+goog_weight_t goog_partition_min_weight(goog_partition_t *p,
+                                        bool count_individuals) {
+  goog_weight_t min_weight = 0;
+  goog_weight_t weight = 0;
+  for (goog_ordinal_t i = 0; i < p->capacity; i++) {
+    if (p->id[i] == i && (count_individuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
       if (min_weight == 0 || weight < min_weight) {
@@ -98,11 +102,12 @@ Weight Partition_MinWeight(Partition *p, bool countIndividuals) {
   return min_weight;
 }
 
-Weight Partition_MaxWeight(Partition *p, bool countIndividuals) {
-  Weight max_weight = 0;
-  Weight weight = 0;
-  for (Ordinal i = 0; i < p->capacity; i++) {
-    if (p->id[i] == i && (countIndividuals || p->seen[i])) {
+goog_weight_t goog_partition_max_weight(goog_partition_t *p,
+                                        bool count_individuals) {
+  goog_weight_t max_weight = 0;
+  goog_weight_t weight = 0;
+  for (goog_ordinal_t i = 0; i < p->capacity; i++) {
+    if (p->id[i] == i && (count_individuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
       if (max_weight == 0 || weight > max_weight) {
@@ -113,9 +118,10 @@ Weight Partition_MaxWeight(Partition *p, bool countIndividuals) {
   return max_weight;
 }
 
-void Partition_Union(Partition *p, Ordinal x, Ordinal y) {
-  int a = Partition_FindSet(p, x);
-  int b = Partition_FindSet(p, y);
+void goog_partition_union(goog_partition_t *p, goog_ordinal_t x,
+                          goog_ordinal_t y) {
+  int a = goog_partition_find_set(p, x);
+  int b = goog_partition_find_set(p, y);
 
   p->seen[a] = true;
   p->seen[b] = true;
@@ -128,15 +134,16 @@ void Partition_Union(Partition *p, Ordinal x, Ordinal y) {
   }
 }
 
-bool Partition_Connected(Partition *p, Ordinal x, Ordinal y) {
-  return Partition_FindSet(p, x) == Partition_FindSet(p, y);
+bool goog_partition_connected(goog_partition_t *p, goog_ordinal_t x,
+                              goog_ordinal_t y) {
+  return goog_partition_find_set(p, x) == goog_partition_find_set(p, y);
 }
 
-void Partition_Destroy(Partition *p) {
+void goog_partition_destroy(goog_partition_t *p) {
   if (p) {
     goog_free(p->id);
     goog_free(p->weight);
     goog_free(p->seen);
-    goog_free(p);
+    free(p);
   }
 }

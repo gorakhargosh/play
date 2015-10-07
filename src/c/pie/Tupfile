@@ -6,6 +6,6 @@ LIB_SRCS += \
 partition.c \
 io.c
 
-: foreach $(LIB_SRCS) |> gcc -Wall -pedantic -Werror -std=c11 -g -o %o %f |> %B.o
+: foreach $(LIB_SRCS) |> $(CC) $(C_FLAGS) -g -c -o %o %f |> %B.o
 
 # : foreach *_test.c |> !c_binary -lm |> %B

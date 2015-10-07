@@ -9,7 +9,7 @@
 #define pie_free(p) \
   do {              \
     if (p) {        \
-      free(p)       \
+      free(p);      \
     }               \
   } while (0)
 

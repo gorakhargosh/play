@@ -6,7 +6,6 @@
 #include "macros.h"
 #include "partition.h"
 
-// goog_partition_new creates a new partition of size n.
 goog_partition_t *goog_partition_new(goog_ord_t n) {
   assert(n > 0);
   goog_partition_t *p = calloc(1, sizeof(goog_partition_t));

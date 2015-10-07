@@ -2,43 +2,45 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <string.h>
 
+#include "macros.h"
 #include "partition.h"
 
 // NewPartition creates a new partition of size n.
 Partition *NewPartition(Ordinal n) {
   assert(n > 0);
-  Partition *p = malloc(sizeof(Partition));
-  if (NULL != p) {
-    memset(p, 0, sizeof(Partition));
+  Partition *p = calloc(1, sizeof(Partition));
+  pie_return_val_if_null(p, NULL);
+
+  if (p) {
+    // memset(p, 0, sizeof(Partition));
     p->capacity = n;
 
-    p->id = malloc(n * sizeof(Ordinal));
-    if (NULL == p->id) {
-      free(p);
+    p->id = calloc(n, sizeof(Ordinal));
+    if (!p->id) {
+      pie_free(p);
       return NULL;
     }
 
-    p->weight = malloc(n * sizeof(Weight));
-    if (NULL == p->weight) {
-      free(p->id);
-      free(p);
+    p->weight = calloc(n, sizeof(Weight));
+    if (!p->weight) {
+      pie_free(p->id);
+      pie_free(p);
       return NULL;
     }
 
-    p->seen = malloc(n * sizeof(bool));
-    if (NULL == p->seen) {
-      free(p->weight);
-      free(p->id);
-      free(p);
+    p->seen = calloc(n, sizeof(bool));
+    if (!p->seen) {
+      pie_free(p->weight);
+      pie_free(p->id);
+      pie_free(p);
       return NULL;
     }
 
     for (Ordinal i = 0; i < n; i++) {
       p->id[i] = i;
       p->weight[i] = 1;
-      p->seen[i] = false;
+      // p->seen[i] = false; // calloc does this automatically.
     }
   }
   return p;
@@ -82,11 +84,11 @@ Weight Partition_Weight(Partition *p, Ordinal x) {
   return p->weight[Partition_FindSet(p, x)];
 }
 
-Weight Partition_MinWeight(Partition *p) {
+Weight Partition_MinWeight(Partition *p, bool countIndividuals) {
   Weight min_weight = 0;
   Weight weight = 0;
   for (Ordinal i = 0; i < p->capacity; i++) {
-    if (p->seen[i] && p->id[i] == i) {
+    if (p->id[i] == i && (countIndividuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
       if (min_weight == 0 || weight < min_weight) {
@@ -97,11 +99,11 @@ Weight Partition_MinWeight(Partition *p) {
   return min_weight;
 }
 
-Weight Partition_MaxWeight(Partition *p) {
+Weight Partition_MaxWeight(Partition *p, bool countIndividuals) {
   Weight max_weight = 0;
   Weight weight = 0;
   for (Ordinal i = 0; i < p->capacity; i++) {
-    if (p->seen[i] && p->id[i] == i) {
+    if (p->id[i] == i && (countIndividuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
       if (max_weight == 0 || weight > max_weight) {
@@ -132,8 +134,10 @@ bool Partition_Connected(Partition *p, Ordinal x, Ordinal y) {
 }
 
 void Partition_Destroy(Partition *p) {
-  free(p->id);
-  free(p->weight);
-  free(p->seen);
-  free(p);
+  if (p) {
+    pie_free(p->id);
+    pie_free(p->weight);
+    pie_free(p->seen);
+    pie_free(p);
+  }
 }

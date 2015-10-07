@@ -1,0 +1,11 @@
+include_rules
+
+.gitignore
+
+LIB_SRCS += \
+partition.c \
+io.c
+
+: foreach $(LIB_SRCS) |> gcc -Wall -pedantic -Werror -std=c11 -g -o %o %f |> %B.o
+
+# : foreach *_test.c |> !c_binary -lm |> %B

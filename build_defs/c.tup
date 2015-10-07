@@ -1,13 +1,35 @@
 CC = gcc
-CC_FLAGS += -Wall
-CC_FLAGS += -pedantic
-CC_FLAGS += -O3
+
+C_FLAGS += -pedantic
+C_FLAGS += -W
+C_FLAGS += -Wall
+C_FLAGS += -Werror
+C_FLAGS += -Wbad-function-cast
+C_FLAGS += -Wcast-align
+C_FLAGS += -Wcast-qual
+C_FLAGS += -Wchar-subscripts
+C_FLAGS += -Wmissing-prototypes
+C_FLAGS += -Wnested-externs
+C_FLAGS += -Wpointer-arith
+C_FLAGS += -Wredundant-decls
+C_FLAGS += -Wshadow
+C_FLAGS += -Wstrict-prototypes
+C_FLAGS += -Wwrite-strings
+C_FLAGS += -Wswitch-enum
+C_FLAGS += -fno-common
+C_FLAGS += -std=c11
 
 
 # ------------------------------------------------------------------------------
 # c_binary build definition.
 # ------------------------------------------------------------------------------
-!c_binary = |> ^ [CC] %f ^ $(CC) $(CC_FLAGS) -o %o %f |>
+!c_binary = |> ^ [CC] %f ^ $(CC) $(C_FLAGS) -o %o %f |>
+
+
+# ------------------------------------------------------------------------------
+# c_object build definition.
+# ------------------------------------------------------------------------------
+!c_object = |> ^ [CCO] %f ^ $(CC) $(C_FLAGS) -c -o %o %f |>
 
 
 # Platform-specific overrides.

@@ -27,10 +27,12 @@ typedef struct {
 
   // A seen array, for the lack of a hash-table, represents whether each
   // element of the set has been "seen" in a previous union operation.
-  bool *seen;
+  bool *seen;  // TODO(yesudeep): Replace this with a hash-table or bit vector
+               // when we have an implementation.
 
   // The capacity of the partition.
   Ordinal capacity;
+
 } Partition;
 
 // Internal API.
@@ -64,10 +66,10 @@ Partition *NewPartition(Ordinal n);
 Weight Partition_Weight(Partition *p, Ordinal x);
 
 // Partition_MinWeight determines the minimum weight in the partition.
-Weight Partition_MinWeight(Partition *p);
+Weight Partition_MinWeight(Partition *p, bool countIndividuals);
 
 // Partition_MaxWeight determines the maximum weight in the partition.
-Weight Partition_MaxWeight(Partition *p);
+Weight Partition_MaxWeight(Partition *p, bool countIndividuals);
 
 // Partition_Union performs a union of the sets represented by x and y.
 void Partition_Union(Partition *p, Ordinal x, Ordinal y);

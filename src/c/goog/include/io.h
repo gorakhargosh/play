@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-int fgetline(FILE *fp, char s[], int maxlen);
+int goog_fgetline(FILE *fp, char s[], int maxlen);
 
 #endif /* _X_IO_H_ */

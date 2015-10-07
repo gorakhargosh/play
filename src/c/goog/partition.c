@@ -10,30 +10,29 @@
 Partition *NewPartition(Ordinal n) {
   assert(n > 0);
   Partition *p = calloc(1, sizeof(Partition));
-  pie_return_val_if_null(p, NULL);
+  goog_return_val_if_null(p, NULL);
 
   if (p) {
-    // memset(p, 0, sizeof(Partition));
     p->capacity = n;
 
     p->id = calloc(n, sizeof(Ordinal));
     if (!p->id) {
-      pie_free(p);
+      goog_free(p);
       return NULL;
     }
 
     p->weight = calloc(n, sizeof(Weight));
     if (!p->weight) {
-      pie_free(p->id);
-      pie_free(p);
+      goog_free(p->id);
+      goog_free(p);
       return NULL;
     }
 
     p->seen = calloc(n, sizeof(bool));
     if (!p->seen) {
-      pie_free(p->weight);
-      pie_free(p->id);
-      pie_free(p);
+      goog_free(p->weight);
+      goog_free(p->id);
+      goog_free(p);
       return NULL;
     }
 
@@ -135,9 +134,9 @@ bool Partition_Connected(Partition *p, Ordinal x, Ordinal y) {
 
 void Partition_Destroy(Partition *p) {
   if (p) {
-    pie_free(p->id);
-    pie_free(p->weight);
-    pie_free(p->seen);
-    pie_free(p);
+    goog_free(p->id);
+    goog_free(p->weight);
+    goog_free(p->seen);
+    goog_free(p);
   }
 }

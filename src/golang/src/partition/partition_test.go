@@ -36,10 +36,6 @@ func TestForestPartitionConnectivity(t *testing.T) {
 	checkConnectivity(NewForestPartition(N), t)
 }
 
-func TestBSTConnectivity(t *testing.T) {
-	checkConnectivity(NewBSTPartition(N), t)
-}
-
 func benchmarkConnectivity(p Partition, b *testing.B) {
 	p.Union(4, 3)
 	p.Union(3, 8)

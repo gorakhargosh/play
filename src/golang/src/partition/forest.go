@@ -109,11 +109,11 @@ func (p *forest) Weight(x int) uint {
 	return p.weight[p.FindSet(x)]
 }
 
-func (p *forest) MinWeight() uint {
+func (p *forest) MinWeight(countIndividuals bool) uint {
 	weight := uint(0)
 	minWeight := uint(0)
 	for i := 0; i < p.capacity; i++ {
-		if _, ok := p.seen[i]; ok && p.id[i] == i {
+		if _, ok := p.seen[i]; p.id[i] == i && (ok || countIndividuals) {
 			// We have a root element.
 			weight = p.weight[i]
 			if minWeight == 0 || weight < minWeight {
@@ -124,12 +124,11 @@ func (p *forest) MinWeight() uint {
 	return weight
 }
 
-func (p *forest) MaxWeight() uint {
+func (p *forest) MaxWeight(countIndividuals bool) uint {
 	weight := uint(0)
 	maxWeight := uint(0)
-
 	for i := 0; i < p.capacity; i++ {
-		if _, ok := p.seen[i]; ok && p.id[i] == i {
+		if _, ok := p.seen[i]; p.id[i] == i && (ok || countIndividuals) {
 			weight = p.weight[i]
 			if maxWeight == 0 || weight > maxWeight {
 				maxWeight = weight
@@ -144,10 +143,10 @@ func (p *forest) Capacity() int {
 }
 
 // Determines the number of disjoint sets in the partition.
-func (p *forest) Count() int {
+func (p *forest) Count(countIndividuals bool) int {
 	roots := make(map[int]int)
 	for i := 0; i < p.capacity; i++ {
-		if _, ok := p.seen[i]; ok && p.id[i] == i {
+		if _, ok := p.seen[i]; p.id[i] == i && (countIndividuals || ok) {
 			roots[i] = i
 		}
 	}

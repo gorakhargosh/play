@@ -21,6 +21,8 @@ type Partition interface {
 	// Determines the capacity of the partition.
 	Capacity() int
 
-	// Determines the number of disjoint sets in the partition.
-	Count() int
+	// Determines the number of disjoint sets that have been seen in the
+	// partition. If you want to determine the number of proper disjoint sets,
+	// you can use Capacity() - Count().
+	CountSeen() int
 }

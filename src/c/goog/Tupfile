@@ -4,7 +4,8 @@ include_rules
 
 LIB_SRCS += \
 partition.c \
-io.c
+io.c \
+testing.c
 
 C_FLAGS += -I$(TUP_CWD)/include/
 

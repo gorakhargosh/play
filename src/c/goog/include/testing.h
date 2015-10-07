@@ -1,12 +1,17 @@
-#ifndef _GOOG_UNITTEST_H_
-#define _GOOG_UNITTEST_H_
+#ifndef _GOOG_TESTING_H_
+#define _GOOG_TESTING_H_
 
+typedef struct { int count; } goog_testing_t;
+
+goog_testing_t *goog_testing_new(void);
+int goog_testing_errorf(goog_testing_t *t, char *sfmt, ...);
+
+#if 0
 /**
  * Minimal unit test runner.
  *
  * Based on http://www.jera.com/techinfo/jtns/jtn002.html
  */
-
 #define goog_assert(message, test) \
   do {                             \
     if (!(test)) {                 \
@@ -25,5 +30,6 @@
 
 // The number of tests run.
 extern int goog_tests_run;
+#endif /* 0 */
 
-#endif /* _GOOG_UNITTEST_H_ */
+#endif /* _GOOG_TESTING_H_ */

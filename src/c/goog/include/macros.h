@@ -58,6 +58,18 @@
   } while (0)
 
 /**
+ * Bail by returning from the function if the pointer is NULL.
+ *
+ * @param cond The condition to test.
+ */
+#define goog_bail_if_null(ptr) \
+  do {                         \
+    if (!(ptr)) {              \
+      return;                  \
+    }                          \
+  } while (0)
+
+/**
  * Bail by returning from the function if the condition is satisfied.
  *
  * @param cond The condition to test.

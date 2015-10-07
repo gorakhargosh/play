@@ -9,14 +9,14 @@ int goog_fgetline(FILE *fp, char s[], int maxlen) {
   int c = 0;
   maxlen = maxlen - 1;  // leave room for '\0'.
   while ((c = getc(fp)) != EOF) {
-    if (c == '\n') {
+    if ('\n' == c) {
       break;
     }
     if (nch < maxlen) {
       s[nch++] = c;
     }
   }
-  if (c == EOF && nch == 0) {
+  if (EOF == c && 0 == nch) {
     return EOF;
   }
   s[nch] = '\0';

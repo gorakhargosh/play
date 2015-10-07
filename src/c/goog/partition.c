@@ -7,7 +7,7 @@
 #include "partition.h"
 
 // goog_partition_new creates a new partition of size n.
-goog_partition_t *goog_partition_new(goog_ordinal_t n) {
+goog_partition_t *goog_partition_new(goog_ord_t n) {
   assert(n > 0);
   goog_partition_t *p = calloc(1, sizeof(goog_partition_t));
   goog_return_if_null(p, NULL);
@@ -15,7 +15,7 @@ goog_partition_t *goog_partition_new(goog_ordinal_t n) {
   if (p) {
     p->capacity = n;
 
-    p->id = calloc(n, sizeof(goog_ordinal_t));
+    p->id = calloc(n, sizeof(goog_ord_t));
     if (!p->id) {
       free(p);
       return NULL;
@@ -36,7 +36,7 @@ goog_partition_t *goog_partition_new(goog_ordinal_t n) {
       return NULL;
     }
 
-    for (goog_ordinal_t i = 0; i < n; i++) {
+    for (goog_ord_t i = 0; i < n; i++) {
       p->id[i] = i;
       p->weight[i] = 1;
       // p->seen[i] = false; // calloc does this automatically.
@@ -45,7 +45,7 @@ goog_partition_t *goog_partition_new(goog_ordinal_t n) {
   return p;
 }
 
-goog_ordinal_t goog_partition_find_set1(goog_partition_t *p, goog_ordinal_t x) {
+goog_ord_t goog_partition_find_set1(goog_partition_t *p, goog_ord_t x) {
   // Single-pass point-at-grandparent path compression.
   while (x != p->id[x]) {
     p->id[x] = p->id[p->id[x]];
@@ -54,21 +54,21 @@ goog_ordinal_t goog_partition_find_set1(goog_partition_t *p, goog_ordinal_t x) {
   return x;
 }
 
-goog_ordinal_t goog_partition_find_set2(goog_partition_t *p, goog_ordinal_t x) {
+goog_ord_t goog_partition_find_set2(goog_partition_t *p, goog_ord_t x) {
   // Two-pass point-at-root path compression.
   while (x != p->id[x]) {
     x = p->id[x];
   }
   // x is now root.
-  for (goog_ordinal_t i = x; i != p->id[i];) {
+  for (goog_ord_t i = x; i != p->id[i];) {
     i = p->id[i];
     p->id[i] = x;
   }
   return x;
 }
 
-goog_ordinal_t goog_partition_find_set_recursive(goog_partition_t *p,
-                                                 goog_ordinal_t x) {
+goog_ord_t goog_partition_find_set_recursive(goog_partition_t *p,
+                                             goog_ord_t x) {
   // Two-pass recursive point-all-nodes-at-root path compression. Unwinding the
   // recursion causes all the nodes in the path to point at root. This
   // implementation can be found in CLRS Chapter 21 and is particularly clean.
@@ -78,11 +78,9 @@ goog_ordinal_t goog_partition_find_set_recursive(goog_partition_t *p,
   return p->id[x];
 }
 
-goog_ordinal_t goog_partition_capacity(goog_partition_t *p) {
-  return p->capacity;
-}
+goog_ord_t goog_partition_capacity(goog_partition_t *p) { return p->capacity; }
 
-goog_weight_t goog_partition_weight(goog_partition_t *p, goog_ordinal_t x) {
+goog_weight_t goog_partition_weight(goog_partition_t *p, goog_ord_t x) {
   return p->weight[goog_partition_find_set(p, x)];
 }
 
@@ -90,7 +88,7 @@ goog_weight_t goog_partition_min_weight(goog_partition_t *p,
                                         bool count_individuals) {
   goog_weight_t min_weight = 0;
   goog_weight_t weight = 0;
-  for (goog_ordinal_t i = 0; i < p->capacity; i++) {
+  for (goog_ord_t i = 0; i < p->capacity; i++) {
     if (p->id[i] == i && (count_individuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
@@ -106,7 +104,7 @@ goog_weight_t goog_partition_max_weight(goog_partition_t *p,
                                         bool count_individuals) {
   goog_weight_t max_weight = 0;
   goog_weight_t weight = 0;
-  for (goog_ordinal_t i = 0; i < p->capacity; i++) {
+  for (goog_ord_t i = 0; i < p->capacity; i++) {
     if (p->id[i] == i && (count_individuals || p->seen[i])) {
       // We have a root element.
       weight = p->weight[i];
@@ -118,8 +116,7 @@ goog_weight_t goog_partition_max_weight(goog_partition_t *p,
   return max_weight;
 }
 
-void goog_partition_union(goog_partition_t *p, goog_ordinal_t x,
-                          goog_ordinal_t y) {
+void goog_partition_union(goog_partition_t *p, goog_ord_t x, goog_ord_t y) {
   int a = goog_partition_find_set(p, x);
   int b = goog_partition_find_set(p, y);
 
@@ -134,8 +131,7 @@ void goog_partition_union(goog_partition_t *p, goog_ordinal_t x,
   }
 }
 
-bool goog_partition_connected(goog_partition_t *p, goog_ordinal_t x,
-                              goog_ordinal_t y) {
+bool goog_partition_connected(goog_partition_t *p, goog_ord_t x, goog_ord_t y) {
   return goog_partition_find_set(p, x) == goog_partition_find_set(p, y);
 }
 

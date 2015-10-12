@@ -4,6 +4,10 @@ package partition
 type quickFind struct {
 	id       []int
 	capacity int
+
+	// The presence of a node id in this map indicates that the element has been
+	// previously seen in a union operation.
+	seen map[int]bool
 }
 
 // NewLinearPartition creates a new partition.
@@ -20,11 +24,16 @@ func NewLinearPartition(size int) Partition {
 }
 
 func (p *quickFind) Union(x, y int) {
-	xid := p.FindSet(x)
-	yid := p.FindSet(y)
-	for i := 0; i < len(p.id); i++ {
-		if p.id[i] == xid {
-			p.id[i] = yid
+	a := p.FindSet(x)
+	b := p.FindSet(y)
+	p.seen[a] = true
+	p.seen[b] = true
+	// Check saves an iteration.
+	if a != b {
+		for i := 0; i < len(p.id); i++ {
+			if p.id[i] == a {
+				p.id[i] = b
+			}
 		}
 	}
 }
@@ -35,4 +44,19 @@ func (p quickFind) FindSet(x int) int {
 
 func (p quickFind) Connected(x, y int) bool {
 	return p.FindSet(x) == p.FindSet(y)
+}
+
+func (p *quickFind) Capacity() int {
+	return p.capacity
+}
+
+// Determines the number of disjoint sets in the partition.
+func (p *quickFind) Count(countIndividuals bool) int {
+	roots := make(map[int]int)
+	for i := 0; i < p.capacity; i++ {
+		if _, ok := p.seen[i]; p.id[i] == i && (countIndividuals || ok) {
+			roots[i] = i
+		}
+	}
+	return len(roots)
 }

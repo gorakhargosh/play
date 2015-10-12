@@ -13,10 +13,10 @@ type Partition interface {
 	Weight(x int) uint
 
 	// Calculates the weight of the smallest disjoint set within the partition.
-	MinWeight() uint
+	MinWeight(countIndividuals bool) uint
 
 	// Calculates the weight of the largest disjoint set within the partition.
-	MaxWeight() uint
+	MaxWeight(countIndividuals bool) uint
 
 	// Determines the capacity of the partition.
 	Capacity() int
@@ -24,5 +24,5 @@ type Partition interface {
 	// Determines the number of disjoint sets that have been seen in the
 	// partition. If you want to determine the number of proper disjoint sets,
 	// you can use Capacity() - Count().
-	CountSeen() int
+	Count(countIndividuals bool) int
 }
